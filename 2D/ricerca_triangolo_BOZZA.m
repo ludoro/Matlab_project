@@ -10,8 +10,9 @@ side=[0 0 0];   %i semipiani di appartenenza dei tre vertici
 points_to_check=zeros(2,2);
 edges_to_check=[0 0];
 %usati in (sum==3 or sum==5) oppure in (sum==0 or sum==4)
-points_on_trace=[0 0];
 edge_on_trace=0;
+nodes_on_trace=[0,0]; % vettore che eventualmente contiene quali nodi del 
+                      % triangolo giacciono sulla traccia
 
 %prima parte di ricerca
 while(id_tri<=n_triangles && found==0)
@@ -84,24 +85,23 @@ while(id_tri<=n_triangles && found==0)
                     
                     %salvo lo status anche nel triangolo vicino
                     for j=1:3
+                        if(neigh(id_tri,edges_to_check(i)-3,j)~= -1)
+                            
                         if(neigh(neigh(id_tri,edges_to_check(i)-3),j)==id_tri)
                             triangle(neigh(id_tri,edges_to_check(i)-3),j+3)=tr(edges_to_check(i));
+                        end
                         end
                     end
                 end
             end
             %tr(edges_to_check([1 2])) contiene i due status
             status=tr(edges_to_check([1 2]));
-            
-            %se status(1)~=0 || status(2)~=0:
-            % - ESEGUIRE TRIANGOLAZIONE; 
-            % - found=1; 
-            % - SALVARE COORDINATE CURVILINEE;
-            % - METTERE IN CODA I TRIANGOLI VICINI;
-            
+         
             if(status(1)~=0 || status(2)~=0)
                 %il triangolo è sicuramente tagliato
+                found = 1;
                 info_trace(id_t).cut_tri(1).id = id_tri;
+                triangle(id_tri,7)= 0;
                 %mettiamo info dei punti del triangolo che stiamo
                 %considerando in info trace. 
                 for j = 1:3
@@ -152,7 +152,9 @@ while(id_tri<=n_triangles && found==0)
                     
                     
                     
-                    %CREARE FUNZIONE PER TRIANGOLI VICINI 
+                    %FUNZIONE PER TRIANGOLI VICINI  
+                    enqueue_tri_to_check(id_tri);
+                    
                         
                 
                 elseif(status(1) == 2 && status(2) == 0)
@@ -200,7 +202,7 @@ while(id_tri<=n_triangles && found==0)
                     
                     
                     %CREARE FUNZIONE PER TRIANGOLI VICINI 
-                    
+                    enqueue_tri_to_check(id_tri);
                     
                     
                 else % 3 triangoli nella triangolazione
@@ -264,10 +266,10 @@ while(id_tri<=n_triangles && found==0)
                         [edges_to_check(1)-3,edges_to_check(2)-3,5];
                     
  %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
-        
+            
+            % Da considerare più avanti se abbiamo tempo
+            %{
             elseif(sum==0 || sum==4)
-            
-            
             %uso solo s_temp(1) e nodes_on_trace(1)
             for i=1:3
                 if(side(i)==2)
@@ -275,6 +277,8 @@ while(id_tri<=n_triangles && found==0)
                     nodes_on_trace(1)=tr(i);
                 end
             end
+            %}
+            
             
             
             

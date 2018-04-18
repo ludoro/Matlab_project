@@ -19,6 +19,8 @@ global toll_t
 global accuracy
 global info_trace
 global queue
+global neigh
+global triangle
 accuracy = 1e-14;
 %---------------------------- NODE --------------------------
 
