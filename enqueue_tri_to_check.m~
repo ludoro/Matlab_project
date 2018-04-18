@@ -1,4 +1,0 @@
-function [output] = enqueue_tri_to_check()
-
-end
-

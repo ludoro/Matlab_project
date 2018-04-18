@@ -65,7 +65,11 @@ triangle(:,[1,2,3])=A([2 3 4],:)';
 %STRUTTURA di 'triangle': n_triangles righe x 7 colonne
 %                         primi 3 colonne vertici
 %                         colonne 4,5,6 status degli edge
-%                         settima colonna flag: -1 non sappiamo niente
+%                         settima colonna flag:  -1 non sappiamo niente
+%                                                -2 lista attesa due nodi
+%                                                   in comune
+%                                                -3 lista attesa un nodo in
+%                                                   comune
 %                                                0 tagliato
 %                                                >0 posizione su .near_tri
 fclose(fp);
