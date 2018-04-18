@@ -18,7 +18,6 @@ global T_squared
 global toll_t
 global accuracy
 global info_trace
-global queue
 accuracy = 1e-14;
 %---------------------------- NODE --------------------------
 
@@ -146,11 +145,8 @@ info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',zeros(4
                            's',[],...
                            'near_tri',struct('id',0,'nodes',[-1,-1])),n_traces,1);
  
-% queue = coda triangoli da controllare      
-% per ogni riga:
-%-primo elemento id_tri
-%-secondo elemento indice nodo condiviso
-%-terzo elemento indice eventuale secondo nodo condiviso 
+% coda triangoli da controllare      
+% primo element
 queue = zeros(0,3);                  
 
 

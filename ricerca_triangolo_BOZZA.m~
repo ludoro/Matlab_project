@@ -28,9 +28,8 @@ while(id_tri<=n_triangles && found==0)
         
         sum=side(1)+side(2)+side(3);
         
-        %---------NESSUN VERTICE SULLA TRACCIA----------%
         if(sum==-1 || sum==1)
-            
+            %NESSUN VERTICE SULLA RETTA DELLA TRACCIA
             
             %capire quali sono i due lati da controllare
             
@@ -263,10 +262,35 @@ while(id_tri<=n_triangles && found==0)
                     info_trace(id_t).cut_tri(1).tri(3,:) = ...
                         [edges_to_check(1)-3,edges_to_check(2)-3,5];
                     
- %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
+                    
+                    
+                    
+                   
+                    
+                    
+                    
+                    
+                    
+                      
+                    
+                    
+                    
+                    
+                    
+                    
+                  
+                  
+                        
+                        
+                   
+                    
+                   
+             
+                
+                
         
-            elseif(sum==0 || sum==4)
-            
+        elseif(sum==0 || sum==4)
+            %UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI
             
             %uso solo s_temp(1) e nodes_on_trace(1)
             for i=1:3
