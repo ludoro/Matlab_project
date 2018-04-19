@@ -5,15 +5,13 @@ id_tri=1;       %id del triangolo in esame
 s_temp=[0 0];   %le coordinate curvilinee dell'eventuale intersezione
 tr=zeros(1,6);  %le info del triangolo corrente
 side=[0 0 0];   %i semipiani di appartenenza dei tre vertici
-
+status = [0, 0]; % status degli eventuali due lati intersecati
 %usati in (sum==1 or sum==-1)
 points_to_check=zeros(2,2);
 edges_to_check=[0 0];
 %usati in (sum==3 or sum==5) oppure in (sum==0 or sum==4)
 edge_on_trace=0;
-nodes_on_trace=[0,0]; % vettore che eventualmente contiene quali nodi del 
-                      % triangolo giacciono sulla traccia
-
+node_on_trace=0;%indica nodo su traccias
 %prima parte di ricerca
 while(id_tri<=n_triangles && found==0)
     tr=triangle(id_tri,:);
@@ -38,6 +36,8 @@ while(id_tri<=n_triangles && found==0)
             %points_to_check(i,:) sono i due punti di edges_to_check(i)
             % in points_to_check(i,1) ci metto il vertice in
             % comune
+            
+            %% CAMBIARE: NON SALVARE TR(i) MA i 
             if(side(1)==side(2))
                 edges_to_check(2)=5; %2+3
                 edges_to_check(1)=4; %1+3
@@ -98,7 +98,7 @@ while(id_tri<=n_triangles && found==0)
             status=tr(edges_to_check([1 2]));
          
             if(status(1)~=0 || status(2)~=0)
-                %il triangolo è sicuramente tagliato
+                %IL TRIANGOLO SICURAMENTE TAGLIATO
                 found = 1;
                 info_trace(id_t).cut_tri(1).id = id_tri;
                 triangle(id_tri,7)= 0;
@@ -219,8 +219,8 @@ while(id_tri<=n_triangles && found==0)
                                            points_to_check(i,2));
                         if(a~=0)
                             disp("ERRORE");
-                            clear a;
                         end
+                        clear a;
       
                         end
                     end
@@ -282,10 +282,104 @@ while(id_tri<=n_triangles && found==0)
             
             
             
-            
+        %traccia passa per un vertice e taglia (forse) triangolo opposto 
         elseif(sum==2)
             
+        %trovo che nodo sta sulla traccia e su opposite nodes metto gli
+        %altri che mi serviranno per intersect e triangolazione
+        if(side(1) == 2)
+            node_on_trace = 1;
+            opposite_nodes = [2,3];
+                    
+        
+        elseif(side(2) == 2)
+            node_on_trace = 2;
+            opposite_nodes = [3,1];
             
+            
+        else%%(side(3) == 2)
+            node_on_trace = 3;
+            opposite_nodes = [1,2];
+          
+        end
+        
+        if(tr(node_on_trace+3) == -1)
+            
+        [tr(node_on_trace+3),s_temp(2)] = ...
+            intersect(id_t,tr(opposite_nodes(1)),tr(opposite_nodes(2)));
+        
+        triangle(id_tri,node_on_trace+3) = tr(node_on_trace+3);
+        
+        
+        %salvo lo status anche nel triangolo vicino
+        for j=1:3
+            if(neigh(id_tri,node_on_trace,j)~= -1)
+               if(neigh(neigh(id_tri,node_on_trace),j)==id_tri)
+                  triangle(neigh(id_tri,node_on_trace),j+3)=...
+                      tr(node_on_trace+3);
+                end
+             end
+        end
+        
+        end
+        s_temp(1) = node(tr(node_on_trace)).s;
+        
+        % è tagliato 
+        if((s_temp(1) > 0 && s_temp(1) < 1) ||...
+            (tr(node_on_trace+3) ~= 0)) 
+        
+            info_trace(id_t).cut_tri(1).id = id_tri;
+            
+            % se lo status è 0 potremmo non conoscere l'ascissa curvilinea
+            % (potremmo non aver chiamato intersect)
+            if(tr(node_on_trace+3) == 0)
+                [a,s_temp(2)] = intersect(id_t,...
+                              tr(opposite_nodes(1)),tr(opposite_nodes(2)));
+                 if(a~=0)
+                    disp("ERRORE");
+                 end
+                 clear a; % ci interessa solo s_temp(2)
+            end
+            
+             found = 1;
+             info_trace(id_t).cut_tri(1).id = id_tri;
+             triangle(id_tri,7)= 0;
+             %mettiamo info dei punti del triangolo che stiamo
+             %considerando in info trace. 
+             for j = 1:3
+                 info_trace(id_t).cut_tri(1).points(j,1) = node(tr(j)).x;
+                 info_trace(id_t).cut_tri(1).points(j,2) = node(tr(j)).y;
+             end
+             
+             %trovo coordinate quarto punto
+             info_trace(id_t).cut_tri(1).points(4,:) = ...
+                        trace_vertex(trace(id_t,1),:) + s_temp(2)*...
+                        (trace_vertex(trace(id_t,2),:) - ...
+                        trace_vertex(trace(id_t,1),:));
+                    
+             %poligonalizzazione (coincide con triangolazione)
+             
+             info_trace(id_t).cut_tri(1).poly_1(1:3) = ...
+                 [node_on_trace,opposite_nodes(1),4];
+             info_trace(id_t).cut_tri(1).poly_2 = ...
+                 [node_on_trace,4,opposite_nodes(2)];
+             
+             %triangolazione
+             info_trace(id_t).cut_tri(1).tri(1,:) = ...
+                 [node_on_trace,opposite_nodes(1),4];
+             info_trace(id_t).cut_tri(1).tri(2,:) = ...
+                 [node_on_trace,4,opposite_nodes(2)];
+        end
+        
+        enqueue_tri_to_check(id_tri);
+           
+        for i = 1:2
+            if(s_temp(i) <= 1 && s_temp(i) >=0)
+               info_trace(id_t).s(end+1) = s_temp(i);
+            end
+        end
+        
+        
         else %sum==3 || sum==5
             
             
