@@ -93,13 +93,13 @@ elseif(prodotto ==4)
             
         elseif(s_2 <= 1 && s_2 > 0)
             %traccia muore dentro il segmento
-            s = [0,s_2];
+            s = 0;
             status = 2;
            
         else % s_2 > 1
             %traccia interna al segmento
             status = 5;
-            s = [0,1];
+            s = 666;
         end
         
     %secondo sottocaso
@@ -119,14 +119,14 @@ elseif(prodotto ==4)
                    
         elseif(s_2 <= 1 && s_2 > 0)
             %segmento interno alla traccia con un estremo o due coincidenti
-            s = [0,s_2];
+            s = 666;
             status = 4;
                
         else % s_2 > 1
             %traccia tutta interna al segmento, con un estremo coincidente. 
             %Intersezione con taglio.
             status = 2;
-            s = [0,1];
+            s = 1;
         end
     
     %terzo sottocaso
@@ -136,19 +136,19 @@ elseif(prodotto ==4)
             
            %traccia muore dentro segmento, si taglio
            status = 2;
-           s = [0,s_1];
+           s = 0;
            
         elseif(s_2 >= 0 && s_2 <=1)
             
             %segmento tutto dentro traccia, no taglio
             
             status = 4;
-            s = [s_1,s_2];
+            s = 666;
             
         else %s_2 > 1
             %analogo al caso s_2 < 0, ma dall'altro lato
             status=2;
-            s = [s_1,1];
+            s = 1;
             
         end
         
@@ -158,44 +158,44 @@ elseif(prodotto ==4)
             
             %traccia tutta dentro, si taglio
             status = 2;
-            s = [0,1];
+            s = 0;
             
         elseif(s_2 >= 0 && s_2 < 1)
             
             %segmento completamente interno alla traccia o coincidente, in
             %entrambi i casi non tagliato
             status = 4;
-            s = [s_2,1]; 
+            s = 666; 
             
         elseif(s_2 == 1)
             
-            % segmento dentro punto finale traccia 
+            % segmento dentro il punto finale della traccia 
             status = -1;
             %printf("I punti %d e %d coincidono con il punto finale della traccia", p_1, p_2);
             disp("Due punti coincidono con il punto finale della traccia");
-            s = 0;
+            s = 666;
             
         else % s_2 > 1
             % adiacenti
             status = 3;
-            s = s_1;
+            s = 666;
         end
         
     else % s_1 > 1
-        if(s_2 < 1)
+        if(s_2 < 0)
             %traccia completamente interna 
             status = 5;
-            s = [0,1];
+            s = 666;
             
         elseif(s_2 >= 0 && s_2 < 1)
             % traccia muore dentro il segmento, si taglio
             status = 2;
-            s = [s_2, 1];
+            s = 1;
             
         elseif(s_2 == 1)
             %traccia e segmento adiacenti, no taglio
             status = 3;
-            s = 1;
+            s = 666;
             
         else % s_2 > 1
             % non si intersecano 

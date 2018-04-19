@@ -5,13 +5,16 @@ id_tri=1;       %id del triangolo in esame
 s_temp=[0 0];   %le coordinate curvilinee dell'eventuale intersezione
 tr=zeros(1,6);  %le info del triangolo corrente
 side=[0 0 0];   %i semipiani di appartenenza dei tre vertici
+already_known = [0, 0, 0] %vettore che ci dice se abbiamo già chiamato la 
+                           %funzione 
 status = [0, 0]; % status degli eventuali due lati intersecati
 %usati in (sum==1 or sum==-1)
 points_to_check=zeros(2,2);
 edges_to_check=[0 0];
 %usati in (sum==3 or sum==5) oppure in (sum==0 or sum==4)
-edge_on_trace=0;
 node_on_trace=0;%indica nodo su traccias
+nodes_on_trace=[];
+
 %prima parte di ricerca
 while(id_tri<=n_triangles && found==0)
     tr=triangle(id_tri,:);
@@ -268,16 +271,19 @@ while(id_tri<=n_triangles && found==0)
  %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
             
             % Da considerare più avanti se abbiamo tempo
-            %{
+            
             elseif(sum==0 || sum==4)
             %uso solo s_temp(1) e nodes_on_trace(1)
             for i=1:3
                 if(side(i)==2)
-                    s_temp(1)=node(tr(i)).s;
-                    nodes_on_trace(1)=tr(i);
+                    s_temp(1)=node(tr(i)).s; % no taglio ma intersection
+                    %nodes_on_trace(1)=tr(i);
                 end
             end
-            %}
+            if(s_temp(1) >= 0 && s_temp(1)<= 1)
+                info_trace(id_t).s(end+1) = s_temp(1);
+            end
+            
             
             
             
@@ -380,9 +386,45 @@ while(id_tri<=n_triangles && found==0)
         end
         
         
-        else %sum==3 || sum==5
+        else %sum==3 || sum==5 %traccia coincidente e parallela segmento
             
+            %controllo quale nodo è fuori dal segmento parallelo
+            if(side(1) ~= 2)
+                lonely_point = 1;
+                nodes_on_trace(1) = 2;
+                nodes_on_trace(2) = 3;
+            elseif(side(2) ~= 2)
+                lonely_point = 2;
+                nodes_on_trace(1) = 3;
+                nodes_on_trace(2) = 1;
+            else%side(3) ~=2
+                lonely_point = 3;
+                nodes_on_trace(1) = 1;
+                nodes_on_trace(2) = 2;
+            end
             
+        if(tr(lonely_point+3) == -1)
+            
+        [tr(lonely_point+3),s_temp(1)] = ...
+            intersect(id_t,tr(nodes_on_trace(1)),tr(nodes_on_trace(2)));
+        
+        triangle(id_tri,lonely_point+3) = tr(lonely_point+3);
+       
+        %salvo lo status anche nel triangolo vicino
+        for j=1:3
+            if(neigh(id_tri,lonely_point,j)~= -1)
+               if(neigh(neigh(id_tri,lonely_point),j)==id_tri)
+                  triangle(neigh(id_tri,lonely_point),j+3)=...
+                      tr(lonely_point+3);
+                end
+             end
+        end
+        
+        end
+       
+        
+            
+         
             
         end
         
