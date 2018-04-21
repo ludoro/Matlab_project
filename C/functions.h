@@ -10,4 +10,6 @@ std::pair<int,int> which_side(int id_t,int p);
 // int a = 1, double b = 1.00000000 ----> a == b grazie a dio
 std::pair<int, double> intersect(int id_t, int p_1, int p_2);
 
+void enqueue_tri_to_check(int id_tri);
+
 #ifndef
