@@ -14,6 +14,7 @@ status:
 %        anche il caso in cui siano esattamente coincidenti.
 % 5 ---> traccia completamente interna al segmento
 */
+// returning status and s
 std::pair<int, double> intersect(int id_t, int p_1, int p_2){
 /*
   %prima di intersect bisogna chiamare la funzione "which_side" per ogni
@@ -31,7 +32,7 @@ if(prodotto == 1){
 }
 else if(prodotto == -1){
   double A[2][2];
-  A[0][0] = node[p_2].x - node[p_1].x
+  A[0][0] = node[p_2].x - node[p_1].x;
   A[0][1] = -T[id_t][1];
   A[1][0] = node[p_2].y - node[p_1].y;
   A[1][1] = -T[id_t][2];
@@ -41,7 +42,7 @@ else if(prodotto == -1){
   double st[2];
 
   //st = A\b IMPLEMENTARE METODO GAUSS QUI (O USARE LIBRERIA ESTERNA?)
-  s = st(2);
+  s = st[1];
 
 if((s < -toll_trace) || (s>1 + toll_trace)){
     // non c'è intersezione, quindi status = 0.
@@ -61,8 +62,9 @@ else{ //s >= 1 - toll_trace && s <= 1 + toll_trace
     status = 2;
     s = 1;
 }
+}
 
-}else if(prodotto == 4){
+else if(prodotto == 4){
   /*Diamo per scontato che il campo s di p_1 e di p_2 contenga dei valori
     %utili, inseriti alla chiamata di which_side, la quale deve già essere
     %stata eseguita.*/
@@ -209,7 +211,7 @@ else{ //s >= 1 - toll_trace && s <= 1 + toll_trace
           s = node[p_1].s;
         }
       else{
-          s = node(p_2).s;
+          s = node[p_2].s;
         }
         if(s < 0 || s>1){
         //non c'è intersezione, quindi status = 0.
@@ -225,4 +227,5 @@ else{ //s >= 1 - toll_trace && s <= 1 + toll_trace
       s = 666;
       status = -1;
     }
+    return std::make_pair(status,s);
 }
