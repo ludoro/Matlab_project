@@ -1,17 +1,13 @@
-
 #include <stdio.h>
-#include <Eigen/Dense>
 #include <iostream>
+#include "global_variables.h"
+#include "file_reading.h"
 
 int main(){
-
-  Eigen::Matrix3f m;
-  m << 1, 2, 3,
-       4, 5, 6,
-       7, 8, 9;
-  std::cout << m;
-
-
-
+  load_max_numbers();
+  load_matrices();
+  for(int i = 0; i< n_nodes; i++){
+    printf("%f", node[i].x);
+  }
   return 0;
 }
