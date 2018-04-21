@@ -6,6 +6,6 @@
 int main(){
   load_max_numbers();
   load_matrices();
-
+  create_additional_structures();
   return 0;
 }

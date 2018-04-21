@@ -7,6 +7,8 @@ extern int n_triangles;
 extern int n_edges;
 extern int n_neigh;
 extern int n_traces;
+extern int n_trace_vertex;
+extern double accuracy;
 
 struct NODE{
     double x;
@@ -22,6 +24,22 @@ struct NODE{
 
 extern std::vector<NODE> node;
 
+extern std::vector<std::vector<int> > triangle;
 
+extern std::vector<std::vector<int> > edge;
+
+extern std::vector<std::vector<int> > neigh;
+
+extern std::vector<std::vector<double> > trace_vertex;
+
+extern std::vector<std::vector<int> > trace;
+
+extern std::vector<std::vector<double> > T;
+
+extern std::vector<double> T_squared;
+
+extern std::vector<double> toll_t;
+
+extern std::vector<std::vector<int> > queue;
 
 #endif

@@ -3,4 +3,6 @@
 
 void load_max_numbers();
 void load_matrices();
+void create_additional_structures();
+
 #endif
