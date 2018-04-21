@@ -75,10 +75,10 @@ void load_max_numbers() {
 
 };
 
-node.resize(n_nodes);
 
 void load_matrices(){
   //--------RIEMPO NODE----------------
+  node.resize(n_nodes);
   std::ifstream input;
   input.open("quad.1.node.txt");
 
@@ -94,6 +94,16 @@ void load_matrices(){
     input >> node[i].x;
     input >> node[i].y;
     input >> garbage;
+    node[i].side = 0;
+    node[i].toll = -1;
+    node[i].edges[0] = 0;
+    node[i].edges[1] = 0;
+    node[i].edges[2] = 0;
+    node[i].triangles[0] = 0;
+    node[i].triangles[1] = 0;
+    node[i].tot_edges = 0;
+    node[i].tot_triangles = 0;
+    node[i].s = 666;
   }
   input.close();
 

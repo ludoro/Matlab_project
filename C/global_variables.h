@@ -11,13 +11,13 @@ extern int n_traces;
 struct NODE{
     double x;
     double y;
-    int side = 0;
-    double toll = -1;
-    int edges[3] = {0,0,0};
-    int triangles[2] = {0,0};
-    int tot_edges = 0;
-    int tot_triangles = 0;
-    int s = 666;
+    int side;
+    double toll;
+    int edges[3];
+    int triangles[2];
+    int tot_edges;
+    int tot_triangles;
+    int s;
 };
 
 extern std::vector<NODE> node;
