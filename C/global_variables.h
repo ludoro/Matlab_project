@@ -22,6 +22,26 @@ struct NODE{
     int s;
 };
 
+//definizione delle strutture che andranno in info_trace
+struct NEAR_TRI{
+  int id;
+  int nodes[2];
+};
+
+struct CUT_TRI{
+  std::vector<int> points;
+  std::vector<int> poly_1;
+  std::vector<int> poly_2;
+  std::vector<std::vector<int> > tri;
+  int id;
+};
+
+struct INFO_TRACE{
+  CUT_TRI cut_tri;
+  std::vector<double> s;
+  NEAR_TRI near_tri;
+};
+
 extern std::vector<NODE> node;
 
 extern std::vector<std::vector<int> > triangle;
@@ -41,5 +61,7 @@ extern std::vector<double> T_squared;
 extern std::vector<double> toll_t;
 
 extern std::vector<std::vector<int> > queue;
+
+extern std::vector<INFO_TRACE> info_trace;
 
 #endif
