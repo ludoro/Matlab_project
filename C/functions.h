@@ -14,5 +14,6 @@ void enqueue_tri_to_check(int id_tri);
 void edges_for_node();
 void triangles_for_node();
 void ricerca_triangolo();
+void toll_for_node();
 
-#ifndef
+#endif
