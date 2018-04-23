@@ -138,9 +138,123 @@ while(id_tri<=n_triangles && found==0){
           //Dobbiamo capire se vale 0 o 1, per inserire le coordinate del quarto
           // punto.
           if(s_temp[1] == 0){
-            
+            //è il primo punto della traccia
+            for(int k=0;k<2;k++){
+              info_trace[id_t].cut_tri[0].points[3][k] =
+                            trace_vertex[trace[id_t][0]][k];
+            }
+        else{//s_temp(2) ==1;
+          for(int k=0;k<2;k++){
+            info_trace[id_t].cut_tri[1].points[3][k] =
+                          trace_vertex[trace[id_t][1]][k];
           }
+
         }
+
+          }
+
+          info_trace[id_t].cut_tri[0].poly_1[0] = edges_to_check[1]-3;
+          info_trace[id_t].cut_tri[0].poly_1[1] = 4;
+          info_trace[id_t].cut_tri[0].poly_1[2] = (edges_to_check(1) + 2)%3;
+
+          info_trace[id_t].cut_tri[0].poly_2[0]=edges_to_check[1]-3;
+          info_trace[id_t].cut_tri[0].poly_2[1]=4;
+          info_trace[id_t].cut_tri[0].poly_2[2]=(edges_to_check[2]+2)%3;
+
+          if(info_trace[id_t].cut_tri[0].poly_1[1] == 0){
+            info_trace[id_t].cut_tri[0].poly_1[1] = 3;
+          }
+          if(info_trace[id_t].cut_tri[0].poly_2[2]==0){
+            info_trace[id_t].cut_tri[0].poly_2[2] = 3;
+          }
+          /*INSERIAMO INFO PER TRIANGOLAZIONE, IN QUESTO CASO COINCIDE CON I DUE
+          POLIGONI*/
+          for(int k = 0; k < 3; k++){
+            info_trace[id_t].cut_tri[0].tri[0][k] =
+                              info_trace[id_t].cut_tri[0].poly_1[k];
+            info_trace[id_t].cut_tri[0].tri[1][k] =
+                              info_trace[id_t].cut_tri[0].poly_2[k];
+
+          }
+
+          //FUNZIONE PER TRIANGOLI VICINI
+          enqueue_tri_to_check(id_tri);
+        }
+          else if(status[0] == 2 && status[1] == 0){
+            // la s che ci interssa è in s_temp(1)
+            info_trace[id_t].s = s_temp[0];
+            //dobbiamo capire se vale 0 o 1, per inserire le coordinate
+            // del quarto punto
+            if(s_tempo[0] == 0){
+              for(int k = 0; k<2 ; k++){
+              info_trace[id_t].cut_tri[0].points[3][k] =
+                        trace_vertex[trace[id_t][0]][k];
+                      }
+            }
+            else{
+              for(int k = 0; k<2 ; k++){
+              info_trace[id_t].cut_tri[0].points[3][k] =
+                        trace_vertex[trace[id_t][1]][k];
+              }
+            }
+            info_trace[id_t].cut_tri[0].poly_1[0]= edges_to_check(0)-3;
+            info_trace[id_t].cut_tri[0].poly_1[1]=(edges_to_check[0]+1)%3;
+            info_trace[id_t].cut_tri[0].poly_1[2]=4;
+
+            info_trace[id_t].cut_tri[0].poly_2[0]=edges_to_check(1)-3;
+            info_trace[id_t].cut_tri[0].poly_2[1]=4;
+            info_trace[id_t].cut_tri[0].poly_2[2]=(edges_to_check[0]+2)%3;
+
+            if(info_trace[id_t].cut_tri[0].poly_1[1] == 0){
+              info_trace[id_t].cut_tri[0].poly_1[1] = 3;
+            }
+            if(info_trace[id_t].cut_tri[0].poly_2[2] == 0){
+              info_trace[id_t].cut_tri[0].poly_2[2] = 3;
+            }
+            //inseriamo info per la triangolazione
+            //in questo caso la triangolazione coincide con i due POLIGONI
+
+            for(int k = 0; k < 3; k++){
+              info_trace[id_t].cut_tri[0].tri[0][k] =
+                                info_trace[id_t].cut_tri[0].poly_1[k];
+              info_trace[id_t].cut_tri[0].tri[1][k] =
+                                info_trace[id_t].cut_tri[0].poly_2[k];
+
+            }
+
+            //FUNZIONE PER TRIANGOLI VICINI
+            enqueue_tri_to_check(id_tri);
+          }
+
+          else{// 3 triangoli nella triangolazione
+            //richiamo intersect nello status==0, perchè potrei non
+            // conoscere la coordinata curvilinea
+            for(int i = 0; i <2; i++){
+              if(status[i]==0){
+                std::pair<int, double> return_intersect =
+                                        intersect(id_t,points_to_check[i][0],
+                                                  points_to_check[i][1]);
+              int a = return_intersect.first;
+              s_temp[i] = return_intersect.second;
+              if ( a != 0){
+                printf("ERRORE");
+              }
+
+              }
+            }
+            // metto ascisse curvilinee dentro info_trace
+            for(int i = 0; i<2; i++){
+              if(s_temp[i] <= 1 && s_temp[i] >= 0){
+                info_trace[id_t].s.resize((info_trace[id_t].s).size() + 1));
+                info_trace[id_t].s[info_trace[id_t].s.size()] = s_temp[i];
+              }
+            }
+            //trovo coordinate punti intersezione traccia segmento
+            for(int i = 0; i<2; i++){
+              
+            }
+          }
+
       }
 
     }
