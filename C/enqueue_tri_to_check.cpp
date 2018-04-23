@@ -34,13 +34,13 @@ void enqueue_tri_to_check(int id_tri){
 
   for(int i = 0; i<3; i++){
     for(int j=0; j<node[triangle[id_tri][i]].tot_triangles; j++){
-      if(triangle[ node[triangle[id_tri][i]]].triangles[j][6] == -1 &&...
+      if(triangle[node[triangle[id_tri][i]].triangles[j]][6] == -1 &&
          node[triangle[id_tri][i]].triangles[j] != id_tri){
            queue.resize(queue.size()+1);
            queue[queue.size()-1][0] = node[triangle[id_tri][i]].triangles[j];
            queue[queue.size()-1][1] = triangle[id_tri][i];
            queue[queue.size()-1][2] = 0; // per scrupolo
-           triangle[node[triangle[id_tri][i]]].triangles[j][6] = -3;
+           triangle[node[triangle[id_tri][i]].triangles[j]][6] = -3;
          }
 
     }

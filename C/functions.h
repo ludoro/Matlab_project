@@ -11,5 +11,8 @@ std::pair<int,int> which_side(int id_t,int p);
 std::pair<int, double> intersect(int id_t, int p_1, int p_2);
 
 void enqueue_tri_to_check(int id_tri);
+void edges_for_node();
+void triangles_for_node();
+void ricerca_triangolo();
 
 #ifndef
