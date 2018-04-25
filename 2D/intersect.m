@@ -113,7 +113,8 @@ elseif(prodotto ==4)
         elseif(s_2 == 0)
             % segmento dentro punto iniziale traccia 
             status = -1;
-            %printf("I punti %d e %d coincidono con il punto iniziale della traccia", p_1, p_2);
+            %printf("I punti %d e %d coincidono con il punto iniziale della
+            %traccia", p_1, p_2);
             disp("Due punti coincidono con il punto iniziale della traccia")
             s = 0;
                    
@@ -222,7 +223,8 @@ elseif(prodotto ==-2 || prodotto == 2)
     end
     
 else % prodotto == 0 non dovrebbe succedere
-    %printf("Errore. node(%d).side = %d e node(%d).side = %d", p_1,node(p_1).side,p_2,node(p_2).side);
+     %printf("Errore. node(%d).side = %d e 
+     %node(%d).side = %d", p_1,node(p_1).side,p_2,node(p_2).side);
     disp("Errore prodotto = 0");
     s = 666;
     status = -1;
