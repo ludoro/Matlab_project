@@ -85,6 +85,8 @@ while(size(queue,1) > 0)
                                         tr(points_together(i)+3);
                         triangle(id_tri,points_together(i)+6) = ...
                                         s_temp(i);
+                        
+                        called_intersect(points_together(i))=1;
                                     
                         %salvo lo status anche nel triangolo vicino
                         saving_in_neigh;

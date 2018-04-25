@@ -7,7 +7,7 @@ global node
 
 % se non sappiamo niente
 if(neigh(id_tri,1) ~= -1)
-if(triangle(neigh(id_tri,1),10) == -1 || triangle(neigh(id_tri,1),10)>0 )
+if(triangle(neigh(id_tri,1),10) ~=0 )
     queue(end+1,1) = neigh(id_tri,1);
     queue(end,2) = triangle(id_tri,2);
     queue(end,3) = triangle(id_tri,3);
@@ -18,7 +18,7 @@ end
 end
 
 if(neigh(id_tri,2) ~= -1)
-if(triangle(neigh(id_tri,2),10) == -1 || triangle(neigh(id_tri,2),10) > 0)
+if(triangle(neigh(id_tri,2),10) ~=0)
     queue(end+1,1) = neigh(id_tri,2);
     queue(end,2) = triangle(id_tri,1);
     queue(end,3) = triangle(id_tri,3);
@@ -30,7 +30,7 @@ end
 end
 
 if(neigh(id_tri,3) ~= -1)
-if(triangle(neigh(id_tri,3),10) == -1 || triangle(neigh(id_tri,3),10) > 0)
+if(triangle(neigh(id_tri,3),10) ~=0)
     queue(end+1,1) = neigh(id_tri,3);
     queue(end,2) = triangle(id_tri,1);
     queue(end,3) = triangle(id_tri,2);

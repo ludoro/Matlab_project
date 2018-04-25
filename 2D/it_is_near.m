@@ -28,6 +28,7 @@ if( b < -1)
 else % b > 0
      % il triangolo è già near_tri, bisogna controllare i nodi
      for i=2:3
+         already_saved=0;
          for j=1:length(info_trace(id_t).near_tri(b).nodes)
             if(queue(1,i) == info_trace(id_t).near_tri(b).nodes(j))
                 already_saved = 1;
