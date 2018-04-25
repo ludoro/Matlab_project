@@ -218,8 +218,7 @@ while(id_tri<=n_triangles && found==0)
                 if(tr(node_on_trace+3) == -1)
 
                     [tr(node_on_trace+3),s_temp(2)] = ...
-                       intersect(id_t,tr(opposite_nodes(1)),...
-                       tr(opposite_nodes(2)));
+                       intersect(id_t,tr(opposite_nodes(1)),tr(opposite_nodes(2)));
 
                     triangle(id_tri,node_on_trace+3) = tr(node_on_trace+3);
                     triangle(id_tri,node_on_trace+6) = s_temp(2);
@@ -231,11 +230,10 @@ while(id_tri<=n_triangles && found==0)
                            if(neigh(neigh(id_tri,node_on_trace),j)==id_tri)
                               triangle(neigh(id_tri,node_on_trace),j+3)=...
                                   tr(node_on_trace+3);
-                              triangle(neigh(id_tri,node_on_trace),j+6) =...
-                                  s_temp(2);
+                              triangle(neigh(id_tri,node_on_trace),j+6) = s_temp(2);
                             end
-                        end
-                     end
+                         end
+                    end
 
                 end
                 s_temp(1) = node(tr(node_on_trace)).s;
@@ -260,7 +258,7 @@ while(id_tri<=n_triangles && found==0)
                     info_trace(id_t).cut_tri(1).poly_2 = ...
                          [node_on_trace,4,opposite_nodes(2)];
 
-                    %triangolazione
+                     %triangolazione
                     info_trace(id_t).cut_tri(1).tri(1,:) = ...
                          [node_on_trace,opposite_nodes(1),4];
                     info_trace(id_t).cut_tri(1).tri(2,:) = ...
