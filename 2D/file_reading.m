@@ -60,14 +60,15 @@ if (fp==-1)
 end
 A=fscanf(fp,'%d',3);
 n_triangles=A(1);
-triangle = -ones(n_triangles,7);
+triangle = -ones(n_triangles,10);
 A=fscanf(fp,'%d',[4 n_triangles]);
 triangle(:,[1,2,3])=A([2 3 4],:)';
 
 %STRUTTURA di 'triangle': n_triangles righe x 7 colonne
 %                         primi 3 colonne vertici
 %                         colonne 4,5,6 status degli edge
-%                         settima colonna flag:  -1 non sappiamo niente
+%                         colonne 7,8,9 s degli edge
+%                         colonna 10 flag:  -1 non sappiamo niente
 %                                                -2 lista attesa due nodi
 %                                                   in comune
 %                                                -3 lista attesa un nodo in
@@ -150,7 +151,7 @@ toll_t = zeros(n_traces,1);
 info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',zeros(4,1),...
                                             'poly_2',zeros(3,1),'tri',zeros(3,3),'id',0),...
                            's',[],...
-                           'near_tri',struct('id',0,'nodes',[-1,-1])),n_traces,1);
+                           'near_tri',struct('id',0,'nodes',[])),n_traces,1);
  
 % queue = coda triangoli da controllare      
 % per ogni riga:
