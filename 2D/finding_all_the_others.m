@@ -2,7 +2,7 @@ s_temp=[0 0]; %le coordinate curvilinee dell'eventuale intersezione
 s_intersect; %usato in (sum == 3 o sum == 5): s restituita da intersect
 tr=zeros(1,6);  %le info del triangolo corrente
 side=[0 0 0];   %i semipiani di appartenenza dei tre vertici
-called_which_side=[0, 0, 0]; %vettore che ci dice se abbiamo già chiamato la 
+called_which_side=[0, 0, 0]; %vettore che ci dice se abbiamo giÃ  chiamato la 
                            %funzione which_side, per l'i-esimo nodo,
                            % 0 --> no chiamata
                            % 1 --> si chiamata
@@ -15,7 +15,7 @@ node_on_trace=0;%indica nodo su traccia
 nodes_on_trace=[];
 points_together = [0,0];
 
-%finchè queue ha delle righe vado avanti
+%finchÃ¨ queue ha delle righe vado avanti
 while(size(queue,1) > 0)
     
     called_which_side=[0,0,0];
@@ -23,7 +23,7 @@ while(size(queue,1) > 0)
     id_tri = queue(1,1); % prendo il primo triangolo nella coda
     
     if(id_tri < num_tri_checked)
-        it_is_near; % verifica che il triangolo non sia già controllato
+        it_is_near; % verifica che il triangolo non sia giÃ  controllato
     elseif(triangle(id_tri,10) ~= 0)
         tr=triangle(id_tri,:);
         for i=1:3
@@ -115,7 +115,7 @@ while(size(queue,1) > 0)
                             a = 1;
                         end
                     
-                    %La s che ci interessa è in s_temp(a)
+                    %La s che ci interessa Ã¨ in s_temp(a)
                     
                     if(called_intersect(points_together(a)) == 1)
                         info_trace(id_t).s(end+1) = s_temp(a);
@@ -125,7 +125,7 @@ while(size(queue,1) > 0)
                     %coordinate del quarto punto.
                     
                     if(s_temp(a) == 0)
-                        %è il primo punto della traccia 
+                        %Ã¨ il primo punto della traccia 
                       info_trace(id_t).cut_tri(end).points(4,:) = ...
                       trace_vertex(trace(id_t,1),:);
                     else % s_temp(a)==1
@@ -202,11 +202,11 @@ while(size(queue,1) > 0)
                 
  %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
             
-            % Da considerare più avanti se abbiamo tempo
+            % Da considerare piÃ¹ avanti se abbiamo tempo
             
             elseif(sum==0 || sum==4)
             %uso solo s_temp(1)
-            %è vicino
+            %Ã¨ vicino
             it_is_near;
             
             for i=1:3
@@ -214,7 +214,7 @@ while(size(queue,1) > 0)
                     s_temp(1)=node(tr(i)).s; % no taglio ma intersection
                 end
             end
-            %La s del nodo non è stata inserita in precedenza se è
+            %La s del nodo non Ã¨ stata inserita in precedenza se Ã¨
             %stata chiamata which_side
             if(s_temp(1) >= 0 && s_temp(1)<= 1 && called_which_side(i) == 1)
                 info_trace(id_t).s(end+1) = s_temp(1);
@@ -280,7 +280,7 @@ while(size(queue,1) > 0)
         
         if((s_temp(1) > 0 && s_temp(1) < 1) ||...
             (tr(node_on_trace+3) ~= 0) )
-            % è tagliato 
+            % Ã¨ tagliato 
             it_is_cut;
             enqueue_tri_to_check(id_tri);
             %trovo coordinate quarto punto
@@ -301,13 +301,13 @@ while(size(queue,1) > 0)
             info_trace(id_t).cut_tri(end).tri(2,:) = ...
                  [node_on_trace,4,opposite_nodes(2)];
         else
-            % non è tagliato ma voglio comunque le info
+            % non Ã¨ tagliato ma voglio comunque le info
             it_is_near;
         end
      
         else %sum==3 || sum==5 %traccia coincidente e parallela segmento
             
-            %controllo quale nodo è fuori dal segmento parallelo
+            %controllo quale nodo Ã¨ fuori dal segmento parallelo
             if(side(1) ~= 2)
                 lonely_point = 1;
                 nodes_on_trace(1) = 2;
@@ -362,7 +362,7 @@ while(size(queue,1) > 0)
         
         %considero status(1)
         status(1) = tr(lonely_point+3);
-        %status 0,3 e 4 non ci interessano perchè non è tagliato
+        %status 0,3 e 4 non ci interessano perchÃ¨ non Ã¨ tagliato
         if(status(1) == 2)
            %tagliato
            it_is_cut;
@@ -374,7 +374,7 @@ while(size(queue,1) > 0)
            end
            
            if(s_intersect == 0)
-              %è il primo punto della traccia 
+              %Ã¨ il primo punto della traccia 
               info_trace(id_t).cut_tri(end).points(4,:) = ...
               trace_vertex(trace(id_t,1),:);
           
@@ -435,6 +435,4 @@ while(size(queue,1) > 0)
     queue = queue(2:end,:);
     end
    
-
-    
 

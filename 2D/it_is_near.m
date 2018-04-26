@@ -23,7 +23,7 @@ if( b < -1)
          else%%b==-3
             info_trace(id_t).near_tri(end).nodes = queue(1,2);
          end
-    end
+     end
     
 else % b > 0
      % il triangolo è già near_tri, bisogna controllare i nodi
