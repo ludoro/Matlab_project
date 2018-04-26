@@ -23,3 +23,5 @@ absolute_toll = absolute_toll/n_nodes;
 for i=1:n_traces
     toll_t(i)= absolute_toll/norm(T(i,:),1);
 end
+
+clear e v_temp

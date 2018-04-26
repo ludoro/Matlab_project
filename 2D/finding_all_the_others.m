@@ -212,11 +212,12 @@ while(size(queue,1) > 0)
             for i=1:3
                 if(side(i)==2)
                     s_temp(1)=node(tr(i)).s; % no taglio ma intersection
+                    node_on_trace=i;
                 end
             end
             %La s del nodo non è stata inserita in precedenza se è
             %stata chiamata which_side
-            if(s_temp(1) >= 0 && s_temp(1)<= 1 && called_which_side(i) == 1)
+            if(s_temp(1) >= 0 && s_temp(1)<= 1 && called_which_side(node_on_trace) == 1)
                 info_trace(id_t).s(end+1) = s_temp(1);
             end
            
@@ -290,8 +291,8 @@ while(size(queue,1) > 0)
                        trace_vertex(trace(id_t,1),:));
                     
             %poligonalizzazione (coincide con triangolazione)
-            info_trace(id_t).cut_tri(end).poly_1(1:3) = ...
-                 [node_on_trace,opposite_nodes(1),4];
+            info_trace(id_t).cut_tri(end).poly_1 = ...
+                 [node_on_trace,opposite_nodes(1),4,0];
             info_trace(id_t).cut_tri(end).poly_2 = ...
                  [node_on_trace,4,opposite_nodes(2)];
              
@@ -346,7 +347,7 @@ while(size(queue,1) > 0)
         
         %salvo lo status anche nel triangolo vicino
         for j=1:3
-            if(neigh(id_tri,lonely_point,j)~= -1)
+            if(neigh(id_tri,lonely_point)~= -1)
                if(neigh(neigh(id_tri,lonely_point),j)==id_tri)
                   triangle(neigh(id_tri,lonely_point),j+3)=...
                       tr(lonely_point+3);
@@ -354,7 +355,7 @@ while(size(queue,1) > 0)
                       s_intersect;
                 end
             end
-             
+            
         end
         else
             s_intersect = tr(lonely_point+6);
@@ -384,7 +385,7 @@ while(size(queue,1) > 0)
            end
            
            %p0lig0n0
-           info_trace(id_t).cut_tri(end).poly_1 = [1,2,3];
+           info_trace(id_t).cut_tri(end).poly_1 = [1,2,3,0];
                                            
            %triangolazione
            info_trace(id_t).cut_tri(end).tri(1,:) = ...
@@ -416,7 +417,7 @@ while(size(queue,1) > 0)
              end
              
              %poligono
-             info_trace(id_t).cut_tri(end).poly_1 = [1,2,3];
+             info_trace(id_t).cut_tri(end).poly_1 = [1,2,3,0];
              
              %triangolazione
              info_trace(id_t).cut_tri(end).tri(1,:) = ...

@@ -33,6 +33,10 @@ while(id_tri<=n_triangles && found==0)
         
         sum=side(1)+side(2)+side(3);
         
+  %!!!!!!!!!!DEBUG!!!!!!!!!!!!!!
+       % [id_tri sum]
+        
+        
         %---------NESSUN VERTICE SULLA TRACCIA----------%
         if(sum==-1 || sum==1)
             
@@ -174,21 +178,31 @@ while(id_tri<=n_triangles && found==0)
                     info_trace(id_t).cut_tri(1).tri(3,:) = ...
                         [points_together(1),points_together(2),5];
                 end
-                
+            end 
  %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
             
             % Da considerare più avanti se abbiamo tempo
             
-            elseif(sum==0 || sum==4)
+        elseif(sum==0 || sum==4)
                 %uso solo s_temp(1)
                 for i=1:3
                     if(side(i)==2)
                         s_temp(1)=node(tr(i)).s; %no taglio ma intersection
+                        node_on_trace=i;
                     end
                 end
+                
+         %!!!!!!!!!!DEBUG!!!!!!!!!!!
+%                 id_tri
+%                 side
+%                 node_on_trace
+%                 called_which_side
+%                 s_temp(1)
+                
+                
                 %La s del nodo non è stata inserita in precedenza se è
                 %stata chiamata which_side
-                if(s_temp(1)>=0 && s_temp(1)<=1 && called_which_side(i)==1)
+                if(s_temp(1)>=0 && s_temp(1)<=1 && called_which_side(node_on_trace)==1)
                     info_trace(id_t).s(end+1) = s_temp(1);
                 end
             
@@ -196,7 +210,7 @@ while(id_tri<=n_triangles && found==0)
             
            
         %-----NODO SULLA TRACCIA, ALTRI DUE DISCORDI--------
-            elseif(sum==2)
+        elseif(sum==2)
             
               %trovo quale nodo sta sulla traccia e su opposite nodes metto 
               %gli altri che mi serviranno per intersect e triangolazione
@@ -255,8 +269,8 @@ while(id_tri<=n_triangles && found==0)
 
                     %poligonalizzazione (coincide con triangolazione)
 
-                    info_trace(id_t).cut_tri(1).poly_1(1:3) = ...
-                         [node_on_trace,opposite_nodes(1),4];
+                    info_trace(id_t).cut_tri(1).poly_1 = ...
+                         [node_on_trace,opposite_nodes(1),4,0];
                     info_trace(id_t).cut_tri(1).poly_2 = ...
                          [node_on_trace,4,opposite_nodes(2)];
 
@@ -281,7 +295,7 @@ while(id_tri<=n_triangles && found==0)
                     info_trace(id_t).s(end+1) = s_temp(2);
                 end
     
-            else %sum==3 || sum==5 
+        else %sum==3 || sum==5 
                  %traccia coincidente e parallela segmento
             
                 %controllo quale nodo è fuori dal segmento parallelo
@@ -306,7 +320,7 @@ while(id_tri<=n_triangles && found==0)
                 % metto s in info_trace.s
                 for i=1:2
                     if(s_temp(i) <= 1 && s_temp(i) >= 0 ...
-                       && called_which_side(i)==1)
+                       && called_which_side(nodes_on_trace(i))==1)
                    
                         info_trace(id_t).s(end+1) = s_temp(i);
                     end
@@ -323,7 +337,7 @@ while(id_tri<=n_triangles && found==0)
         
                     %salvo lo status anche nel triangolo vicino
                     for j=1:3
-                        if(neigh(id_tri,lonely_point,j)~= -1)
+                        if(neigh(id_tri,lonely_point)~= -1)
                            if(neigh(neigh(id_tri,lonely_point),j)==id_tri)
                               triangle(neigh(id_tri,lonely_point),j+3)=...
                                   tr(lonely_point+3);
@@ -344,7 +358,8 @@ while(id_tri<=n_triangles && found==0)
                    found = 1;
                    it_is_cut;
                    info_trace(id_t).s(end+1) = s_intersect;
-
+                   enqueue_tri_to_check(id_tri);
+                   
                    if(s_intersect == 0)
                       %è il primo punto della traccia 
                       info_trace(id_t).cut_tri(1).points(4,:) = ...
@@ -355,7 +370,7 @@ while(id_tri<=n_triangles && found==0)
                    end
            
                    %p0lig0n0
-                   info_trace(id_t).cut_tri(1).poly_1 = [1,2,3];
+                   info_trace(id_t).cut_tri(1).poly_1 = [1,2,3,0];
 
                    %triangolazione
                    info_trace(id_t).cut_tri(1).tri(1,:) = ...
@@ -387,7 +402,7 @@ while(id_tri<=n_triangles && found==0)
                      end
              
                      %poligono
-                     info_trace(id_t).cut_tri(1).poly_1 = [1,2,3];
+                     info_trace(id_t).cut_tri(1).poly_1 = [1,2,3,0];
 
                      %triangolazione
                      info_trace(id_t).cut_tri(1).tri(1,:) = ...
@@ -403,9 +418,9 @@ while(id_tri<=n_triangles && found==0)
                      enqueue_tri_to_check(id_tri);
 
                 end
-            end
         end
     end
     id_tri=id_tri+1;
 end
+    
 num_tri_checked = id_tri-1;

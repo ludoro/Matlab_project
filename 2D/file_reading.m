@@ -3,7 +3,6 @@ close all
 
 global n_nodes
 global n_edges
-global n_neigh
 global n_triangles
 global n_trace_vertex
 global n_traces
@@ -85,13 +84,10 @@ if (fp==-1)
 end
 A=fscanf(fp,'%d',2);
 n_edges=A(1);
-A=fscanf(fp,'%d',[4 n_edges]);
-edge=-ones(n_edges,3);      
-edge(:,[1 2])=A([2 3],:)';
+A=fscanf(fp,'%d',[4 n_edges]);   
+edge=A([2 3],:)';
 %STRUTTURA di 'edge': edge(n,1)=vertice 1 del segmento n
 %                     edge(n,2)= vertice 2 del segmento n 
-%                     edge(n,3)=status con la traccia (intersecato, non
-%                               intersecato, sconosciuto...)
 fclose(fp);
 
 %--------------------------- NEIGH -------------------------
@@ -101,8 +97,7 @@ if (fp==-1)
     return;
 end
 A=fscanf(fp,'%d',2);
-n_neigh=A(1);
-A=fscanf(fp,'%d',[4 n_neigh]);
+A=fscanf(fp,'%d',[4 n_triangles]);
 neigh=A([2 3 4],:)';
 %STRUTTURA di 'neigh': neigh(n,2)=vicino 2 del triangolo n
 fclose(fp);
@@ -124,6 +119,12 @@ A=fscanf(fp,'%d',[3 n_traces]);
 trace=A([2 3],:)';
 %STRUTTURA di 'trace': trace(n,1)=estremo 1 della traccia n
 fclose(fp);
+
+
+%!!!!!! ------- modifiche di prova -------- !!!!!!
+trace_vertex(3,:)=[0.1 0.1];
+trace_vertex(4,:)=[0.9 0.9];
+
 
 %creo matrice T che è la matrice che per ogni traccia contiene 
 %il vettore tangente alla traccia.
@@ -148,8 +149,8 @@ toll_t = zeros(n_traces,1);
 % - near_tri = struttura che contiene i triangoli vicini, in particolare:
 %               id : numero triangolo vicino, con i due nodi 
 
-info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',zeros(4,1),...
-                                            'poly_2',zeros(3,1),'tri',zeros(3,3),'id',0),...
+info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',[],...
+                                            'poly_2',[],'tri',zeros(3,3),'id',0),...
                            's',[],...
                            'near_tri',struct('id',0,'nodes',[])),n_traces,1);
  
