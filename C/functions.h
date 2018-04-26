@@ -14,5 +14,7 @@ void edges_for_node();
 void triangles_for_node();
 void ricerca_triangolo(int id_t);
 void toll_for_node();
+void it_is_near();
+void it_is_cut();
 
 #endif
