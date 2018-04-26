@@ -50,7 +50,7 @@ elseif(prodotto == -1)
     s = st(2);
     
     if((s < -toll_trace) || (s>1 + toll_trace))
-        % non c'Ë intersezione, quindi status = 0.
+        % non c'√® intersezione, quindi status = 0.
         status = 0;
         
     elseif(s <= +toll_trace && s>= -toll_trace)
@@ -70,7 +70,7 @@ elseif(prodotto == -1)
      
 elseif(prodotto ==4)
     %Diamo per scontato che il campo s di p_1 e di p_2 contenga dei valori 
-    %utili, inseriti alla chiamata di which_side, la quale deve gi‡ essere
+    %utili, inseriti alla chiamata di which_side, la quale deve gi√† essere
     %stata eseguita.
     
     s_1 = node(p_1).s;
@@ -80,14 +80,14 @@ elseif(prodotto ==4)
     if(s_1 < 0) 
         
         if(s_2 < 0)
-             %non c'Ë intersezione perchË sono paralleli ma uno 
+             %non c'√® intersezione perch√® sono paralleli ma uno 
              %finisce prima
              status = 0;
              s = 666;
                 
         elseif(s_2 == 0)
-            %segmento e traccia sono adiacenti, c'Ë intersezione, 
-            %ma non c'Ë taglio. 
+            %segmento e traccia sono adiacenti, c'√® intersezione, 
+            %ma non c'√® taglio. 
             status = 3;
             s = 0;
             
@@ -113,9 +113,8 @@ elseif(prodotto ==4)
         elseif(s_2 == 0)
             % segmento dentro punto iniziale traccia 
             status = -1;
-            %printf("I punti %d e %d coincidono con il punto iniziale della
-            %traccia", p_1, p_2);
-            disp("Due punti coincidono con il punto iniziale della traccia")
+            %printf("I punti %d e %d coincidono con il punto iniziale della traccia", p_1, p_2);
+            disp('Due punti coincidono con il punto iniziale della traccia')
             s = 0;
                    
         elseif(s_2 <= 1 && s_2 > 0)
@@ -173,7 +172,7 @@ elseif(prodotto ==4)
             % segmento dentro il punto finale della traccia 
             status = -1;
             %printf("I punti %d e %d coincidono con il punto finale della traccia", p_1, p_2);
-            disp("Due punti coincidono con il punto finale della traccia");
+            disp('Due punti coincidono con il punto finale della traccia');
             s = 666;
             
         else % s_2 > 1
@@ -214,18 +213,17 @@ elseif(prodotto ==-2 || prodotto == 2)
     end
         
     if(s < 0 || s>1)
-        % non c'Ë intersezione, quindi status = 0.
+        % non c'√® intersezione, quindi status = 0.
         status = 0;
         
-    else %tutti i casi rimanenti sono accorpati,perchË hanno tutti
+    else %tutti i casi rimanenti sono accorpati,perch√® hanno tutti
          % status = 3. 
         status = 3;
     end
     
 else % prodotto == 0 non dovrebbe succedere
-     %printf("Errore. node(%d).side = %d e 
-     %node(%d).side = %d", p_1,node(p_1).side,p_2,node(p_2).side);
-    disp("Errore prodotto = 0");
+    %printf("Errore. node(%d).side = %d e node(%d).side = %d", p_1,node(p_1).side,p_2,node(p_2).side);
+    disp('Errore prodotto = 0');
     s = 666;
     status = -1;
 end
