@@ -25,7 +25,7 @@ struct NODE{
 //definizione delle strutture che andranno in info_trace
 struct NEAR_TRI{
   int id;
-  int nodes[2];
+  std::vector<int> nodes;
 };
 
 struct CUT_TRI{
