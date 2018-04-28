@@ -15,6 +15,10 @@ end
 tetramesh(tets,X,'FaceAlpha',0.3,'LineWidth',1) ;
 axis equal
 
+hold on
+
+for i=1:n_frac
+
 % for i=1:n_fractures
 %     j=1;
 %     while j<length(fract(i))

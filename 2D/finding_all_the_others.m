@@ -12,12 +12,15 @@ status = [0, 0]; % status degli eventuali due lati intersecati
 
 %usati in (sum==3 or sum==5) oppure in (sum==0 or sum==4)
 node_on_trace=0;%indica nodo su traccia
-nodes_on_trace=[];
+nodes_on_trace=[0 0];
 points_together = [0,0];
 
 %finchè queue ha delle righe vado avanti
-while(size(queue,1) > 0)
+while(size(queue,1) > 0 || size(queue_temp,1) > 0)
     
+    checking_queue_temp;
+    
+if(size(queue,1) > 0)
     called_which_side=[0,0,0];
     called_intersect =[0,0,0];
     id_tri = queue(1,1); % prendo il primo triangolo nella coda
@@ -200,10 +203,8 @@ while(size(queue,1) > 0)
                     end
                 end
                 
- %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
-            
-            % Da considerare più avanti se abbiamo tempo
-            
+ %------------1 NODO SU TRACCIA, GLI ALTRI 2 CONCORDI------------------
+           
             elseif(sum==0 || sum==4)
             %uso solo s_temp(1)
             %è vicino
@@ -215,10 +216,25 @@ while(size(queue,1) > 0)
                     node_on_trace=i;
                 end
             end
-            %La s del nodo non è stata inserita in precedenza se è
-            %stata chiamata which_side
-            if(s_temp(1) >= 0 && s_temp(1)<= 1 && called_which_side(node_on_trace) == 1)
-                info_trace(id_t).s(end+1) = s_temp(1);
+            
+            if(s_temp(1) >= 0 && s_temp(1)<= 1)
+                %La s del nodo non è stata inserita in precedenza se è
+                %stata chiamata which_side
+                if( called_which_side(node_on_trace) == 1 )
+                    info_trace(id_t).s(end+1) = s_temp(1);
+                end
+            
+                %aggiungo i triangoli intorno a node_on_trace in queue_temp
+                %solo quelli di cui non so nulla ( triangle(...,10) == -1 )
+                for i=1:node(tr(node_on_trace)).tot_triangles
+                    if(node(tr(node_on_trace)).triangles(i)~=id_tri && ...
+                            triangle(node(tr(node_on_trace)).triangles(i))==-1)
+                        queue_temp(end+1,1)=node(tr(node_on_trace)).triangles(i);
+                        queue_temp(end,2)=tr(node_on_trace);
+
+                        triangle(node(tr(node_on_trace)).triangles(i),10)=-4;
+                    end
+                end
             end
            
 
@@ -305,7 +321,9 @@ while(size(queue,1) > 0)
             % non è tagliato ma voglio comunque le info
             it_is_near;
         end
-     
+        
+%---------------------- 2 NODI SULLA TRACCIA ------------------------
+
         else %sum==3 || sum==5 %traccia coincidente e parallela segmento
             
             %controllo quale nodo è fuori dal segmento parallelo
@@ -330,7 +348,7 @@ while(size(queue,1) > 0)
         for i=1:2
             if(s_temp(i) <= 1 ...
                && s_temp(i) >= 0 ...
-               && called_which_side(i)==1)
+               && called_which_side(nodes_on_trace(i))==1)
            
                info_trace(id_t).s(end+1) = s_temp(i);
             
@@ -363,7 +381,7 @@ while(size(queue,1) > 0)
         
         %considero status(1)
         status(1) = tr(lonely_point+3);
-        %status 0,3 e 4 non ci interessano perchè non è tagliato
+        %status 0 non ci interessa perchè non tocca la traccia
         if(status(1) == 2)
            %tagliato
            it_is_cut;
@@ -429,11 +447,30 @@ while(size(queue,1) > 0)
              info_trace(id_t).cut_tri(end).tri(3,:) = ...
                  [lonely_point,5,nodes_on_trace(2)];
              
+        elseif(status(1)==4)
+                    
+            it_is_near;
+            for j=[1 2]
+                for i=1:node(tr(nodes_on_trace(j))).tot_triangles
+                    if(node(tr(nodes_on_trace(j))).triangles(i)~=id_tri && ...
+                        triangle(node(tr(nodes_on_trace(j))).triangles(i),10)==-1)
+
+                        queue_temp(end+1,1)=node(tr(nodes_on_trace(j))).triangles(i);
+                        queue_temp(end,2)=tr(nodes_on_trace(j));
+
+                        triangle(node(tr(nodes_on_trace(j))).triangles(i),10)=-4;
+                    end
+                end
+            end
+            
+        else
+            it_is_near;
         end
             end
         end
     end
     queue = queue(2:end,:);
-    end
+end
+end
    
 

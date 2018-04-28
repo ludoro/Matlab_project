@@ -18,6 +18,7 @@ global toll_t
 global accuracy
 global info_trace
 global queue
+global queue_temp
 global neigh
 global triangle
 accuracy = 1e-14;
@@ -72,6 +73,7 @@ triangle(:,[1,2,3])=A([2 3 4],:)';
 %                                                   in comune
 %                                                -3 lista attesa un nodo in
 %                                                   comune
+%                                                -4 passato per queue_temp
 %                                                0 tagliato
 %                                                >0 posizione su .near_tri
 fclose(fp);
@@ -159,7 +161,8 @@ info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',[],...
 %-primo elemento id_tri
 %-secondo elemento indice nodo condiviso
 %-terzo elemento indice eventuale secondo nodo condiviso 
-queue = zeros(0,3);                  
+queue = zeros(0,3);  
+queue_temp = zeros(0,2);
 
 
 clear A fp
