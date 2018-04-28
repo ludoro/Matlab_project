@@ -13,7 +13,7 @@ status = [0, 0]; % status degli eventuali due lati intersecati
 %usati in (sum==1 or sum==-1)
 %usati in (sum==3 or sum==5) oppure in (sum==0 or sum==4)
 node_on_trace=0; %indica nodo su traccia
-nodes_on_trace=[];
+nodes_on_trace=[0 0];
 points_together = [0,0];
 
 %prima parte di ricerca
@@ -178,19 +178,17 @@ while(id_tri<=n_triangles && found==0)
                     info_trace(id_t).cut_tri(1).tri(3,:) = ...
                         [points_together(1),points_together(2),5];
                 end
-            end 
- %--------UN VERTICE SULLA RETTA DELLA TRACCIA E GLI ALTRI DUE CONCORDI---
+            end
             
-            % Da considerare più avanti se abbiamo tempo
-            
+ %----------------UN NODO SU TRACCIA, ALTRI 2 CONCORDI----------------  
         elseif(sum==0 || sum==4)
-                %uso solo s_temp(1)
-                for i=1:3
-                    if(side(i)==2)
-                        s_temp(1)=node(tr(i)).s; %no taglio ma intersection
-                        node_on_trace=i;
-                    end
+            %uso solo s_temp(1)
+            for i=1:3
+                if(side(i)==2)
+                    s_temp(1)=node(tr(i)).s; %no taglio ma intersection
+                    node_on_trace=i;
                 end
+            end
                 
          %!!!!!!!!!!DEBUG!!!!!!!!!!!
 %                 id_tri
@@ -199,17 +197,25 @@ while(id_tri<=n_triangles && found==0)
 %                 called_which_side
 %                 s_temp(1)
                 
-                
+            if(s_temp(1)>=0 && s_temp(1)<=1 )
+                found=1;
                 %La s del nodo non è stata inserita in precedenza se è
                 %stata chiamata which_side
-                if(s_temp(1)>=0 && s_temp(1)<=1 && called_which_side(node_on_trace)==1)
+                if(called_which_side(node_on_trace)==1)
                     info_trace(id_t).s(end+1) = s_temp(1);
                 end
-            
+                %aggiungo i triangoli intorno a node_on_trace in queue_temp
+                for i=1:node(tr(node_on_trace)).tot_triangles
+                    if(node(tr(node_on_trace)).triangles(i)~=id_tri)
+                        queue_temp(end+1,1)=node(tr(node_on_trace)).triangles(i);
+                        queue_temp(end,2)=tr(node_on_trace);
+
+                        triangle(node(tr(node_on_trace)).triangles(i),10)=-4;
+                    end
+                end
+            end
            
-            
-           
-        %-----NODO SULLA TRACCIA, ALTRI DUE DISCORDI--------
+%-------------------NODO SULLA TRACCIA, ALTRI 2 DISCORDI----------------
         elseif(sum==2)
             
               %trovo quale nodo sta sulla traccia e su opposite nodes metto 
@@ -294,7 +300,7 @@ while(id_tri<=n_triangles && found==0)
                 if(s_temp(2) <= 1 && s_temp(2) >=0)
                     info_trace(id_t).s(end+1) = s_temp(2);
                 end
-    
+%---------------------- 2 NODI SULLA TRACCIA ------------------------
         else %sum==3 || sum==5 
                  %traccia coincidente e parallela segmento
             
@@ -352,7 +358,7 @@ while(id_tri<=n_triangles && found==0)
         
                 %considero status(1)
                 status(1) = tr(lonely_point+3);
-                %status 0,3 e 4 non ci interessano perchè non è tagliato
+                %status 0 non ci interessa perchè non tocca la traccia
                 if(status(1) == 2)
                    %tagliato
                    found = 1;
@@ -417,6 +423,24 @@ while(id_tri<=n_triangles && found==0)
                      %funzione per triangoli vicini
                      enqueue_tri_to_check(id_tri);
 
+                elseif(status(1)==4)
+                    
+                    found=1;
+                    
+                    for j=[1 2]
+                        for i=1:node(tr(nodes_on_trace(j))).tot_triangles
+                            if(node(tr(nodes_on_trace(j))).triangles(i)~=id_tri && ...
+                                triangle(node(tr(nodes_on_trace(j))).triangles(i),10)==-1)
+                           
+                                queue_temp(end+1,1)=node(tr(nodes_on_trace(j))).triangles(i);
+                                queue_temp(end,2)=tr(nodes_on_trace(j));
+
+                                triangle(node(tr(nodes_on_trace(j))).triangles(i),10)=-4;
+                            end
+                        end
+                    end
+                    
+                    
                 end
         end
     end
