@@ -1,7 +1,7 @@
 #include "global_variables.h"
 #include "functions.h"
 
-void ricerca_triangolo(int id_t){
+void finding_first_triangle(int id_t){
 /*
 %suppongo che la matrice 'triangle' abbia 6 colonne: dalla 4 alla 6
 %contenenti gli status dei lati. Status sconociuto: -1
@@ -251,7 +251,7 @@ while(id_tri<=n_triangles && found==0){
             }
             //trovo coordinate punti intersezione traccia segmento
             for(int i = 0; i<2; i++){
-              
+
             }
           }
 
