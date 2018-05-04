@@ -2,6 +2,7 @@
 
 void enqueue_tri_to_check(int id_tri){
   //se non sappiamo niente
+  id_tri = id_tri - 1;
   if(neigh[id_tri][0] != -1){
     if(triangle[neigh[id_tri][0]][6] == -1){
       queue.resize(queue.size()+1);

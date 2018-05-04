@@ -21,6 +21,9 @@ std::pair<int, double> intersect(int id_t, int p_1, int p_2){
   %vertice del triangolo in analisi. Diamo per scontato che side sia
   %conosciuto, quindi che node().side sia diverso da 0.
 */
+id_t = id_t -1;
+p_1 = p_1 -1;
+p_2 = p_2 -1;
 int status;
 double s;
 double toll_trace = toll_t[id_t];

@@ -29,7 +29,7 @@ struct NEAR_TRI{
 };
 
 struct CUT_TRI{
-  std::vector<int> points;
+  std::vector< std::vector<double> > points;
   std::vector<int> poly_1;
   std::vector<int> poly_2;
   std::vector<std::vector<int> > tri;

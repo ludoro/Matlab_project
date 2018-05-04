@@ -4,6 +4,8 @@
 
 // returning side, s
 std::pair<int,int> which_side(int id_t,int p){
+  id_t = id_t - 1;
+  p = p - 1;
   double v[2];
   double N[2];
   double scalar;
