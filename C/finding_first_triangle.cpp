@@ -6,10 +6,11 @@ void finding_first_triangle(int id_t){
 %suppongo che la matrice 'triangle' abbia 6 colonne: dalla 4 alla 6
 %contenenti gli status dei lati. Status sconociuto: -1
 */
+id_t = id_t -1;
 int found = 0;
-int id_tri = 1; //id del triangolo in esame
+int id_tri = 1;
 double s_temp[2] = {0,0}; //le coordinate curvilinee dell'eventuale intersezione
-int tr[6] = {0,0,0,0,0,0}; // info sul triangolo corrente
+int tr[10] = {0,0,0,0,0,0,0,0,0,0}; // info sul triangolo corrente
 int side[3] = {0,0,0}; //semipiani di appartenenza dei tre vertici
 int called_which_side[3]; //vettore che ci dice se abbiamo chiamato la
                                     // funzione which_side
@@ -17,30 +18,29 @@ int called_which_side[3]; //vettore che ci dice se abbiamo chiamato la
                                     // 1---> si chiamata
 int status[2] = {0,0}; //status delle eventuali intersezioni con due lati di un
                        // triangolo
-
-int points_to_check[2][2] = {{0,0},{0,0}};
-int edges_to_check[2] = {0,0};
 int node_on_trace = 0; //indica nodo su traccia
 int nodes_on_trace[2] = {0,0};
 int sum = 0;
 int lonely_point;
+int points_together[2] = {0,0};
+
 //prima parte di ricerca
 while(id_tri<=n_triangles && found==0){
-  for(int j = 0; j<2;j++){
+  for(int j = 0; j<3; j++){
     called_which_side[j] = 0;
   }
   for(int i = 0; i<6; i++){
     tr[i] = triangle[id_tri][i];
   }
   for(int i = 0; i<3; i++){
-    if(node[tr[i]].side == 0){
+    if(node[tr[i]-1].side == 0){
       //N.B Which side ritorna side,status
       std::pair<int,int> return_which = which_side(id_t,tr[i]);
-      node[tr[i]].side = return_which.first;
+      node[tr[i]-1].side = return_which.first;
       called_which_side[i] = 1;
     }
     else{
-      side[i] = node[tr[i]].side;
+      side[i] = node[tr[i]-1].side;
         }
 
 
@@ -51,77 +51,114 @@ while(id_tri<=n_triangles && found==0){
 
     //-------NESSUN VERTICE SULLA TRACCIA---------
     if(sum == -1 !! sum == 1){
-      /*
-       %capire quali sono i due lati da controllare
-       %points_to_check(i,:) sono i due punti di edges_to_check(i)
-       % in points_to_check(i,1) ci metto il vertice in
-       % comune
-      */
+      // capire quali sono i due lati da controllare
 
-      //DOMANDA IMPORTANTE: DEVO TOGLIERE UNO ANCHE DA RIGA 63 64 4 70?
-      // e dalle successive nello stesso modo??? HELPPPP
+
       if( side[0] == side[1]){
-        edges_to_check[1] = 5;
-        edges_to_check[0] = 4;
-
-        points_to_check[1][0]=tr[2];
-        points_to_check[1][1]=tr[0];
-        points_to_check[1][1]=tr[2];
-        points_to_check[0][1]=tr[1];
+        points_together[0] = 1;
+        points_together[1] = 2;
         lonely_point = 3;
+
       }
       else if( side[1] == side[2] ){
-        edges_to_check[0] = 5;
-        edges_to_check[1] = 6;
-        points_to_check[0][0]=tr[0];
-        points_to_check[0][1]=tr[2];
-        points_to_check[1][0]=tr[0];
-        points_to_check[1][1]=tr[1];
+        points_together[0] = 2;
+        points_together[1] = 3;
         lonely_point = 1;
+
       }
       else{//side(1) == side(3)
-        edges_to_check[1] = 4;
-        edges_to_check[0] = 6;
-        points_to_check[1][0]=tr[1];
-        points_to_check[1][1]=tr[0];
-        points_to_check[0][0]=tr[1];
-        points_to_check[0][1]=tr[2];
+        points_together[0] = 3;
+        points_together[1] = 1;
         lonely_point = 2;
-
       }
       /*
       Per ora s_temp non contiene info utili, se li status saranno positivi
       allora verranno salvati permanentmente
       */
       for(int i = 0; i<2; i++){
-        if(tr[edges_to_check[i]] == -1){
+        if(tr[points_together[i]+3-1] == -1){
           std::pair<int,double> return_intersect =
-          intersect(id_t,points_to_check[i][0],points_to_check[i][1]);
-          tr[edges_to_check[i]] = return_intersect.first;
+          intersect(id_t,tr[lonely_point-1],tr[points_together[((i+1)%2)]-1]);
+          tr[points_together[i]+3-1] = return_intersect.first;
           s_temp[i] = return_intersect.second;
 
           //salvo le informazioni nella variabile globale.
-          triangle[id_tri][edges_to_check[i]] = tr[edges_to_check[i]];
+          triangle[id_tri][points_together[i]+3-1] = tr[points_together[i]+3-1];
+          triangle[id_tri][points_together[i]+6-1] = s_temp[i];
 
           //salvo lo status anche nel triangolo vicino
-          for(int j = 0; j<3; j++){
-            if(neigh[id_tri][edges_to_check[i]-3][j] != -1){
-              if(neigh[neigh[id_tri][edges_to_check[i]-3][j]] == id_tri){
-                triangle[neigh[id_tri][edges_to_check(i)-3][j+3]]=tr[edges_to_check[i]];
-              }
-            }
-          }
+          saving_in_neigh();
+        }
+        else{
+          s_temp[i] = tr[points_together[i]+6-1];
         }
 
       }
+
       //tr(edges_to_check([1 2])) contiene i due status
-      status[0] = tr[edges_to_check[0]];
-      status[1] = tr[edges_to_check[1]];
+      status[0] = tr[points_together[0]+3-1];
+      status[1] = tr[points_together[1]+3-1];
       if (status[0] != 0 || status[1] != 0){
         //IL TRIANGOLO E' SICURAMENTE TAGLIATO
         found = 1;
-        info_trace[id_t].cut_tri[0].id = id_tri;
-        triangle[id_tri][6] = 0;
+        it_is_cut();
+        enqueue_tri_to_check(id_tri);
+        if( (status[0] == 0 && status[1] == 2) ||
+            (status[1] == 0 && status[0] == 2) ){
+
+              if(status[0] == 0 && status[1] == 2){
+                int a = 2;
+              }
+              else{
+                int a = 1;
+              }
+              info_trace[id_t].s.resize(info_trace[id_t].s.size()+1);
+              info_trace[id_t].s[info_trace[id_t].s.size()-1] = s_temp[a-1];
+
+              if(s_temp[a-1] == 0){
+                for(int k = 0; k < 2; k++){
+                  info_trace[id_t].cut_tri[0].points[3][k]=
+                  trace_vertex[trace[id_t][0]]][k];
+                }
+              }
+              else{
+                for(int k = 0; k < 2; k++){
+                  info_trace[id_t].cut_tri[0].points[3][k]=
+                  trace_vertex[trace[id_t][1]]][k];
+                }
+
+              }
+
+              info_trace[id_t].cut_tri[0].poly_1[0] = 1;
+              info_trace[id_t].cut_tri[0].poly_1[0] = 2;
+              info_trace[id_t].cut_tri[0].poly_1[0] = 3;
+              info_trace[id_t].cut_tri[0].poly_1[0] = 0;
+
+              if(a == 1){
+                info_trace[id_t].cut_tri[0].tri[0][0] = points_together[a-1];
+                info_trace[id_t].cut_tri[0].tri[0][1] = points_together[a+1-1];
+                info_trace[id_t].cut_tri[0].tri[0][2] = 4;
+
+                info_trace[id_t].cut_tri[0].tri[1][0] = points_together[a-1];
+                info_trace[id_t].cut_tri[0].tri[1][1] = 4;
+                info_trace[id_t].cut_tri[0].tri[1][2] = lonely_point;
+              }
+              else{
+                info_trace[id_t].cut_tri[0].tri[0][0] = points_together[a-1-1];
+                info_trace[id_t].cut_tri[0].tri[0][1] = points_together[a+1-1];
+                info_trace[id_t].cut_tri[0].tri[0][2] = 4;
+
+                info_trace[id_t].cut_tri[0].tri[1][0] = points_together[a-1];
+                info_trace[id_t].cut_tri[0].tri[1][1] = 4;
+                info_trace[id_t].cut_tri[0].tri[1][2] = lonely_point;
+
+              }
+
+
+
+            }
+
+
         /*
         Mettiamo info dei punto del triangolo che stiamo considerando in info
         trace.
