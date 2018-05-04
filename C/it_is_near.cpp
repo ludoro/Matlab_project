@@ -2,8 +2,8 @@
 
 void it_is_near(){
   //Inizializzo a 2 la lunghezza del vettore di nodi.
-  info_trace[id_t].cut_tri[0].nodes.resize(2);
-  info_trace[id_t].cut_tri[1].nodes.resize(2);
+  info_trace[id_t].near_tri[0].nodes.resize(2);
+  info_trace[id_t].near_tri[1].nodes.resize(2);
   double b = triangle(id_tri,9);
   int already_saved = 0;
   if(b<-1){
