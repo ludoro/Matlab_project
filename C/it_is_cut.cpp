@@ -2,9 +2,10 @@
 
 void it_is_cut(){
   //Inizializzo a 2 la lunghezza del vettore di nodi.
-  info_trace[id_t].cut_tri[0].nodes.resize(2);
-  info_trace[id_t].cut_tri[1].nodes.resize(2);
-  
+  id_t = id_t -1;
+  info_trace[id_t].cut_tri[0].points.resize(2);
+  info_trace[id_t].cut_tri[1].points.resize(2);
+
   if(info_trace[id_t].cut_tri[0].id == 0){
      info_trace[id_t].cut_tri[0].id = id_t;
      triangle[id_t][9] = 0;
@@ -13,8 +14,8 @@ void it_is_cut(){
     %considerando in info trace.
     */
     for(j=0; j<3; j++){
-      info_trace[id_t].cut_tri[0].points[j][0] = node[tr[j]].x;
-      info_trace[id_t].cut_tri[0].points[j][1] = node[tr[j]].y;
+      info_trace[id_t].cut_tri[0].points[j][0] = node[tr[j]-1].x;
+      info_trace[id_t].cut_tri[0].points[j][1] = node[tr[j]-1].y;
     }
   }
   else{
@@ -27,9 +28,9 @@ void it_is_cut(){
     */
     for(int j = 0; j<3; j++){
       info_trace[id_t].cut_tri[len(info_trace[id_t].cut_tri)-1]points[j][0]
-         = node(tr(j)).x;
+         = node[tr[j]-1].x;
       info_trace[id_t].cut_tri[len(info_trace[id_t].cut_tri)-1]points[j][1]
-         = node(tr(j)).Y;
+         = node[tr[j]-1].y;
     }
   }
 
