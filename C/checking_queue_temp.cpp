@@ -200,7 +200,7 @@ void checking_queue_temp(){
        else if(status == 4){
          for(j = 0; j<2 ; j++){
            if(tr[nodes_on_trace[j]-1] != queue_temp[0][1]){
-             for(i = 0; i < node[tr[nodes_on_trace[j]-1]-1] - 1; i++){
+             for(i = 0; i < node[tr[nodes_on_trace[j]-1]-1]; i++){
                if(node[tr[nodes_on_trace[j]-1]-1].triangles[i] != id_tri &&
                   triangle[node[tr[nodes_on_trace[j]-1]-1].triangles[i]][9] == -1)
                   int queue_size = queue_temp.size();
