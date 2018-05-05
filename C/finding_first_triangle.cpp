@@ -157,6 +157,15 @@ while(id_tri<=n_triangles && found==0){
 
 
             }
+            else{//tre triangoli nella triangolazione
+              /*
+
+              ARRIVATO QUI!!!!!!!!
+
+              */
+
+
+            }
 
 
         /*
