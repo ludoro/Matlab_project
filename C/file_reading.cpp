@@ -260,5 +260,7 @@ void create_additional_structures(){
     T_squared[i] = T[i][0]*T[i][0] + T[i][1]*T[i][1];
   }
 
+  //ogni volta che viene chiamata queue_temp bisogna fare il resize;
+
 
 }

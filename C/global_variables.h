@@ -64,4 +64,6 @@ extern std::vector<std::vector<int> > queue;
 
 extern std::vector<INFO_TRACE> info_trace;
 
+extern std::vector<std::vector<int> > queue_temp;
+
 #endif

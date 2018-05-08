@@ -135,11 +135,9 @@ fp = fopen('barra.1.face','r');
   
 % vettore di strutture inizialmente vuoto che contiene per ogni frattura
 % le informazioni dei nodi che stanno sul piano.
-% coord contiene le coordinate x e y (già proiettate)
-% sides contiene tutti i side del punto rispetto ai lati della frattura
-
+% coord contiene le coordinate x e y (già proie
 node_fract = repmat(struct('coord', [], 'sides',[]),0,1);
-
+  
   %STRUTTURA di 'fract': fract(n,1)=punto 1 della frattura n
   fclose(fp);    
   
