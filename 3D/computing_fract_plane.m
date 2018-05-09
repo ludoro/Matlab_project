@@ -1,4 +1,3 @@
-global coord_to_use;
 coord_to_use = zeros(n_fractures,2);
 N_temp = zeros(3,1);
 
@@ -30,13 +29,13 @@ for id_f = 1:n_fractures
     end
     
     if(max == 1)
-        coord_to_use(1) = 2;
-        coord_to_use(2) = 3;
+        coord_to_use(id_f,1) = 2;
+        coord_to_use(id_f,2) = 3;
     elseif(max == 2)
-        coord_to_use(1) = 1;
-        coord_to_use(2) = 3;
+        coord_to_use(id_f,1) = 1;
+        coord_to_use(id_f,2) = 3;
     else%max == 3
-        coord_to_use(1) = 1;
-        coord_to_use(2) = 2;
+        coord_to_use(id_f,1) = 1;
+        coord_to_use(id_f,2) = 2;
     end                   
 end
