@@ -7,6 +7,7 @@ global coord_to_use;
 global accuracy;
 global info_fract;
 global fract;
+global node_plane;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -128,7 +129,8 @@ fp = fopen('barra.1.face','r');
   A = fscanf(fp,'%d',2); 
   n_fractures = A(1); 
   
-  fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0], 'd', 0),...
+  fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0],'d',0,...
+                       'G',[0,0],'r',0),...
                 n_fractures,1);
   
   %le fratture possono avere un numero di nodi da 3 a n, uso un ciclo for

@@ -37,5 +37,26 @@ for id_f = 1:n_fractures
     else%max == 3
         coord_to_use(id_f,1) = 1;
         coord_to_use(id_f,2) = 2;
-    end                   
+    end
+    
+    % calcolo anche il baricentro e il raggio
+    
+    g_temp = [0,0];
+    for i = 1:fract(id_f).n_points
+        g_temp = g_temp + fract_vertex(fract(id_f).P(i),...
+                                       coord_to_use(id_f,:));
+    end
+    fract(id_f).G = g_temp/fract(id_f).n_points;
+    
+    max = norm(fract_vertex(fract(id_f).P(1),coord_to_use(id_f,:)) - ...
+                fract(id_f).G,inf);
+    for i = 2:fract(id_f).n_points
+        r_temp = norm(fract_vertex(fract(id_f).P(i),coord_to_use(id_f,:)) - ...
+                fract(id_f).G,inf);
+        if(r_temp > max)
+            max = r_temp;
+        end
+    end
+    fract(id_f).r = max;
+    clear max r_temp;
 end
