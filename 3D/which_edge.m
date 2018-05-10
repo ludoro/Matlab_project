@@ -1,6 +1,5 @@
 function id_e = which_edge(p_1,p_2)
 global node;
-global 
 found = 0;
 i = 1;
 j = 1;

@@ -16,7 +16,6 @@ global accuracy;
 global info_fract;
 global fract;
 global node_plane;
-
 %salvo subito coordinate frattura
 num_f = fract(id_f).n_points;
 F = zeros(num_f,2);
@@ -90,7 +89,8 @@ else
         %faccio poligonazione
         for i = 1:n_to_check
             if(node_plane(id_node_plane(i)).in_info == -1)
-               
+                
+                
             end
         end
         

@@ -9,7 +9,7 @@ id_node_plane = [-1,-1,-1,-1];
 
 while(id_tet <= n_tets && found == 0)
     id_node_plane = [-1,-1,-1,-1];
-    called_which_side = [0,0,0];
+    called_which_side = [0,0,0,0];
     for i =1:4
         if(node(tet(id_tet,i)).side == 0)
             side(i) = which_side_3D(id_f,tet(id_tet,i));
@@ -67,6 +67,7 @@ while(id_tet <= n_tets && found == 0)
                 if(edge(e_temp(i)).checked == -1)
                    node_plane(end+1).coord = intersect_plane_edge...
                                              (id_f,e_temp(i));
+                   node_plane(end).in_info = -1;
                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_nodes_plane(i) = edge(e_temp(i)).checked;

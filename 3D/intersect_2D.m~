@@ -7,7 +7,6 @@ global fract_vertex;
 global toll;
 global node_plane;
 
-
 if(is_empty(node_plane(p_1).sides) || is_empty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
 end

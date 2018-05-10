@@ -148,12 +148,12 @@ fp = fopen('barra.1.face','r');
 % coord contiene le coordinate x e y (già proiettate)
 % sides contiene tutti i side del punto rispetto ai lati della frattura
 
-node_plane = repmat(struct('coord', [], 'sides',[]),0,1);
+node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1),0,1);
 
   %STRUTTURA di 'fract': fract(n,1)=punto 1 della frattura n
   fclose(fp);  
 info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
                                             'poly_1',[],'poly_2',[]),...
                            'near_tet',struct('id',0,'nodes',[],'edges',[]),...
-       'div',struct('points',zeros(0,3),'pol',struct('v',[]))),n_fracts,1);
+       'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
   clear A fp
