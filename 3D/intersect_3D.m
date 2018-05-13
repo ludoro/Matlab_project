@@ -88,12 +88,26 @@ else
     
     if(all_out == 0)
         %faccio poligonazione
+        if(is_empy(info_fract(id_f).pol(1).v))
+            info_fract(id_f).pol(1).v=zeros(n_to_check,1);
+        else
+            info_fract(id_f).pol(end+1).v=zeros(n_to_check,1);
+        end
         for i = 1:n_to_check
             if(node_plane(id_node_plane(i)).in_info == -1)
-               
+                %inserisco il punto in info_fract.points
+                info_fract(id_f).points(end+1,coord_to_use(id_f,:))=P(i,:);
+                %calcolo la terza coordinata 
+                %con indice = 6-coord_to_use(id_f,1)-coord_to_use(id_f,2)
+                info_fract(id_f).points(end,6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = ...
+                    -(fract(id_f).N(coord_to_use(id_f,1))*P(i,1)+...
+                      fract(id_f).N(coord_to_use(id_f,2))*P(i,2)+...
+                      fract(id_f).d)...
+                      / fract(id_f).N(6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+                node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
             end
+            info_fract(id_f).pol(end).v(i)=node_plane(id_node_plane(i)).in_info;
         end
-        
        
         it_is_cut = 2;
     else

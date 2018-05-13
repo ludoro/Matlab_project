@@ -12,16 +12,22 @@ if(is_empty(node_plane(p_1).sides) || is_empty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
 end
 
+num_f=fract(id_f).n_points;
+%salvo localmente le variabili della frattura
+F = zeros(num_f,2);
+for i = 1:num_f
+    F(i,:) = fract_vertex(fract(id_f).P(i),coord_to_use(id_f,:));
+end
+
 side = [0,0];
-for id_t = 1:fract(id_f).n_points
+for id_t = 1:num_f
     side(1) = node_plane(p_1).sides(id_t);
     side(2) = node_plane(p_2).sides(id_t);
-    if(side(1) ~= side(2))
+    if(side(1) ~= side(2))   
+        
         
         
     end
-    
-    
 end
 
 

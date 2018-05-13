@@ -79,6 +79,8 @@ while(id_tet <= n_tets && found == 0)
             
         %------2 nodi da una parte e 2 dall'altra parte-------
         elseif(sum == 0)
+            %ATTENZIONE ALL'ORDINE IN CUI I PUNTI DI INTERSEZIONE SONO
+            %MESSI IN id_node_plane. 
             
         %-----NON TAGLIATO 1 nodo su piano 3 concordi-----
         elseif(sum == 7 || sum == 1)
