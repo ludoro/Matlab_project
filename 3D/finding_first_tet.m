@@ -68,6 +68,7 @@ while(id_tet <= n_tets && found == 0)
                    node_plane(end+1).coord = intersect_plane_edge...
                                              (id_f,e_temp(i));
                    node_plane(end).in_info = -1;
+                   node_plane(end).is_out = -1;
                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_nodes_plane(i) = edge(e_temp(i)).checked;

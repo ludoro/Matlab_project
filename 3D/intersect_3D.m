@@ -71,18 +71,24 @@ else
         side(i,:) = node_plane(id_node_plane(i)).sides;
     end
     
-    side_int = which_side_2D(G_f,F(1,:),F(2,:));
+    %salvo il "side campione"
+    side_int = fract(id_f).side_int;
     
     it_is_out = zeroes(n_to_check,1);
     all_out = 0;
     j = 1;
     for i = 1:n_to_check
-        while(it_is_out(i) == 0 && j <= num_f)
-            if(side(i,j) == -side_int)
-                all_out = 1;
-                it_is_out(i) = 1;
+        if(node_plane(id_node_plane(i)).is_out==-1)
+            node_plane(id_node_plane(i)).is_out=0;
+            while(node_plane(id_node_plane(i)).is_out == 0 && j <= num_f)
+                if(side(i,j) == -side_int)
+                    all_out = 1;
+                    node_plane(id_node_plane(i)).is_out = 1;
+                end
+                j = j + 1;
             end
-            j = j + 1;
+        elseif(node_plane(id_node_plane(i)).is_out==1)
+            all_out=1;
         end
     end
     

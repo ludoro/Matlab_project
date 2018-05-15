@@ -130,9 +130,12 @@ fp = fopen('barra.1.face','r');
   n_fractures = A(1); 
   
   fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0],'d',0,...
-                       'G',[0,0],'r',0),...
+                       'G',[0,0],'r',0,'side_int',0),...
                 n_fractures,1);
-  
+  %il campo .side_int serve ad avere un riferimento per capire se un punto
+  %è interno o no alla frattura. Si fa la prova con il baricentro. 
+  %RIEMPITO SU: "global_toll.m"
+            
   %le fratture possono avere un numero di nodi da 3 a n, uso un ciclo for
   %e memorizzo in una matrice le cui righe hanno dim diversa
   for i=1:n_fractures 
@@ -148,7 +151,7 @@ fp = fopen('barra.1.face','r');
 % coord contiene le coordinate x e y (già proiettate)
 % sides contiene tutti i side del punto rispetto ai lati della frattura
 
-node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1),0,1);
+node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1,'is_out',-1),0,1);
 
   %STRUTTURA di 'fract': fract(n,1)=punto 1 della frattura n
   fclose(fp);  

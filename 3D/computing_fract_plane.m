@@ -39,7 +39,7 @@ for id_f = 1:n_fractures
         coord_to_use(id_f,2) = 2;
     end
     
-    % calcolo anche il baricentro e il raggio
+    % calcolo anche il baricentro (2 coordinate) e il raggio
     
     g_temp = [0,0];
     for i = 1:fract(id_f).n_points
@@ -58,5 +58,14 @@ for id_f = 1:n_fractures
         end
     end
     fract(id_f).r = max;
+    
+    %riempio il campo fract.side_int
+    %prima di poter chiamare la funzione which_side_2D era necessario conoscere
+    %la tolleranza "toll"
+    fract(id_f).side_int = which_side_2D(fract(id_f).G, ...
+        fract_vertex(fract(id_f).P(1),coord_to_use(id_f,:)), ...
+        fract_vertex(fract(id_f).P(2),coord_to_use(id_f,:)));
+    
+    
     clear max r_temp;
 end
