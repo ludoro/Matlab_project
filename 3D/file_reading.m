@@ -159,4 +159,12 @@ info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
                                             'poly_1',[],'poly_2',[]),...
                            'near_tet',struct('id',0,'nodes',[],'edges',[]),...
        'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
+   
+% metto i vertici di ogni frattura in info_fract.points
+for i = 1:n_fracts
+    info_fract(i).points = zeros(fract(i).n_points,3);
+    for j = 1:fract(i).n_points
+        info_fract(i).points(j,:) = fract_vertex(fract(i).P(j),:);
+    end
+end
   clear A fp

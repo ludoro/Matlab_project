@@ -1,11 +1,10 @@
-function [P_intersect,n_intersections,edge_intersection]... 
+function [P_intersect,n_intersections,in,out]... 
             = intersect_2D(id_f,p_1,p_2) 
 % p_1 e p_2 sono gli indici di nodeplane
 % P_intersect matrice 2x2 di coordinate di punti di intersezione
 % se n_intersection = numero intersezioni proprie (escluse i vertici della
 %                     frattura)
 % edge_intersection = in quale lato entra? in quale lato esce?
-
 global fract;
 global fract_vertex;
 global accuracy;
@@ -43,7 +42,7 @@ else %node_plane(p_1).is_out==1 && node_plane(p_2).is_out==1
     in_out=3;
 end
 
-while(i <= num_f && flag)
+while(i <= num_f && flag) 
     side(1) = node_plane(p_1).sides(i);
     side(2) = node_plane(p_2).sides(i);
     %node_plane.sides non dovrebbe essere vuoto
@@ -167,5 +166,6 @@ end
 if(flag == 1 && n_intersections == 1)
     n_intersections = 0;
 end
+in = edge_intersection(1);
+out = edge_intersection(2);
 end
-

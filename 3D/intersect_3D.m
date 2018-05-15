@@ -92,29 +92,33 @@ else
         end
     end
     
+    
+    for i = 1:n_to_check
+        if(node_plane(id_node_plane(i)).is_out == 0 ...
+           && node_plane(id_node_plane(i)).in_info == -1 )
+            %inserisco il punto in info_fract.points
+            info_fract(id_f).points(end+1,coord_to_use(id_f,:))=P(i,:);
+            %calcolo la terza coordinata 
+            %con indice = 6-coord_to_use(id_f,1)-coord_to_use(id_f,2)
+            info_fract(id_f).points(end,6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = ...
+                -(fract(id_f).N(coord_to_use(id_f,1))*P(i,1)+...
+                  fract(id_f).N(coord_to_use(id_f,2))*P(i,2)+...
+                  fract(id_f).d)...
+                  / fract(id_f).N(6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+            node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
+        end
+    end
+    
     if(all_out == 0)
         %faccio poligonazione
-        if(is_empy(info_fract(id_f).pol(1).v))
+        if(is_empty(info_fract(id_f).pol(1).v))
             info_fract(id_f).pol(1).v=zeros(n_to_check,1);
         else
             info_fract(id_f).pol(end+1).v=zeros(n_to_check,1);
         end
         for i = 1:n_to_check
-            if(node_plane(id_node_plane(i)).in_info == -1)
-                %inserisco il punto in info_fract.points
-                info_fract(id_f).points(end+1,coord_to_use(id_f,:))=P(i,:);
-                %calcolo la terza coordinata 
-                %con indice = 6-coord_to_use(id_f,1)-coord_to_use(id_f,2)
-                info_fract(id_f).points(end,6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = ...
-                    -(fract(id_f).N(coord_to_use(id_f,1))*P(i,1)+...
-                      fract(id_f).N(coord_to_use(id_f,2))*P(i,2)+...
-                      fract(id_f).d)...
-                      / fract(id_f).N(6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
-                node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
-            end
             info_fract(id_f).pol(end).v(i)=node_plane(id_node_plane(i)).in_info;
         end
-       
         it_is_cut = 2;
     else
         %-----------STEP 3--------------------
@@ -131,25 +135,65 @@ else
         if( (orient_f < 0 && orient_p > 0) ||  ...
             (orient_f > 0 && orient_p < 0) )
             if(n_to_check == 3)
-                temp = P(3,:);
-                P(3,:) = P(1,:);
-                P(1,:) = temp;
-            else
-                temp = P(4,:);
-                P(4,:) = P(1,:);
-                P(1,:) = temp;
+                temp = id_node_plane(3);
+                id_node_plane(3) = id_node_plane(1);
+                id_node_plane(1) = temp;
                 
-                temp = P(3,:);
-                P(3,:)= P(2,:);
-                P(2,:) = temp;
+            else
+                temp = id_node_plane(4);
+                id_node_plane(4) = id_node_plane(1);
+                id_node_plane(1) = temp;
+                
+                temp = id_node_plane(3);
+                id_node_plane(3)= id_node_plane(2);
+                id_node_plane(2) = temp;
             end
         end
-    
-    end
         
-    
-    
-    
+        %chiamo
+        %intersect_2D(id_f,id_node_plane(i),id_node_plane(mod(i,n_to_check)+1))
+        pol_temp = [];
+        P_intersect = [0 0; 0 0];
+        n_intersect = 0;
+        in = 0;
+        in_first = 0;
+        out = 0;
+        out_temp = 0;
+        for i = 1:n_to_check
+            if(node_plane(id_node_plane(i)).is_out == 0)
+                %già messo in info_fract.points nello step 2
+                pol_temp(end+1) = node_plane(id_node_plane(i)).in_info;
+            end   
+            
+            %controllo che i punti(i i+1) non siano entrambi dentro
+            if(node_plane(id_node_plane(i)).is_out == 1 || node_plane(id_node_plane(mod(i,n_to_check)+1)).is_out == 1)
+                [P_intersect,n_intersect,in,out_temp]... 
+                 = intersect_2D(id_f,id_node_plane(i),...
+                              id_node_plane(mod(i,n_to_check)+1));
+                if(in ~= 0)
+                    if(out == 0)
+                        in_first = in;
+                    else
+                        %devo andare ad inserire i punti in mezzo
+                        j = out;
+                        while(j ~= in)
+                            j= mod(j,num_f)+1;
+                            pol_temp(end+1) = j;
+                        end
+                    end
+                end
+                
+                if(out_temp ~= 0) 
+                    out = out_temp;
+                end
+                
+                
+                
+            end
+            
+        end
+        
+    end
 end
 
 else% n_to_check == 2

@@ -83,10 +83,6 @@ while(id_tet <= n_tets && found == 0)
             %ATTENZIONE ALL'ORDINE IN CUI I PUNTI DI INTERSEZIONE SONO
             %MESSI IN id_node_plane. 
             
-        %-----NON TAGLIATO 1 nodo su piano 3 concordi-----
-        elseif(sum == 7 || sum == 1)
-            
-            
         %-----1 nodo su piano, altri discordi------
         elseif(sum == 3 || sum == 5)
             
@@ -100,7 +96,7 @@ while(id_tet <= n_tets && found == 0)
             
             
         %------3 nodi sul piano-------
-        else%sum == 13 || sum == 11
+        elseif(sum == 13 || sum == 11)
         
         
         end
