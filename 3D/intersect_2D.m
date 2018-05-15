@@ -8,10 +8,9 @@ function [P_intersect,n_intersections,edge_intersection]...
 
 global fract;
 global fract_vertex;
-global toll;
 global accuracy;
 global node_plane;
-
+global coord_to_use
 
 if(is_empty(node_plane(p_1).sides) || is_empty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
@@ -48,8 +47,10 @@ while(i <= num_f && flag)
     side(1) = node_plane(p_1).sides(i);
     side(2) = node_plane(p_2).sides(i);
     %node_plane.sides non dovrebbe essere vuoto
-    if(side(1)+side(2)==0)
+    if(side(1)+side(2)==0 || side(1)+side(2) == 3 || side(1)+side(2) == 1)
         %un punto da una parte e uno dall'altra => faccio il sistema
+        %In realtà sorprendentemente anche gli altri due casi funzionano
+        %qui dentro, cioè quando un vertice sta sul segmento 
         A=[node_plane(p_2).coord(1)-node_plane(p_1).coord(1), ...
            F(1,1) - F(mod(i,num_f)+1,1); ...
            node_plane(p_2).coord(2)-node_plane(p_1).coord(2), ...
@@ -63,11 +64,14 @@ while(i <= num_f && flag)
         if(st(2)<1-accuracy && st(2)>accuracy)
             if(in_out<=2)
                 flag=0;
-                n_intersections=1;
-                P_intersect(1,:)=F(i,:)+st(2)*(F(mod(i,num_f)+1,:)-F(i,:));
-                
                 edge_intersection(in_out)=i;
-                
+                if(side(1) == 2 || side(2) == 2)
+                    %controllo se side(1) + side(2) == 1 oppure 3
+                    n_intersections = 0;
+                else 
+                    n_intersections=1;
+                    P_intersect(1,:)=F(i,:)+st(2)*(F(mod(i,num_f)+1,:)-F(i,:));
+                end
             else %in_out==3
                 n_intersections = n_intersections+1;
                 if(n_intersections==1)
@@ -153,14 +157,15 @@ while(i <= num_f && flag)
                     end
                 end
             end
-        
         end
-        
     end
     i=i+1;
 end
-
-
-
+%problema: potrebbe essere che da fuori a fuori abbia solo un intersezione,
+%con un vertice della frattura, ma la funzione in questo caso si aspetta
+%due intersezioni, risolviamo il problema:
+if(flag == 1 && n_intersections == 1)
+    n_intersections = 0;
+end
 end
 
