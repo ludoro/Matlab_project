@@ -72,33 +72,142 @@ while(id_tet <= n_tets && found == 0)
                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_nodes_plane(i) = edge(e_temp(i)).checked;
-            end
-            
-            
-            
-           
-            
+            end 
         %------2 nodi da una parte e 2 dall'altra parte-------
         elseif(sum == 0)
             %ATTENZIONE ALL'ORDINE IN CUI I PUNTI DI INTERSEZIONE SONO
-            %MESSI IN id_node_plane. 
+            %MESSI IN id_node_plane.
+            if(side(1) == side(2))
+                nodes_together_1 = [1,2];
+                nodes_together_2 = [3,4];
+            elseif(side(1) == side(3))
+                nodes_together_1 = [1,3];
+                nodes_together_2 = [2,4];
+            else%side(1) == side(4)
+                nodes_together_1 = [1,4];
+                nodes_together_2 = [2,3];
+            end
             
         %-----1 nodo su piano, altri discordi------
         elseif(sum == 3 || sum == 5)
             
-        
+            if(side(1) == side(2))
+                nodes_together = [1,2];
+                if(side(3) == 4)
+                    lonely_point = 4;
+                    point_on_plane = 3;
+                else%side(4) == 4
+                    lonely_point = 3;
+                    point_on_plane = 4;
+                end
+            elseif(side(1) == side(3))
+                nodes_together = [1,3];
+                if(side(2) == 4)
+                    lonely_point = 4;
+                    point_on_plane = 2;
+                else%side(4) == 4
+                    lonely_point = 2;
+                    point_on_plane = 4;
+                end
+            elseif(side(1) == side(4))
+                nodes_together = [1,4];
+                if(side(2) == 4)
+                    lonely_point = 3;
+                    point_on_plane = 2;
+                else%side(3) == 4
+                    lonely_point = 2;
+                    point_on_plane = 3;
+                end
+            elseif(side(2) == side(3))
+                nodes_together = [2,3];
+                if(side(1) == 4)
+                    lonely_point = 4;
+                    point_on_plane = 1;
+                else%side(4) == 4
+                    lonely_point = 1;
+                    point_on_plane = 4;
+                end
+            elseif(side(2) == side(4))
+                nodes_together = [2,4];
+                if(side(1) == 4)
+                    lonely_point = 3;
+                    point_on_plane = 1;
+                else%side(3) == 4
+                    lonely_point = 1;
+                    point_on_plane = 3;
+                end
+            else%side(3) == side(4) 
+                nodes_together = [3,4];
+                if(side(1) == 4)
+                    lonely_point = 2;
+                    point_on_plane = 1;
+                else%side(2) == 4
+                    lonely_point = 1;
+                    point_on_plane =2;
+                end
+            end
         %----2 nodi su piano altri concordi-------
         elseif(sum == 10 || sum == 6)
             
-        
+            if(side(1) == side(2) == 4)
+                nodes_on_plane = [1,2];
+                nodes_together = [3,4];
+            elseif(side(1) == side(3) == 4)
+                nodes_on_plane = [1,3];
+                nodes_together = [2,4];
+            elseif(side(1) == side(4) == 4)
+                nodes_on_plane = [1,4];
+                nodes_together = [2,3];
+            elseif(side(2) == side(3) == 4)
+                nodes_on_plane = [2,3];
+                nodes_together = [1,4];
+            elseif(side(2) == side(4) == 4)
+                nodes_on_plane = [2,4];
+                nodes_together = [1,3];
+            else%side(3) == side(4) == 4
+                nodes_on_plane = [3,4];
+                nodes_together = [1,2];
+            end
         %-----2 nodi su piano altri discordi----
         elseif(sum == 8)
             
-            
+            if(side(1) == side(2) == 4)
+                nodes_on_plane = [1,2];
+                lonely_point_1 = 3;
+                lonely_point_2 = 4;
+            elseif(side(1) == side(3) == 4)
+                nodes_on_plane = [1,3];
+                lonely_point_1 = 2;
+                lonely_point_2 = 4;
+            elseif(side(1) == side(4) == 4)
+                nodes_on_plane = [1,4];
+                lonely_point_1 = 2;
+                lonely_point_2 = 3;
+            elseif(side(2) == side(3) == 4)
+                nodes_on_plane = [2,3];
+                lonely_point_1 = 1;
+                lonely_point_2 = 4;
+            elseif(side(2) == side(4) == 4)
+                nodes_on_plane = [2,4];
+                lonely_point_1 = 1;
+                lonely_point_2 = 3;
+            else%side(3) == side(4) == 4
+                nodes_on_plane = [3,4];
+                lonely_point_1 = 1;
+                lonely_point_2 = 2;
+            end
         %------3 nodi sul piano-------
         elseif(sum == 13 || sum == 11)
-        
-        
+            if(side(1) == side(2) == side(3) == 4)
+                nodes_on_plane = [1,2,3];
+                lonely_point = 4;
+            elseif(side(2) == side(3) == side(4) == 4)
+                nodes_on_plane = [2,3,4];
+                lonely_point = 1;
+            else%side(3) == side(4) == side(1) == 4
+                nodes_on_plane = [1,3,4];
+                lonely_point = 2;
+            end
         end
         
     end
