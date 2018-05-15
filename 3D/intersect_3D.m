@@ -144,11 +144,7 @@ else
                 P(2,:) = temp;
             end
         end
-        
-        
-            
-        
-        
+    
     end
         
     
