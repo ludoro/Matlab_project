@@ -1,4 +1,4 @@
-function [P_intersect,n_intersections,in,out]... 
+function [P_intersect,n_intersect,in,out]... 
             = intersect_2D(id_f,p_1,p_2) 
 % p_1 e p_2 sono gli indici di nodeplane
 % P_intersect matrice 2x2 di coordinate di punti di intersezione
@@ -15,7 +15,7 @@ if(is_empty(node_plane(p_1).sides) || is_empty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
 end
 
-n_intersections=0;
+n_intersect=0;
 P_temp=[0 0];
 P_intersect=[0 0;0 0];
 edge_intersection=[0 0];
@@ -51,12 +51,12 @@ while(i <= num_f && flag)
         %In realtà sorprendentemente anche gli altri due casi funzionano
         %qui dentro, cioè quando un vertice sta sul segmento 
         A=[node_plane(p_2).coord(1)-node_plane(p_1).coord(1), ...
-           F(1,1) - F(mod(i,num_f)+1,1); ...
+           F(i,1) - F(mod(i,num_f)+1,1); ...
            node_plane(p_2).coord(2)-node_plane(p_1).coord(2), ...
-           F(1,2) - F(mod(i,num_f)+1,2)];
+           F(i,2) - F(mod(i,num_f)+1,2)];
        
-        b=[F(1,1)-node_plane(p_1).coord(1);
-           F(1,2)-node_plane(p_1).coord(2)];
+        b=[F(i,1)-node_plane(p_1).coord(1);
+           F(i,2)-node_plane(p_1).coord(2)];
        
         st = A\b; %prima posizione t(segmento) , seconda posizione s(frattura)
         %devo controllare i valori di st(2)
@@ -66,14 +66,14 @@ while(i <= num_f && flag)
                 edge_intersection(in_out)=i;
                 if(side(1) == 2 || side(2) == 2)
                     %controllo se side(1) + side(2) == 1 oppure 3
-                    n_intersections = 0;
+                    n_intersect = 0;
                 else 
-                    n_intersections=1;
+                    n_intersect=1;
                     P_intersect(1,:)=F(i,:)+st(2)*(F(mod(i,num_f)+1,:)-F(i,:));
                 end
             else %in_out==3
-                n_intersections = n_intersections+1;
-                if(n_intersections==1)
+                n_intersect = n_intersect+1;
+                if(n_intersect==1)
                     P_intersect(1,:)=F(i,:)+st(2)*(F(mod(i,num_f)+1,:)-F(i,:));
                     edge_intersection(1)=i;
                 else %n_intersections==2
@@ -95,7 +95,7 @@ while(i <= num_f && flag)
                         end
                     else %il punto precedente era un vertice della frattura
                         %controllo se l'ordine è quello giusto
-                        n_intersections=1;
+                        n_intersect=1;
                         if(norm(P_intersect(1,:)-node_plane(p_1).coord,inf)>...
                                 norm(P_temp-node_plane(p_1).coord,inf))
                             %scambio
@@ -116,15 +116,15 @@ while(i <= num_f && flag)
             % uscente : edge_intersection = i-1
             if(in_out==2)
                 flag=0;
-                n_intersections=0;
+                n_intersect=0;
                 edge_intersection(2)=mod(i-2,num_f)+1; % "i-1"
             elseif(in_out==1)
                 flag=0;
-                n_intersections=0;
+                n_intersect=0;
                 edge_intersection(1)=i;
             else %in_out==3
-                n_intersection=n_intersection+1;
-                if(n_intersection==1)
+                n_intersect = n_intersect +1;
+                if(n_intersect == 1)
                     P_intersect(1,:)=F(i,:);
                     %momentaneamente salvo i su entrambi gli
                     %edge_intersect_temp
@@ -141,7 +141,7 @@ while(i <= num_f && flag)
                         else%ordine giusto
                             edge_intersection(2) = mod(i-2,num_f)+1; %i-1
                         end
-                        n_intersections = 1;
+                        n_intersect = 1;
                        
                     else%punto precedente è vertice
                         if(norm(P_intersect(1,:)-node_plane(p_1).coord,inf)>...
@@ -152,9 +152,34 @@ while(i <= num_f && flag)
                         else%ordine giusto
                             edge_intersection(2) = mod(i-2,num_f)+1;
                         end
-                        n_intersections = 0;
+                        n_intersect = 0;
                     end
                 end
+            end
+        end
+    else%side(1) + side(2) == 4
+        %trovo punto medio G del lato della frattura
+        G = (node_plane(p_1).coord + node_plane(p_2).coord)/2;
+        if(norm(G-F(i,:),inf) < norm(G-node_plane(p_1).coord,inf))
+            %primo punto del lato frattura interno al segmento
+            % entrante : edge_intersection = i
+            % uscente : edge_intersection = i-1
+            
+            if(in_out == 1)
+                flag = 0;
+                n_intersect = 0;
+                edge_intersection(1) = i;
+                edge_intersection(2) = 0;
+            elseif(in_out == 2)
+                flag = 0;
+                n_intersect = 0;
+                edge_intersection(1) = 0;
+                edge_intersection(2) = mod(i-2,n_to_check)+1;
+            else%in_out == 3
+                n_intersect = 1;
+                edge_intersection(1)= i;
+                edge_intersection(2) = i;
+                P_intersect(1,:) = F(i,:);
             end
         end
     end
@@ -163,8 +188,8 @@ end
 %problema: potrebbe essere che da fuori a fuori abbia solo un intersezione,
 %con un vertice della frattura, ma la funzione in questo caso si aspetta
 %due intersezioni, risolviamo il problema:
-if(flag == 1 && n_intersections == 1)
-    n_intersections = 0;
+if(flag == 1 && n_intersect == 1)
+    n_intersect = 0;
 end
 in = edge_intersection(1);
 out = edge_intersection(2);

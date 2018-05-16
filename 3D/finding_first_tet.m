@@ -8,8 +8,10 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 
 while(id_tet <= n_tets && found == 0)
-    id_node_plane = [-1,-1,-1,-1];
-    called_which_side = [0,0,0,0];
+    id_node_plane = [-1,-1,-1,-1]; %indici nodi 
+    called_which_side = [0,0,0,0]; %flag
+    
+    %chiamo which_side
     for i =1:4
         if(node(tet(id_tet,i)).side == 0)
             side(i) = which_side_3D(id_f,tet(id_tet,i));

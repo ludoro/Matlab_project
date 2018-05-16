@@ -8,6 +8,7 @@ global accuracy;
 global info_fract;
 global fract;
 global node_plane;
+global info_node;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -151,15 +152,20 @@ fp = fopen('barra.1.face','r');
 % coord contiene le coordinate x e y (già proiettate)
 % sides contiene tutti i side del punto rispetto ai lati della frattura
 
-node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1,'is_out',-1),0,1);
+node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1,'is_out',-1,'near_nodes',zeros(0,2)),0,1);
+% -1 nella seconda colonna di near_nodes quando non ci sono intersezioni 
+% e quindi non ci sono informazioni su info_node
 
+info_node = repmat(struct('n_intersect',0,'in',0,...
+                          'out',0,'in_info',[0 0]),0,1);
+                      
   %STRUTTURA di 'fract': fract(n,1)=punto 1 della frattura n
   fclose(fp);  
 info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
                                             'poly_1',[],'poly_2',[]),...
                            'near_tet',struct('id',0,'nodes',[],'edges',[]),...
        'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
-   
+
 % metto i vertici di ogni frattura in info_fract.points
 for i = 1:n_fracts
     info_fract(i).points = zeros(fract(i).n_points,3);

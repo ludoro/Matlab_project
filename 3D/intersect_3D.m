@@ -166,10 +166,88 @@ else
             end   
             
             %controllo che i punti(i i+1) non siano entrambi dentro
-            if(node_plane(id_node_plane(i)).is_out == 1 || node_plane(id_node_plane(mod(i,n_to_check)+1)).is_out == 1)
-                [P_intersect,n_intersect,in,out_temp]... 
-                 = intersect_2D(id_f,id_node_plane(i),...
+            if( node_plane(id_node_plane(i)).is_out == 1 || ...
+                node_plane(id_node_plane(mod(i,n_to_check)+1)).is_out == 1)
+                %controllo che id_node_plane(i+1) sia tra i "vicini" di
+                %id_node_plane(i)
+                
+                j = 1;
+                flag = 0;
+                while(j < size(node_plane(id_node_plane(i)).near_nodes,1)...
+                        && flag == 0)
+                    if(node_plane(id_node_plane(i)).near_nodes(j,1) == ...
+                       id_node_plane(mod(i,n_to_check)+1))
+                        %id_node_plane(i+1) E' VICINO di id_node_plane(i)
+                        flag = 1;
+                        %a = posizione delle informazioni su info_node
+                        a = node_plane(id_node_plane(i)).near_nodes(j,2);
+                        if(a == -1)%no intersezione
+                            n_intersect = 0;
+                            in = 0;
+                            out_temp = 0;
+                            in_info = [0 0];
+                        else
+                            n_intersect = info_node(a).n_intersect;
+                            in = info_node(a).in;
+                            out_temp = info_node(a).out;
+                            in_info = info_node(a).in_info;
+                        end
+                    end
+                end
+                
+                if(flag == 0)
+                    %se è 0 significa che %id_node_plane(i+1) NON ERA tra i
+                    %.near_nodes di id_node_plane(i), quindi dobbiamo aggiungerlo
+                    [P_intersect,n_intersect,in,out_temp]... 
+                     = intersect_2D(id_f,id_node_plane(i),...
                               id_node_plane(mod(i,n_to_check)+1));
+                          
+                    in_info = [0 0];
+                    if(in ~= 0 || out_temp ~= 0)
+                        
+                        %salvare in info_nodes
+                        info_node(end+1).in = in;
+                        info_node(end).out = out_temp;
+                        info_node(end).n_intersect = n_intersect;
+                        
+                        %salvare in info_fract
+                        for k = 1:n_intersect
+                            info_fract(id_f).points(end+1,coord_to_use(id_f,:))=...
+                                P_intersect(k,:);
+
+                            %calcolo coordinata mancante
+                            info_fract(id_f).points(end,6-coord_to_use(id_f,1)...
+                                                   -coord_to_use(id_f,2)) = ...
+                            -(fract(id_f).N(coord_to_use(id_f,1))*P_intersect(k,1) + ...
+                              fract(id_f).N(coord_to_use(id_f,2))*P_intersect(k,2) + ...
+                              fract(id_f).d)/(fract(id_f).N(...
+                              6-coord_to_use(id_f,1)-coord_to_use(id_f,2)));
+
+                            in_info(k) = size(info_fract(id_f).points,1);
+                        end
+                        %salvo su node_plane.near_nodes
+                        node_plane(id_node_plane(i)).near_nodes(end+1,1) = ...
+                            id_node_plane(mod(i,n_to_check)+1);
+                        node_plane(id_node_plane(i)).near_nodes(end,2) = ...
+                            length(info_node);
+                        
+                        node_plane(id_node_plane(mod(i,n_to_check)+1)).near_nodes(end+1,1) = ...
+                            id_node_plane(i);
+                        node_plane(id_node_plane(mod(i,n_to_check)+1)).near_nodes(end,2) = ...
+                            length(info_node);
+                            
+                            
+                    else%non devo salvare nulla
+                        node_plane(id_node_plane(i)).near_nodes(end+1,1) = ...
+                            id_node_plane(mod(i,n_to_check)+1);
+                        node_plane(id_node_plane(i)).near_nodes(end,2) = -1;
+                        node_plane(id_node_plane(mod(i,n_to_check)+1)).near_nodes(end+1,1) = ...
+                            id_node_plane(i);
+                        node_plane(id_node_plane(mod(i,n_to_check)+1)).near_nodes(end,2) = -1;
+                    end 
+                end
+                
+                %----blocco algoritmico di "uscita/entrata" dalla frattura-
                 if(in ~= 0)
                     if(out == 0)
                         in_first = in;
@@ -182,17 +260,20 @@ else
                         end
                     end
                 end
-                
                 if(out_temp ~= 0) 
                     out = out_temp;
                 end
                 
-                
-                
+                %inserisco le eventuali intersezioni
+                for j = 1:n_intersect
+                    pol_temp(end+1) = in_info(j);
+                end
             end
-            
         end
-        
+        if(lenght(pol_temp) > 2)
+            info_fract(id_f).pol(end+1).v = pol_temp;
+        end
+        %dettaglio: quando è tagliato oppure no?
     end
 end
 
