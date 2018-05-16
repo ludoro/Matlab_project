@@ -71,6 +71,7 @@ while(id_tet <= n_tets && found == 0)
                                              (id_f,e_temp(i));
                    node_plane(end).in_info = -1;
                    node_plane(end).is_out = -1;
+                   node_plane(end).from_edge = 1;
                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_nodes_plane(i) = edge(e_temp(i)).checked;
@@ -150,7 +151,6 @@ while(id_tet <= n_tets && found == 0)
             end
         %----2 nodi su piano altri concordi-------
         elseif(sum == 10 || sum == 6)
-            
             if(side(1) == side(2) == 4)
                 nodes_on_plane = [1,2];
                 nodes_together = [3,4];
@@ -211,20 +211,6 @@ while(id_tet <= n_tets && found == 0)
                 lonely_point = 2;
             end
         end
-        
     end
-        
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     id_tet = id_tet + 1;
 end

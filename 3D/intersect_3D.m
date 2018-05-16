@@ -4,10 +4,13 @@ function [it_is_cut] = intersect_3D(id_f,id_node_plane)
 %node_plane = i punti di taglio del piano
 %id_node_plane = indici da considerare di node plane
 
-% it_is_cut = 0 se non è tagliato
+%it_is_cut = 0 se non è tagliato
+% it_is_cut = 1 se è tagliato nello step 3 
 % it_is_cut = 2 se è tagliato nello step 2(se la sezione del tetraedro è
 %               interna alla frattura)
-% it_is_cut = 1 se è tagliato nello step 3 
+% it_is_cut = 3 se un vertice della frattura tocca lato proiezione
+% it_is_cut = 4 un vertice della proiezione è sulla frontiera
+% 
 global fract_vertex;
 global node;
 global tet;
@@ -270,10 +273,55 @@ else
                 end
             end
         end
-        if(lenght(pol_temp) > 2)
-            info_fract(id_f).pol(end+1).v = pol_temp;
+        if(in_first ~= 0)
+            %devo inserire punti tra out e in_first
+             j = out;
+             while(j ~= in_first)
+                j= mod(j,num_f) + 1;
+                pol_temp(end+1) = j;
+             end
         end
+        
         %DETTAGLIO: quando è tagliato oppure no?
+        if(length(pol_temp) > 2)
+            info_fract(id_f).pol(end+1).v = pol_temp;
+            it_is_cut = 1;
+            
+        elseif(length(pol_temp) == 2)
+            
+            
+            
+            
+        else%length(pol_temp) == 1
+            i=1;
+            one_inside = 0;
+            
+            while(i <= n_to_check && one_inside == 0)
+                if(node_plane(id_node_plane(i)).is_out == 0)
+                    one_inside = i;
+                end
+            end
+            if(one_inside == 0)
+                it_is_cut = 3;
+            else%one_inside == nodo interno
+                if(node_plane(id_node_plane(one_inside)).from_edge == 1)
+                    it_is_cut = 4;
+                else
+                    it_is_cut = 0;
+                end
+            end
+            
+           
+                
+            
+            
+            
+            
+        
+        end
+        
+        
+         
         
         
         
