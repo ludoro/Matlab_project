@@ -34,7 +34,7 @@ P = zeros(n_to_check,2);
 for i = 1:n_to_check
     P(i,:) = node_plane(id_node_plane(i)).coord;
 end
-if(n_to_check > 2)
+
 %-----STEP 1-----------
 %controllo grossolano
 G_f = fract(id_f).G;
@@ -58,7 +58,7 @@ end
 if(norm(G_f-G_p,inf) > r_p + r_f)
     it_is_cut = 0;
 else
-    %------STEP 2---------------
+    %--------------------------STEP 2----------------------------------
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
         if(is_empty(node_plane(id_node_plane(i)).sides))
@@ -108,7 +108,7 @@ else
             node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
         end
     end
-    
+    if(n_to_check > 2)
     if(all_out == 0)
         %faccio poligonazione
         if(is_empty(info_fract(id_f).pol(1).v))
@@ -273,19 +273,50 @@ else
         if(lenght(pol_temp) > 2)
             info_fract(id_f).pol(end+1).v = pol_temp;
         end
-        %dettaglio: quando è tagliato oppure no?
+        %DETTAGLIO: quando è tagliato oppure no?
+        
+        
+        
+        
+        
+        
+        
+        
+    end
+    else % n_to_check == 2
+        
+        if(node_plane(id_node_plane(1).is_out) == 0 && ...
+           node_plane(id_node_plane(2).is_out) == 0)
+            %entrambi interni, non c'è taglio.
+            it_is_cut = 0;
+            
+        else%bisogna se sono propriamente interni
+            it_is_in = [1,1];
+            for i = 1:2
+                j = 1;
+                while(j < num_f && it_is_in(i) == 1)
+                    if(side(i,j) == side_int)
+                        it_is_in(i) = 0;
+                    end
+                    j=j+1;
+                end 
+            end
+            if(it_is_in(1) == 1 || it_is_in(2) == 1)
+                it_is_cut = 1;
+            else
+                [garbage1,garbage2,in,out]... 
+                 = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
+                if(in ~= 0 && out ~=0 && in ~= out)
+                    %CHIEDERE BERRONE PER in ~= out
+                    it_is_cut = 1;
+                else
+                    it_is_cut = 0;
+                end
+            end
+        end
+           
+            
     end
 end
-
-else% n_to_check == 2
-    
-end
-    
-
-
-
-
-
-
 end
 
