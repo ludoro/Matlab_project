@@ -334,22 +334,84 @@ else
                 else%length(pol_temp) == 1
                     i=1;
                     one_inside = 0;
-                    %cerco quale vertice è interno
+            
                     while(i <= n_to_check && one_inside == 0)
                         if(node_plane(id_node_plane(i)).is_out == 0)
-                            one_inside = i;
+                        one_inside = i;
                         end
                     end
                     
-                    if(one_inside == 0)
-                        it_is_cut = 3;
-                    else%one_inside == nodo interno
-                        if(node_plane(id_node_plane(one_inside)).from_edge == 1)
-                            it_is_cut = 4;
-                        else
-                            it_is_cut = 0;
-                        end
-                    end
+                if(one_inside == 0)
+                    it_is_cut = 3;
+                else%one_inside == nodo interno
+                    
+                if(node_plane(id_node_plane(one_inside)).from_edge == 1)
+                    it_is_cut = 4;
+                else
+                    it_is_cut = 0;
+                end
+            end
+        end
+                
+            end
+            
+            
+            
+            
+        end
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        if(length(pol_temp) == 2)
+            counter = 0;
+            points_inside = [0 0];
+            for i = 1:n_to_check
+                if(node_plane(id_node_plane(i)).is_out == 0)
+                    counter = counter + 1;
+                    points_inside(counter) = id_node_plane(i);
+                end
+            end
+            
+            if(counter == 2)
+                if(node_plane(points_inside(1)).from_edge == 0 && ...
+                   node_plane(points_inside(2)).from_edge == 0)
+                    it_is_cut = 0;
+                else%almeno un vertice non veramente vertice del tetraedro
+                    it_is_cut = 1;
+                end
+
+            else%counter == 1 || counter == 0
+                it_is_cut = 2;
+            end
+            
+        else%length(pol_temp) == 1
+            i=1;
+            one_inside = 0;
+            
+            while(i <= n_to_check && one_inside == 0)
+                if(node_plane(id_node_plane(i)).is_out == 0)
+                    one_inside = i;
+                end
+            end
+            if(one_inside == 0)
+                it_is_cut = 3;
+            else%one_inside == nodo interno
+                if(node_plane(id_node_plane(one_inside)).from_edge == 1)
+                    it_is_cut = 4;
+                else
+                    it_is_cut = 0;
                 end
             end
         end
@@ -379,6 +441,7 @@ else
                 [garbage1,garbage2,in,out]... 
                  = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
                 if(in ~= 0 && out ~=0 && in ~= out)
+                    %CHIEDERE BERRONE PER in ~= out
                     it_is_cut = 1;
                 else
                     it_is_cut = 0;

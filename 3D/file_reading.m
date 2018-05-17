@@ -131,12 +131,16 @@ fp = fopen('barra.1.face','r');
   n_fractures = A(1); 
   
   fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0],'d',0,...
-                       'G',[0,0],'r',0,'side_int',0),...
+                       'G',[0,0],'r',0,'side_int',0,'protocol',-1),...
                 n_fractures,1);
   %il campo .side_int serve ad avere un riferimento per capire se un punto
   %è interno o no alla frattura. Si fa la prova con il baricentro. 
   %RIEMPITO SU: "global_toll.m"
-            
+  
+  %protocol = 0 standard
+  %protocol = -1 non so ancora
+  %protocol = 1 casi patologici frattura minuscola 
+  
   %le fratture possono avere un numero di nodi da 3 a n, uso un ciclo for
   %e memorizzo in una matrice le cui righe hanno dim diversa
   for i=1:n_fractures 
