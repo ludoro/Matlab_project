@@ -6,11 +6,11 @@ lonely_point = 0;
 nodes_together = [0,0,0];
 e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
+it_is_cut = -1;
 
-while(id_tet <= n_tets && found == 0)
+while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     id_node_plane = [-1,-1,-1,-1]; %indici nodi 
     called_which_side = [0,0,0,0]; %flag
-    
     %chiamo which_side
     for i =1:4
         if(node(tet(id_tet,i)).side == 0)
@@ -20,8 +20,7 @@ while(id_tet <= n_tets && found == 0)
         else
             side(i) = node(tet(id_tet,i)).side;
         end
-    end
-    
+    end  
     if( ~(side(1) == side(2) == side(3) == side(4)) )
         %potrebbe essere tagliato 
         sum = side(1)+side(2)+side(3)+side(4);
@@ -74,8 +73,26 @@ while(id_tet <= n_tets && found == 0)
                    node_plane(end).from_edge = 1;
                    edge(e_temp(i)).checked = length(node_plane);
                 end
-                id_nodes_plane(i) = edge(e_temp(i)).checked;
-            end 
+                id_node_plane(i) = edge(e_temp(i)).checked;
+            end
+            
+            %chiamo la funzione intersect_3D
+            it_is_cut = intersect_3D(id_f,id_node_plane(1:3));
+            
+            if(it_is_cut ~= 0)
+                %-------TAGLIATO-------
+                found = 1;
+                info_fract(id_f).cut_tet(1).id = id_tet;
+                %devo riempire points e quindi up middle e down
+                info_fract(id_f).cut_tet(1).
+                
+                
+            end
+                
+            
+            
+            
+            
         %------2 nodi da una parte e 2 dall'altra parte-------
         elseif(sum == 0)
             %ATTENZIONE ALL'ORDINE IN CUI I PUNTI DI INTERSEZIONE SONO

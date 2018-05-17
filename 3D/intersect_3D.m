@@ -306,6 +306,10 @@ else
                     end
                     c = c+1;
                 end
+                if(G_f_is_out == 0)
+                    fract(id_f).protocol = 1;
+                    it_is_cut = 1;
+                end
             end
             
             if(fract(id_f).protocol ~= 1)
