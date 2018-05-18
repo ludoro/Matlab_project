@@ -6,19 +6,21 @@ lonely_point = 0;
 nodes_together = [0,0,0];
 e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
+third_coord = [0,0,0,0];
 it_is_cut = -1;
+
 
 while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     id_node_plane = [-1,-1,-1,-1]; %indici nodi 
     called_which_side = [0,0,0,0]; %flag
     %chiamo which_side
     for i =1:4
-        if(node(tet(id_tet,i)).side == 0)
-            side(i) = which_side_3D(id_f,tet(id_tet,i));
-            node(tet(id_tet,i)).side = side(i);
+        if(node(tet(id_tet).P(i)).side == 0)
+            side(i) = which_side_3D(id_f,tet(id_tet).P(i));
+            node(tet(id_tet).P(i)).side = side(i);
             called_which_side(i) = 1;
         else
-            side(i) = node(tet(id_tet,i)).side;
+            side(i) = node(tet(id_tet).P(i)).side;
         end
     end  
     if( ~(side(1) == side(2) == side(3) == side(4)) )
@@ -63,10 +65,10 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             %salvo in e_temp indici degli edge 
             %e lavoro su node_plane
             for i = 1:3
-                e_temp(i) = which_edge(tet(id_tet,lonely_point),...
-                                       tet(id_tet,nodes_together(i)));  
+                e_temp(i) = which_edge(tet(id_tet).P(lonely_point),...
+                                       tet(id_tet).P(nodes_together(i)));  
                 if(edge(e_temp(i)).checked == -1)
-                   node_plane(end+1).coord = intersect_plane_edge...
+                   [node_plane(end+1).coord,third_coord(i)] = intersect_plane_edge...
                                              (id_f,e_temp(i));
                    node_plane(end).in_info = -1;
                    node_plane(end).is_out = -1;
@@ -80,11 +82,37 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3));
             
             if(it_is_cut ~= 0)
-                %-------TAGLIATO-------
+                %------------TAGLIATO-------------
                 found = 1;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 %devo riempire points e quindi up middle e down
-                info_fract(id_f).cut_tet(1).
+                
+                %inizio con punta
+                info_fract(id_f).cut_tet(1).points(1,:) = ...
+                      tet(id_tet).P(lonely_point);
+                  
+                % metto quelli della base
+                for i = 2:4
+                    info_fract(id_f).cut_tet(1).points(i,:) = ...
+                        tet(id_tet).P(nodes_together(i-1));
+                end
+                
+                %metto le intersezioni
+                for i = 5:7
+                    info_fract(id_f).cut_tet(1).points...
+                    (i,coord_to_use(id_f,:)) = node_plane(id_node_plane(i-4)).coord;
+                
+                    info_fract(id_f).cut_tet(1).points...
+                    (i,6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = third_coord(i-4);
+                end
+                
+                id_cut = 1;
+                up = 1;
+                middle = [5,6,7];
+                down = [2,3,4];
+                slicing_tet;
+                
+                
                 
                 
             end

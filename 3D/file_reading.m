@@ -9,6 +9,7 @@ global info_fract;
 global fract;
 global node_plane;
 global info_node;
+global queue;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -52,6 +53,18 @@ n_tets = A(1) ;
 
 A = fscanf(fp,'%d',[5 n_tets]); 
     tet=A([2 3 4 5],:)';
+
+tet = repmat(struct('P',[0,0,0,0],'faces',[0,0,0,0],'status_queue',-1),n_tets,1);
+% status_queue = -1 se sconosciuto
+% status_queue = -2 condivide 1 nodo
+% status_queue = -3 condivide 2 nodi 
+% status_queue = -4 condivide 3 nodi
+% status_queue = 0 se tagliato
+% status_queue > 0 posizione in info_trace.near_tet 
+for i = 1:n_tets
+    tet(i).P = A([2,3,4,5],i);
+end
+
     
 % STRUTTURA di 'tets' : tets(n,3) = terzo vertice dell' n_esimo tetraedro 
 fclose(fp); 
@@ -104,7 +117,7 @@ fp = fopen('barra.1.face','r');
  n_faces = A(1); 
  
  A = fscanf(fp,'%d',[7 n_faces]);
- face = A([2 3 4],:)';
+ face = A([2 3 4 6 7],:)';
  
  %STRUTTURA di face :  face(n,1) =  primo punto della n-esima faccia
  %                     face(n,2) = secondo punto della n-esima faccia
@@ -128,11 +141,11 @@ fp = fopen('barra.1.face','r');
   %                            fract_vertex(n,3) coordinata z del vertice n
   
   A = fscanf(fp,'%d',2); 
-  n_fractures = A(1); 
+  n_fracts = A(1); 
   
   fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0],'d',0,...
                        'G',[0,0],'r',0,'side_int',0,'protocol',-1),...
-                n_fractures,1);
+                n_fracts,1);
   %il campo .side_int serve ad avere un riferimento per capire se un punto
   %è interno o no alla frattura. Si fa la prova con il baricentro. 
   %RIEMPITO SU: "global_toll.m"
@@ -143,7 +156,7 @@ fp = fopen('barra.1.face','r');
   
   %le fratture possono avere un numero di nodi da 3 a n, uso un ciclo for
   %e memorizzo in una matrice le cui righe hanno dim diversa
-  for i=1:n_fractures 
+  for i=1:n_fracts 
       A = fscanf(fp,'%d',2);
       fract(i).n_points = A(2); 
       A = fscanf(fp,'%d',fract(i).n_points);
@@ -172,7 +185,8 @@ info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
                                             'faces',zeros(0,4)),...
                            'near_tet',struct('id',0,'nodes',[],'edges',[]),...
        'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
-
+   
+queue = repmat(struct('id',-1,'points',[],'edges',[],'face',[]),0,1);
 % metto i vertici di ogni frattura in info_fract.points
 for i = 1:n_fracts
     info_fract(i).points = zeros(fract(i).n_points,3);
