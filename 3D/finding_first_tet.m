@@ -8,8 +8,6 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
-
-
 while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     id_node_plane = [-1,-1,-1,-1]; %indici nodi 
     called_which_side = [0,0,0,0]; %flag
@@ -257,30 +255,23 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             %aggiungo in node_plane il punto tet(id_tet).P(point_on_plane)
             
             if(node(tet(id_tet).P(point_on_plane)).where_on_plane == -1)
-                node_plane(end+1).coord = [0 0];
-                %inserisco coordinate su node_plane.coord
-                if(coord_to_use(1) == 1)
-                    node_plane(end).coord(1) = node(tet(id_tet).P(point_on_plane)).x;
-                    if(coord_to_use(2) == 2)
-                        node_plane(end).coord(2) = node(tet(id_tet).P(point_on_plane)).y;
-                        third_coord(3) = node(tet(id_tet).P(point_on_plane)).z;
-                    else%coord_to_use(2) == 3
-                        node_plane(end).coord(2) = node(tet(id_tet).P(point_on_plane)).z;
-                        third_coord(3) = node(tet(id_tet).P(point_on_plane)).y;
-                    end
-                else%coord_to_use(1) == 2 && coord_to_use(2) == 3 
-                    third_coord(3) = node(tet(id_tet).P(point_on_plane)).x;
-                    node_plane(end).coord(1) = node(tet(id_tet).P(point_on_plane)).y;
-                    node_plane(end).coord(2) = node(tet(id_tet).P(point_on_plane)).z;
-                end
+                node_plane(end+1).coord = ...
+                    node(tet(id_tet).P(point_on_plane)).coord(coord_to_use(id_f,:));
+                
                 node(tet(id_tet).P(point_on_plane)).where_on_plane = ...
                     length(node_plane);
+                
                 node_plane(end).in_info = -1;
                 node_plane(end).is_out = -1;
                 node_plane(end).from_edge = 0;
+                
             end
             id_node_plane(3) = node(tet(id_tet).P(point_on_plane)).where_on_plane;
             
+            third_coord(3) = ...
+                  node(tet(id_tet).P(point_on_plane)).coord(...
+                  6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+              
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
             
             if(it_is_cut ~= 0)
@@ -340,9 +331,51 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 nodes_on_plane = [3,4];
                 nodes_together = [1,2];
             end
+            
+            for i = 1:2
+                if(node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane == -1)
+                    node_plane(end+1).coord = ...
+                      node(tet(id_tet).P(nodes_on_plane(i))).coord(coord_to_use(id_f,:));
+                    
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane =...
+                      length(node_plane);
+                  
+                    node_plane(end).in_info = -1;
+                    node_plane(end).is_out = -1;
+                    node_plane(end).from_edge = 0;
+                end
+                id_node_plane(i) = ...
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
+                third_coord(i) = ...
+                  node(tet(id_tet).P(nodes_on_plane(i))).coord(...
+                  6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+            end
+            
+            it_is_cut = intersect_3D(id_f,id_node_plane(1:2),third_coord(1:2));
+            
+            if(it_is_cut == 1)
+                found = 1;
+                info_fract(id_f).cut_tet(1).id = id_tet;
+                
+                %metto punti e facce 
+                info_fract(id_f).cut_tet(1).points = zeros(4,3);
+                info_fract(id_f).cut_tet(1).faces = zeros(4,3);
+                for i=1:4
+                    info_fract(id_f).cut_tet(1).points(i,:) = ...
+                        tet(id_tet).P(i);
+                    info_fract(id_f).cut_tet(1).faces(i,:) = ...
+                        find(1:4~=i);
+                end
+                
+                %metto poliedri
+                info_fract(id_f).cut_tet(1).poly_1 = [1,2,3,4];
+                info_fract(id_f).cut_tet(1).poly_2 = [];
+                
+                enqueue_tet_to_check;
+            end
+            
         %-----2 nodi su piano altri discordi----
         elseif(sum == 8)
-            
             if(side(1) == side(2) == 4)
                 nodes_on_plane = [1,2];
                 lonely_point_1 = 3;
@@ -368,6 +401,74 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 lonely_point_1 = 1;
                 lonely_point_2 = 2;
             end
+            e_temp(1) = ...
+                which_edge(tet(id_tet).P(lonely_point_1),...
+                           tet(id_tet).P(lonely_point_2));
+            if(edge(e_temp(1)).checked == -1)
+                [node_plane(end+1).coord,third_coord(1)] = ...
+                    intersect_plane_edge(id_f,e_temp(1));
+                
+                node_plane(end).in_info = -1;
+                node_plane(end).is_out = -1;
+                node_plane(end).from_edge = 1;
+                
+                edge(e_temp(1)).checked = length(node_plane);
+            end
+            id_node_plane(1) = edge(e_temp(1)).checked;
+            
+            for i = 1:2
+                if(node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane == -1)
+                    node_plane(end+1).coord = ...
+                      node(tet(id_tet).P(nodes_on_plane(i))).coord(coord_to_use(id_f,:));
+                    
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane =...
+                      length(node_plane);
+                  
+                    node_plane(end).in_info = -1;
+                    node_plane(end).is_out = -1;
+                    node_plane(end).from_edge = 0;
+                end
+                id_node_plane(i+1) = ...
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
+                third_coord(i+1) = ...
+                  node(tet(id_tet).P(nodes_on_plane(i))).coord(...
+                  6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+            end
+            
+            it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+            
+            if(it_is_cut ~= 0)
+                %----tagliato-----
+                found = 1;
+                
+                info_fract(id_f).cut_tet(1).id = id_tet;
+                info_fract(id_f).cut_tet(1).points = zeros(5,3);
+                
+                %metto punto in alto
+                info_fract(id_f).cut_tet(1).points(1,:) = ...
+                    tet(id_tet).P(lonely_point_1);
+                %metto punto basso
+                info_fract(id_f).cut_tet(1).points(4,:) = ...
+                    tet(id_tet).P(lonely_point_2);
+                %metto nodes_on_plane
+                for i = 2:3
+                    info_fract(id_f).cut_tet(1).points(i,:) = ...
+                    tet(id_tet).P(nodes_on_plane(i-1));
+                end
+                %metto punto intersezione
+                info_fract(id_f).cut_tet(1).points(5,coord_to_use(id_f,:)) = ...
+                    node_plane(id_node_plane(1)).coord;
+                info_fract(id_f).cut_tet(1).points(5,...
+                    6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = ...
+                        third_coord(1);
+                up = 1;
+                middle = [2,3,5];
+                down = 4;
+                id_cut = 1;
+                slicing_tet;
+                enqueue_tet_to_check;   
+            end
+            
         %------3 nodi sul piano-------
         elseif(sum == 13 || sum == 11)
             if(side(1) == side(2) == side(3) == 4)
@@ -379,6 +480,55 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             else%side(3) == side(4) == side(1) == 4
                 nodes_on_plane = [1,3,4];
                 lonely_point = 2;
+            end
+            
+            for i = 1:3
+                if(node(tet(id_tet).P(nodes_on_plane(i))).checked == -1)
+                    node_plane(end+1).coord = ...
+                        node(tet(id_tet).P(nodes_on_plane(i))).coord(coord_to_use(id_f,:));
+                    
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane =...
+                      length(node_plane);
+                  
+                    node_plane(end).in_info = -1;
+                    node_plane(end).is_out = -1;
+                    node_plane(end).from_edge = 0;
+                end
+                id_node_plane(i) = ...
+                    node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
+                third_coord(i) = ...
+                  node(tet(id_tet).P(nodes_on_plane(i))).coord(...
+                  6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+            end
+            
+            it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+            
+            if(it_is_cut ~= 0 && it_is_cut ~=2)
+                %-----tagliato------
+                found = 1;
+                info_fract(id_f).cut_tet(1).id = id_tet;
+                
+                %metto punti e facce 
+                info_fract(id_f).cut_tet(1).points = zeros(4,3);
+                info_fract(id_f).cut_tet(1).faces = zeros(4,3);
+                for i=1:4
+                    info_fract(id_f).cut_tet(1).points(i,:) = ...
+                        tet(id_tet).P(i);
+                    info_fract(id_f).cut_tet(1).faces(i,:) = ...
+                        find(1:4~=i);
+                end
+                
+                %metto poliedri
+                info_fract(id_f).cut_tet(1).poly_1 = [1,2,3,4];
+                info_fract(id_f).cut_tet(1).poly_2 = [];
+                
+                enqueue_tet_to_check;
+                
+            elseif(it_is_cut == 2)
+                %riempo queue_temp
+                found = 1;
+                edge_to_avoid = 0;
+                filling_queue_temp;
             end
         end
     end

@@ -9,7 +9,8 @@ function [it_is_cut] = intersect_3D(id_f,id_node_plane,third_coord)
 % it_is_cut = 2 non è tagliato quando tetraedro è appoggiato sul piano
 % it_is_cut = 3 se un vertice della frattura tocca lato proiezione
 % it_is_cut = 4 un vertice della proiezione è sulla frontiera
-
+% se n_to_check == 2:
+% it_is_cut == 0 o 1
 global fract_vertex;
 global coord_to_use;
 global info_fract;

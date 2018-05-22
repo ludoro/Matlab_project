@@ -5,12 +5,8 @@ function [side] = which_side_3D(id_f,p)
 global fract;
 global fract_vertex;
 global node;
-v = [0,0,0];
 
-v(1)=node(p).x-fract_vertex(fract(id_f).P(1),1);
-v(2)=node(p).y-fract_vertex(fract(id_f).P(1),2);
-v(3)=node(p).z-fract_vertex(fract(id_f).P(1),3);
-
+v = node(p).coord-fract_vertex(fract(id_f).P(1),:);
 scalar=dot(fract(id_p).N,v);
 toll=node(p).toll;
 

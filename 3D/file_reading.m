@@ -10,6 +10,7 @@ global fract;
 global node_plane;
 global info_node;
 global queue;
+global queue_temp;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -29,14 +30,12 @@ A = fscanf(fp,'%d %f %f %f',[4 n_nodes]);
 
 %s = -1 se il punto non sta sul piano della frattura
 %s > 0 da la riga corrispondente di node_fract
-node = repmat(struct('x',0,'y',0,'z',0,'side',0,'toll',-1,'edges',[0,0,0],...
+node = repmat(struct('coord',[0 0 0],'side',0,'toll',-1,'edges',[0,0,0],...
     'tets',[0,0,0,0],'tot_edges',0,'tot_tets',0,'where_on_plane',-1),n_nodes,1);
 
+
 for i=1:n_nodes 
-    node(i).x = A(2,i);
-    node(i).y = A(3,i);
-    node(i).z = A(4,i); 
-    
+    node(i).coord = A(2:4,i);
 end 
 
 fclose(fp); 
@@ -60,6 +59,7 @@ tet = repmat(struct('P',[0,0,0,0],'faces',[0,0,0,0],'status_queue',-1,...
 % status_queue = -2 condivide 1 nodo
 % status_queue = -3 condivide 2 nodi 
 % status_queue = -4 condivide 3 nodi
+% status_queue = -5 si trova su queue_temp
 % status_queue = 0 se tagliato
 % status_queue > 0 posizione in info_trace.near_tet 
 for i = 1:n_tets
@@ -188,6 +188,8 @@ info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
        'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
    
 queue = repmat(struct('id',-1,'points',[],'edges',[],'face',[]),0,1);
+queue_temp = zeros(0,2); 
+
 % metto i vertici di ogni frattura in info_fract.points
 for i = 1:n_fracts
     info_fract(i).points = zeros(fract(i).n_points,3);
