@@ -10,15 +10,40 @@
 
 \author{Bessi Ludovico, Boscolo Claudio,\\ Cataldo Luca, Licari Valentina\\ A.A. 2017/2018\\Programmazione e calcolo scientifico}
 \title{Presentazione progetto\\}
-\date{01/05/2018}
+\date{22/05/2018}
 \maketitle
 \tableofcontents
 \newpage
 
-\section{Triangolazione}
-Triangoli, 
-\subsection{Tolleranza}
-Inserire idee geniali che abbiamo avuto \textbf{QUI}
+\section{Progetto 2D}
+Obiettivo della parte bidimensionale del progetto scritto in matlab \'e, data una triangolazione e un segmento definito "traccia", portare a termine le seguenti richieste:
+\begin{itemize}
+    \item Individuare quali triangoli di partenza vengono tagliati dalla traccia
+    \item Individuare tutti i triangoli vicini ai triangoli tagliati, i.e. tutti quelli che condividono un vertice o un lato con un triangolo tagliato
+    \item Costruire sottopoligoni a partire dalle informazioni ottenute analizzando la posizione della traccia rispetto alla triangolazione di partenza.
+    \item Costruire sottotriangoli a partire dalle informazioni ottenute analizzando la posizione della traccia rispetto alla triangolazione di partenza.
+    \item Salvare le informazioni relative alle intersezioni tra la traccia e la triangolazione, i.e. le ascisse curvilinee dei punti di intersezione.
+\end{itemize}
+\subsection{Lettura file e strutture dati}
+In questa sezione vengono brevemente presentate le scelte adottate per salvare le informazioni del file relativo alla triangolazione. Per generare le strutture dati di \textit{node} e \textit{info\_trace} \'e stato utilizzato il comando \textit{repmat} di matlab.
+
+\subsubsection{\textbf{Strutture dati}}
+\textbf{Node}\\
+Si \`e scelto di salvare nella struttura \textit{node} le coordinate dei punti della triangolazione del piano cartesiano 2D, un "side" del punto rispetto alla traccia (un indicatore che pu\'o assumere valore 0,1,-1,2) che esprime dove si trovi il punto rispetto alla traccia. Il campo side assume valore '0' se la posizione del punto \'e non nota, '1' o '-1' se il punto si trova alla sinistra o alla destra della traccia e '2' se si trova sulla retta della traccia. Il campo "toll" presenta una tolleranza relativa al problema, calcolata tenendo conto delle dimensioni dei lati della triangolazione e verr\'a meglio descritta in seguito. 'Edges' e 'Triangles' sono vettori che contengono rispettivamente gli indici dei segmenti e dei triangoli che hanno l'n-esimo nodo della struttura dati come estremo. 'tot\_edges' e 'tot\_triangles' contengono rispettivamente il numero di segmenti e il numero di triangoli condivisi da ogni nodo della struttura dati. L'ultimo campo di \textit{node} contiene l'ascissa curvilinea s del punto nel caso in cui questo si trovi sulla traccia.\\\\
+\textbf{Triangle}\\
+ \'E una matrice di {n\_triangles} righe e 10 colonne. Le colonne 1,2,3 contengono i vertici del triangolo (indici dei nodi). Le colonne 4,5,6 contengono degli status relativi ai lati dell' n-esimo triangolo. Gli status indicano le possibili posizioni del segmento rispetto alla traccia (interno,secante,non incidente). \'E importante osservare che la colonna 4 della matrice contiene lo status del segmento formato dai nodi 2-3 ; la colonna 5 della matrice contiene lo status del segmento formato dai nodi 1-3 ; la colonna 6 della matrice contiene lo status del segmento formato dai nodi 1-2. Le colonne 7,8,9 contengono le eventuali intersezioni dei segmenti del triangolo con la traccia, seguendo una numerazione analoga a quella poco prima descritta. La colonna 10, ultima, contiene un flag che monitora l'operazione di messa in coda del triangolo la quale serve per verificare se \'e tagliato.\\\\
+\textbf{Edge}\\
+\'E una matrice contenente i segmenti indicizzati della triangolazione, le due colonne della matrice contengono gli indici degli estremi del segmento.\\\\
+\textbf{Neigh}\\
+\'E una matrice le cui colonne contengono i vicini del triangolo n-esimo.\\\\
+\textbf{Trace vertex}\\
+\'E una matrice le cui colonne contengono le \textit{coordinate} degli estremi della traccia.\\\\
+\textbf{Trace}\\
+\'E una matrice le cui colonne contengono gli indici degli estremi della traccia riferiti alla matrice 'trace\_vertex'. \\\\
+\textbf{Info trace}\\
+\'E una struttura che contiene, per ogni traccia, le informazioni relative alle richieste del problema. Il campo 'cut\_tri' \'e una sottostruttura di 'info\_trace' e contiene le informazioni relative ai triangoli tagliati. Per ogni triangolo tagliato di questa sottostruttura vengono salvati in 'points' i punti in 'poly\_1' i punti del primo poligono che si forma dopo il taglio, in 'poly\_2' i punti del secondo poligono che si forma dopo il taglio, in 'tri' le informazioni relative alla sottotriangolazione, 'tri' \'e una matrice di dimensione iniiziale 3x3 (numero plausibile di sottotriangoli) che descrive utilizzando i punti le cui coordinate sono salvate in points, i triangoli della sottotriangolazione. \\
+\subsubsection{\textbf{Funzioni di riempimento}}
+
 
 
 

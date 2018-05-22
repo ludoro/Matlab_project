@@ -1,6 +1,8 @@
 \select@language {italian}
 \select@language {italian}
-\contentsline {section}{\numberline {1}Triangolazione}{2}
-\contentsline {subsection}{\numberline {1.1}Tolleranza}{2}
-\contentsline {section}{\numberline {2}Fratture}{2}
-\contentsline {section}{\numberline {3}C++}{2}
+\contentsline {section}{\numberline {1}Progetto 2D}{2}
+\contentsline {subsection}{\numberline {1.1}Lettura file e strutture dati}{2}
+\contentsline {subsubsection}{\numberline {1.1.1}\textbf {Strutture dati}}{2}
+\contentsline {subsubsection}{\numberline {1.1.2}\textbf {Funzioni di riempimento}}{4}
+\contentsline {section}{\numberline {2}Fratture}{4}
+\contentsline {section}{\numberline {3}C++}{4}
