@@ -30,7 +30,7 @@ A = fscanf(fp,'%d %f %f %f',[4 n_nodes]);
 %s = -1 se il punto non sta sul piano della frattura
 %s > 0 da la riga corrispondente di node_fract
 node = repmat(struct('x',0,'y',0,'z',0,'side',0,'toll',-1,'edges',[0,0,0],...
-    'tet',[0,0,0,0],'tot_edges',0,'tot_tets',0,'where_on_plane',-1),n_nodes,1);
+    'tets',[0,0,0,0],'tot_edges',0,'tot_tets',0,'where_on_plane',-1),n_nodes,1);
 
 for i=1:n_nodes 
     node(i).x = A(2,i);
@@ -54,7 +54,8 @@ n_tets = A(1) ;
 A = fscanf(fp,'%d',[5 n_tets]); 
     tet=A([2 3 4 5],:)';
 
-tet = repmat(struct('P',[0,0,0,0],'faces',[0,0,0,0],'status_queue',-1),n_tets,1);
+tet = repmat(struct('P',[0,0,0,0],'faces',[0,0,0,0],'status_queue',-1,...
+            'edges',[0 0 0 0 0 0]),n_tets,1);
 % status_queue = -1 se sconosciuto
 % status_queue = -2 condivide 1 nodo
 % status_queue = -3 condivide 2 nodi 
@@ -78,7 +79,7 @@ fclose(fp);
  
  A = fscanf(fp,'%d',2); 
  n_edges=A(1);
- edge = repmat(struct('P',[0,0],'checked',-1),n_edges,1);
+ edge = repmat(struct('P',[0,0],'checked',-1,'tets',[]),n_edges,1);
  A = fscanf(fp,'%d',[5 n_edges]);
  for i = 1:n_edges
      edge(i).P = A([2 3],i);

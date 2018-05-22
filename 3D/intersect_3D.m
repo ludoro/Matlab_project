@@ -1,23 +1,21 @@
-function [it_is_cut] = intersect_3D(id_f,id_node_plane)
+function [it_is_cut] = intersect_3D(id_f,id_node_plane,third_coord)
 %Questa funzione va a riempire info_trace.div
 %id_f = id della frattura
 %node_plane = i punti di taglio del piano
 %id_node_plane = indici da considerare di node plane
 
-%it_is_cut = 0 se non è tagliato
+% it_is_cut = 0 se non è tagliato
 % it_is_cut = 1 se è tagliato nello step 3 
 % it_is_cut = 2 non è tagliato quando tetraedro è appoggiato sul piano
 % it_is_cut = 3 se un vertice della frattura tocca lato proiezione
 % it_is_cut = 4 un vertice della proiezione è sulla frontiera
 
 global fract_vertex;
-global node;
-global tet;
 global coord_to_use;
-global accuracy;
 global info_fract;
 global fract;
 global node_plane;
+global info_node;
 
 %salvo subito coordinate frattura
 num_f = fract(id_f).n_points;
@@ -103,10 +101,7 @@ else
             %calcolo la terza coordinata 
             %con indice = 6-coord_to_use(id_f,1)-coord_to_use(id_f,2)
             info_fract(id_f).points(end,6-coord_to_use(id_f,1)-coord_to_use(id_f,2)) = ...
-                -(fract(id_f).N(coord_to_use(id_f,1))*P(i,1)+...
-                  fract(id_f).N(coord_to_use(id_f,2))*P(i,2)+...
-                  fract(id_f).d)...
-                  / fract(id_f).N(6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
+                third_coord(i);
             node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
         end
     end

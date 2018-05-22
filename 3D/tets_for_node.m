@@ -9,19 +9,19 @@ for i=1:n_tets
     
     
     n_1 = node(tet(i).P(1)).tot_tets; 
-    node(tet(i).P(1)).tet(n_1+1) = i; 
+    node(tet(i).P(1)).tets(n_1+1) = i; 
     node(tet(i).P(1)).tot_tets = n_1+1; 
     
     n_2 = node(tet(i).P(2)).tot_tets; 
-    node(tet(i).P(2)).tet(n_2+1) = i; 
+    node(tet(i).P(2)).tets(n_2+1) = i; 
     node(tet(i).P(2)).tot_tets = n_2+1;
     
     n_3 = node(tet(i).P(3)).tot_tets; 
-    node(tet(i).P(3)).tet(n_3+1) = i; 
+    node(tet(i).P(3)).tets(n_3+1) = i; 
     node(tet(i).P(3)).tot_tets = n_3+1;
     
     n_4 = node(tet(i).P(4)).tot_tets; 
-    node(tet(i).P(4)).tet(n_4+1) = i; 
+    node(tet(i).P(4)).tets(n_4+1) = i; 
     node(tet(i).P(4)).tot_tets = n_4+1;
 end
 

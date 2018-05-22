@@ -8,7 +8,7 @@ for i = 1:n_faces
             same_node = 0;
             while(w <= 3 && same_node == 0)
                 % w controlla i 3 punti della faccia 
-                if(tet(face(j)).P(k) == face(w))
+                if(tet(face(i,j)).P(k) == face(i,w))
                     same_node = 1;
                 end
                 w = w + 1;
@@ -19,7 +19,8 @@ for i = 1:n_faces
                 %k-esimo punto del j-esimo tetraedo non è nella faccia
                 %considerata, quindi la faccia è quella opposta al k-esimo
                 %punto
-                tet(face(j)).faces(k) = i;
+                tet(face(i,j)).faces(k) = i;
+                position = 1;
             end
             k = k + 1;
         end
