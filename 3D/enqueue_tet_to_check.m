@@ -43,9 +43,9 @@ end
 %inserisco i vicini di punto
 for i = 1:4
     for j = 1:node(tet(id_tet).P(i)).tot_tets
-        id_temp = node(tet(id_tet));
+        id_temp = node(tet(id_tet).P(i)).tets(j);
         if(~ismember(id_temp,tet_second_level) &&...
-           ~ismember(id_tet,neigh(id_tet,:)) && id_temp ~= id_temp)
+           ~ismember(id_temp,neigh(id_tet,:)) && id_temp ~= id_temp)
             queue(end+1).id = id_temp;
             queue(end).points = tet(id_tet).P(i);
             queue(end).faces = [];

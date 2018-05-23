@@ -11,7 +11,7 @@ global accuracy;
 global node_plane;
 global coord_to_use
 
-if(is_empty(node_plane(p_1).sides) || is_empty(node_plane(p_1).sides))
+if(isempty(node_plane(p_1).sides) || isempty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
 end
 

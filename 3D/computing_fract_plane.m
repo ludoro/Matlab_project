@@ -1,7 +1,7 @@
-coord_to_use = zeros(n_fractures,2);
+coord_to_use = zeros(n_fracts,2);
 N_temp = zeros(3,1);
 
-for id_f = 1:n_fractures
+for id_f = 1:n_fracts
     for i = 2:(fract(id_f).n_points-1)
         v_1 = fract_vertex(fract(id_f).P(i),:) - ...
               fract_vertex(fract(id_f).P(1),:);

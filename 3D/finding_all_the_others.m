@@ -101,12 +101,12 @@ while(~isempty(queue))
                 info_fract(id_f).cut_tet(end).points = zeros(7,3);
                 %inizio con punta
                 info_fract(id_f).cut_tet(end).points(1,:) = ...
-                      tet(id_tet).P(lonely_point);
+                      node(tet(id_tet).P(lonely_point)).coord;
                   
                 % metto quelli della base
                 for i = 2:4
                     info_fract(id_f).cut_tet(end).points(i,:) = ...
-                        tet(id_tet).P(nodes_together(i-1));
+                        node(tet(id_tet).P(nodes_together(i-1))).coord;
                 end
                 
                 %metto le intersezioni
@@ -174,12 +174,16 @@ while(~isempty(queue))
                     info_fract(id_f).cut_tet(end).points = zeros(8,3);
                     
                     %inizio con i 2 sopra
-                    info_fract(id_f).cut_tet(end).points(1:2,:) = ...
-                        tet(id_tet).P(nodes_together_1);
+                    info_fract(id_f).cut_tet(end).points(1,:) = ...
+                        node(tet(id_tet).P(nodes_together_1(1))).coord;
+                    info_fract(id_f).cut_tet(end).points(2,:) = ...
+                        node(tet(id_tet).P(nodes_together_1(2))).coord;
 
                     %metto i 2 sotto
-                    info_fract(id_f).cut_tet(end).points(3:4,:) = ...
-                        tet(id_tet).P(nodes_together_2);
+                    info_fract(id_f).cut_tet(end).points(3,:) = ...
+                        node(tet(id_tet).P(nodes_together_2(1))).coord;
+                    info_fract(id_f).cut_tet(end).points(4,:) = ...
+                        node(tet(id_tet).P(nodes_together_2(2))).coord;
 
                     %metto le 4 intersezioni
                     for i = 5:8
@@ -301,11 +305,11 @@ while(~isempty(queue))
 
                     %inizio con il lonely_point
                     info_fract(id_f).cut_tet(end).points(1,:) = ...
-                        tet(id_tet).P(lonely_point);
+                        node(tet(id_tet).P(lonely_point)).coord;
 
                     %metto point_on_plane
                     info_fract(id_f).cut_tet(end).points(2,:) = ...
-                        tet(id_tet).P(point_on_plane);
+                        node(tet(id_tet).P(point_on_plane)).coord;
 
                     %metto nodes_together
                     for i = 3:4
@@ -473,10 +477,10 @@ while(~isempty(queue))
 
                     %metto punto in alto
                     info_fract(id_f).cut_tet(end).points(1,:) = ...
-                        tet(id_tet).P(lonely_point_1);
+                        node(tet(id_tet).P(lonely_point_1)).coord;
                     %metto punto basso
                     info_fract(id_f).cut_tet(end).points(4,:) = ...
-                        tet(id_tet).P(lonely_point_2);
+                        node(tet(id_tet).P(lonely_point_2)).coord;
                     %metto nodes_on_plane
                     for i = 2:3
                         info_fract(id_f).cut_tet(end).points(i,:) = ...

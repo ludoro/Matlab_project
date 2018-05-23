@@ -24,13 +24,7 @@ F = zeros(num_f,2);
 for i = 1:num_f
     F(i,:) = fract_vertex(fract(id_f).P(i),coord_to_use(id_f,:));
 end
-if(id_nodes_plane(3) == -1)
-    n_to_check = 2;
-elseif(id_nodes_plane(4) == -1)
-    n_to_check = 3;
-else
-    n_to_check = 4;
-end
+n_to_check = length(id_node_plane);
 P = zeros(n_to_check,2);
 for i = 1:n_to_check
     P(i,:) = node_plane(id_node_plane(i)).coord;
@@ -63,7 +57,7 @@ else
     %tutta l'impronta è tutta interna o ha almeno un punto esterno
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
-        if(is_empty(node_plane(id_node_plane(i)).sides))
+        if(isempty(node_plane(id_node_plane(i)).sides))
             node_plane(id_node_plane(i)).sides = zeros(num_f,1);
             for j=1:num_f
                 node_plane(id_node_plane(i)).sides(j) = ...  
@@ -75,7 +69,7 @@ else
     
     %salvo il "side campione"
     side_int = fract(id_f).side_int;
-    it_is_out = zeroes(n_to_check,1);
+    it_is_out = zeros(n_to_check,1);
     all_out = 0;
     j = 1;
     for i = 1:n_to_check
@@ -109,7 +103,7 @@ else
     if(n_to_check > 2)
     if(all_out == 0)
         %faccio poligonazione
-        if(is_empty(info_fract(id_f).pol(1).v))
+        if(isempty(info_fract(id_f).pol(1).v))
             info_fract(id_f).pol(1).v=zeros(n_to_check,1);
         else
             info_fract(id_f).pol(end+1).v=zeros(n_to_check,1);
