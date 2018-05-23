@@ -192,5 +192,5 @@ if(flag == 1 && n_intersect == 1)
     n_intersect = 0;
 end
 in = edge_intersection(1);
-out = edge_intersection(2);
+out = edge_intersection(2); 
 end

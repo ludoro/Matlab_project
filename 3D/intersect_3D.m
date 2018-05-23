@@ -203,6 +203,8 @@ else
                               id_node_plane(mod(i,n_to_check)+1));
                           
                     in_info = [0 0];
+                    
+                    %lato "trapassa" la frattura
                     if(in ~= 0 || out_temp ~= 0)
                         
                         %salvare in info_nodes
@@ -210,7 +212,7 @@ else
                         info_node(end).out = out_temp;
                         info_node(end).n_intersect = n_intersect;
                         
-                        %salvare in info_fract
+                        %salvare in info_fract le intersezioni
                         for k = 1:n_intersect
                             info_fract(id_f).points(end+1,coord_to_use(id_f,:))=...
                                 P_intersect(k,:);
@@ -331,7 +333,7 @@ else
                         it_is_cut = 2;
                     end
             
-                else%length(pol_temp) == 1
+                elseif(length(pol_temp) == 1)
                     i=1;
                     one_inside = 0;
                     %cerco quale vertice è interno
@@ -350,13 +352,68 @@ else
                             it_is_cut = 0;
                         end
                     end
+                else%lenght(pol_temp) == 0
+                    
+                    if(in_first == 0)
+                        
+                        if(fract(id_f).protocol == 0 || ...
+                           fract(id_f).protocol == 1)
+                            %frattura esterna a tetraedro
+                            it_is_cut = 0;
+                        else%controllo G_f
+                            %controllo se baricentro della frattura è interno o esterno
+                            side_int_imprint = which_side_2D(G_p,...
+                                               node_plane(id_node_plane(1)).coord,...
+                                               node_plane(id_node_plane(2)).coord);
+                            G_f_is_out = 0; %flag che indica in o out di G_f
+                            c = 1;
+                            while(c <= n_to_check && G_f_is_out == 0)
+                                side_G_f = which_side_2D(G_f,...
+                                            node_plane(id_node_plane(i)).coord,...
+                                            node_plane(id_node_plane(mod(i,n_to_check)+1)).coord);
+                                if(side_G_f == -side_int_imprint)
+                                    G_f_is_out = 1;
+                                end
+                                c = c+1;
+                            end
+                            
+                            if(G_f_is_out == 0)%interno
+                                it_is_cut = 1;
+                            else%esterno
+                                it_is_cut = 0;
+                            end
+                        end
+                    else%in_first != 0
+                        %controllo se baricentro della frattura è interno o esterno
+                        side_int_imprint = which_side_2D(G_p,...
+                                           node_plane(id_node_plane(1)).coord,...
+                                           node_plane(id_node_plane(2)).coord);
+                        G_f_is_out = 0; %flag che indica in o out di G_f
+                        c = 1;
+                        while(c <= n_to_check && G_f_is_out == 0)
+                            side_G_f = which_side_2D(G_f,...
+                                       node_plane(id_node_plane(i)).coord,...
+                                       node_plane(id_node_plane(mod(i,n_to_check)+1)).coord);
+                            if(side_G_f == -side_int_imprint)
+                                G_f_is_out = 1;
+                            end
+                            c = c+1;
+                        end
+                        
+                        if(G_f_is_out == 0)
+                            %interno
+                            it_is_cut = 1;
+                        else%G_f_is_out == 1
+                            %esterno
+                            it_is_cut = 3;
+                        end
+                    end
                 end
             end
         end
     end
     
     else % n_to_check == 2
-        
         if(node_plane(id_node_plane(1).is_out) == 0 && ...
            node_plane(id_node_plane(2).is_out) == 0)
             %entrambi interni, non c'è taglio.
@@ -388,4 +445,3 @@ else
     end
 end
 end
-

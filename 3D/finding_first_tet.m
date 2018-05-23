@@ -23,9 +23,13 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     end  
     if( ~(side(1) == side(2) == side(3) == side(4)) )
         %potrebbe essere tagliato 
+        
         sum = side(1)+side(2)+side(3)+side(4);
+%--------------------------------------------------------------------------
+%------------------------INIZIO SUDDIVISIONE-------------------------------
+%--------------------------------------------------------------------------
 
-        %-------1 nodo da una parte, 3 dall'altra parte--------- 
+%-------1 nodo da una parte, 3 dall'altra parte----------------------------
         if(sum == 2 || sum == -2)
             %capiamo quale nodo sta da solo, spezzando in due casi
             if(sum == 2)
@@ -60,7 +64,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                     nodes_together=[1,2,3];
                 end
             end
-            %salvo in e_temp indici degli edge 
+            %salvo in e_temp indici degli edge che tagliano il piano
             %e lavoro su node_plane
             for i = 1:3
                 e_temp(i) = which_edge(tet(id_tet).P(lonely_point),...
@@ -111,7 +115,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 enqueue_tet_to_check;
             end
             
-        %------2 nodi da una parte e 2 dall'altra parte-------
+%---------------2 nodi da una parte, 2 dall'altra parte--------------------
         elseif(sum == 0)
             %ATTENZIONE ALL'ORDINE IN CUI I PUNTI DI INTERSEZIONE SONO
             %MESSI IN id_node_plane.
@@ -151,6 +155,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane,third_coord);
             
             if(it_is_cut ~= 0)
+                %---------TAGLIATO-------------
                 found = 1;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 %devo riempire points e quindi up middle e down
@@ -179,7 +184,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 enqueue_tet_to_check;
             end
             
-        %-----1 nodo su piano, altri discordi------
+%---------------1 nodo su piano, altri discordi----------------------------
         elseif(sum == 3 || sum == 5)
             if(side(1) == side(2))
                 nodes_together = [1,2];
@@ -416,6 +421,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             end
             id_node_plane(1) = edge(e_temp(1)).checked;
             
+            %inserisco i 2 nodi del tetraedro su node_plane
             for i = 1:2
                 if(node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane == -1)
                     node_plane(end+1).coord = ...
@@ -534,3 +540,4 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     end
     id_tet = id_tet + 1;
 end
+last_checked = id_tet - 1;

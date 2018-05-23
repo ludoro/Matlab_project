@@ -15,7 +15,7 @@ node_on_trace=0;%indica nodo su traccia
 nodes_on_trace=[0 0];
 points_together = [0,0];
 
-%finchÃ¨ queue ha delle righe vado avanti
+%finchè queue ha delle righe vado avanti
 while(size(queue,1) > 0 || size(queue_temp,1) > 0)
     
     checking_queue_temp;

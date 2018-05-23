@@ -164,7 +164,6 @@ fp = fopen('barra.1.face','r');
       fract(i).P =A(1:fract(i).n_points);
   end
   clear i
-  
 % vettore di strutture inizialmente vuoto che contiene per ogni frattura
 % le informazioni dei nodi che stanno sul piano.
 % coord contiene le coordinate x e y (già proiettate)
@@ -184,10 +183,10 @@ info_node = repmat(struct('n_intersect',0,'in',0,...
 info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
                                             'poly_1',[],'poly_2',[],...
                                             'faces',zeros(0,4)),...
-                           'near_tet',struct('id',0,'nodes',[],'edges',[]),...
+                           'near_tet',struct('id',0,'points',[],'edges',[],'faces',[]),...
        'points',zeros(0,3),'pol',struct('v',[])),n_fracts,1);
    
-queue = repmat(struct('id',-1,'points',[],'edges',[],'face',[]),0,1);
+queue = repmat(struct('id',-1,'points',[],'edges',[],'faces',[]),0,1);
 queue_temp = zeros(0,2); 
 
 % metto i vertici di ogni frattura in info_fract.points

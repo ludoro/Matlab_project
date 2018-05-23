@@ -1,8 +1,11 @@
 
 b = triangle(id_tri,10);
 already_saved = 0;
+
+% b < -1 := il triangolo non è già stato inserito su near_tri
+% b > 0  := il triangolo è già stato inserito su near_tri
+%           b indica posizione in near_tri
 if( b < -1)
-    
     %controllo che la prima cella di near_tri non contenga triangoli
     if(info_trace(id_t).near_tri(1).id == 0)
         
@@ -13,8 +16,7 @@ if( b < -1)
         else%%b==-3
             info_trace(id_t).near_tri(1).nodes = queue(1,2);
         end
-        
-    
+
      else %near_tri contiene già dei triangoli
          info_trace(id_t).near_tri(end+1).id = id_tri;
          triangle(id_tri,10) = length(info_trace(id_t).near_tri);
