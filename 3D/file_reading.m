@@ -11,6 +11,9 @@ global node_plane;
 global info_node;
 global queue;
 global queue_temp;
+global edge;
+global neigh;
+global face;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario

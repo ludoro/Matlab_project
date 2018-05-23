@@ -60,6 +60,7 @@ if(norm(G_f-G_p,inf) > r_p + r_f)
     it_is_cut = 0;
 else
     %--------------------------STEP 2----------------------------------
+    %tutta l'impronta è tutta interna o ha almeno un punto esterno
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
         if(is_empty(node_plane(id_node_plane(i)).sides))
@@ -74,7 +75,6 @@ else
     
     %salvo il "side campione"
     side_int = fract(id_f).side_int;
-    
     it_is_out = zeroes(n_to_check,1);
     all_out = 0;
     j = 1;
@@ -123,7 +123,7 @@ else
     else
         %-----------STEP 3--------------------
         %controllo ed eventualmente inverto P per avere verso concorde
-        %controllo con prodotto scalare
+        %controllo con prodotto vettoriale
         v_1 = F(2,:) - F(1,:);
         v_2 = F(3,:) - F(2,:);
         orient_f = v_1(1)*v_2(2)-v_1(2)*v_2(1);
@@ -150,8 +150,8 @@ else
             end
         end
         
-        %chiamo
-        %intersect_2D(id_f,id_node_plane(i),id_node_plane(mod(i,n_to_check)+1))
+        %salvo temporaneamente il poligono, successivamente considero se
+        %salvarlo su info_fract oppure no
         pol_temp = [];
         P_intersect = [0 0; 0 0];
         n_intersect = 0;
@@ -160,6 +160,7 @@ else
         out = 0;
         out_temp = 0;
         for i = 1:n_to_check
+            %------comincio "girotondo"------
             if(node_plane(id_node_plane(i)).is_out == 0)
                 %già messo in info_fract.points nello step 2
                 pol_temp(end+1) = node_plane(id_node_plane(i)).in_info;
@@ -170,7 +171,6 @@ else
                 node_plane(id_node_plane(mod(i,n_to_check)+1)).is_out == 1)
                 %controllo che id_node_plane(i+1) sia tra i "vicini" di
                 %id_node_plane(i)
-                
                 j = 1;
                 flag = 0;
                 while(j < size(node_plane(id_node_plane(i)).near_nodes,1)...

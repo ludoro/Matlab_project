@@ -5,13 +5,13 @@ for i=1:n_edges
     %node(...).edges e di conseguenza aumentiamo il numero di edge
     %condivisi. Analogo al caso 2D. 
     
-    n_1 = node(edge(i,1)).tot_edges; 
-    node(edge(i,1)).edges(n_1+1) = i; 
-    node(edge(i,1)).tot_edges = n_1 + 1; 
+    n_1 = node(edge(i).P(1)).tot_edges; 
+    node(edge(i).P(1)).edges(n_1+1) = i; 
+    node(edge(i).P(1)).tot_edges = n_1 + 1; 
     
-    n_2 = node(edge(i,2)).tot_edges; 
-    node(edge(i,2)).edges(n_2+1) = i;
-    node(edge(i,2)).tot_edges = n_2+1; 
+    n_2 = node(edge(i).P(2)).tot_edges; 
+    node(edge(i).P(2)).edges(n_2+1) = i;
+    node(edge(i).P(2)).tot_edges = n_2+1; 
     
 end
    
