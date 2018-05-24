@@ -15,8 +15,9 @@ while(~isempty(queue) || ~isempty(queue_temp))
 while(~isempty(queue))
     id_tet = queue(1).id;
     
-    % controllo di non aver già incontrato il tetraedro 
-    if(id_tet > last_checked)
+    % controllo di non aver già incontrato il tetraedro oppure che non sia
+    % già tagliato
+    if(id_tet > last_checked && tet(id_tet).status_queue ~=0)
         %id_node_plane = [-1,-1,-1,-1]; %indici nodi 
         called_which_side = [0,0,0,0]; %flag
         %chiamo which_side
@@ -96,6 +97,7 @@ while(~isempty(queue))
             if(it_is_cut ~= 0)
                 %------------TAGLIATO-------------
                 info_fract(id_f).cut_tet(end+1).id = id_tet;
+                tet(id_tet).status_queue = 0;
                 %devo riempire points e quindi up middle e down
                 
                 info_fract(id_f).cut_tet(end).points = zeros(7,3);
@@ -169,6 +171,7 @@ while(~isempty(queue))
                 if(it_is_cut ~= 0)
                     %---------TAGLIATO-------------
                     info_fract(id_f).cut_tet(end+1).id = id_tet;
+                    tet(id_tet).status_queue = 0;
                     %devo riempire points e quindi up middle e down
 
                     info_fract(id_f).cut_tet(end).points = zeros(8,3);
@@ -299,6 +302,7 @@ while(~isempty(queue))
                 if(it_is_cut ~= 0)
                     %--------TAGLIATO----------
                     info_fract(id_f).cut_tet(end+1).id = id_tet;
+                    tet(id_tet).status_queue = 0;
                     %devo riempire points e quindi up middle e down
 
                     info_fract(id_f).cut_tet(end).points = zeros(6,3);
@@ -383,6 +387,7 @@ while(~isempty(queue))
                 if(it_is_cut == 1)
                     %------TAGLIATO---------
                     info_fract(id_f).cut_tet(end+1).id = id_tet;
+                    tet(id_tet).status_queue = 0;
 
                     %metto punti e facce 
                     info_fract(id_f).cut_tet(end).points = zeros(4,3);
@@ -473,6 +478,7 @@ while(~isempty(queue))
                 if(it_is_cut ~= 0)
                     %----TAGLIATO-----
                     info_fract(id_f).cut_tet(end+1).id = id_tet;
+                    tet(id_tet).status_queue = 0;
                     info_fract(id_f).cut_tet(end).points = zeros(5,3);
 
                     %metto punto in alto
@@ -541,6 +547,7 @@ while(~isempty(queue))
                 if(it_is_cut ~= 0 && it_is_cut ~=2)
                     %-----TAGLIATO------
                     info_fract(id_f).cut_tet(end+1).id = id_tet;
+                    tet(id_tet).status_queue = 0;
 
                     %metto punti e facce 
                     info_fract(id_f).cut_tet(end).points = zeros(4,3);

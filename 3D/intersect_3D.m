@@ -87,7 +87,7 @@ else
         end
     end
     
-    
+    %inserisco i punti interni in info_fract.points
     for i = 1:n_to_check
         if(node_plane(id_node_plane(i)).is_out == 0 ...
            && node_plane(id_node_plane(i)).in_info == -1 )
@@ -159,7 +159,6 @@ else
                 %già messo in info_fract.points nello step 2
                 pol_temp(end+1) = node_plane(id_node_plane(i)).in_info;
             end   
-            
             %controllo che i punti(i i+1) non siano entrambi dentro
             if( node_plane(id_node_plane(i)).is_out == 1 || ...
                 node_plane(id_node_plane(mod(i,n_to_check)+1)).is_out == 1)
@@ -174,8 +173,8 @@ else
                         %id_node_plane(i+1) E' VICINO di id_node_plane(i)
                         flag = 1;
                         %a = posizione delle informazioni su info_node
-                        a = node_plane(id_node_plane(i)).near_nodes(j,2);
-                        if(a == -1)%no intersezione
+                        a = node_plane(id_node_plane(i)).near_nodes(j,2);%(j,2)informazioni nodo vicino
+                        if(a == -1)%no intersezione, quindi no informazioni 
                             n_intersect = 0;
                             in = 0;
                             out_temp = 0;
@@ -187,6 +186,7 @@ else
                             in_info = info_node(a).in_info;
                         end
                     end
+                    j = j + 1;
                 end
                 
                 if(flag == 0)
@@ -221,7 +221,9 @@ else
 
                             in_info(k) = size(info_fract(id_f).points,1);
                         end
-                        %salvo su node_plane.near_nodes
+                        info_node(end).in_info = in_info;
+                        %salvo su node_plane.near_nodes, ho trovato dei
+                        %nuovi vicini
                         node_plane(id_node_plane(i)).near_nodes(end+1,1) = ...
                             id_node_plane(mod(i,n_to_check)+1);
                         node_plane(id_node_plane(i)).near_nodes(end,2) = ...
@@ -247,21 +249,28 @@ else
                 if(in ~= 0)
                     if(out == 0)
                         in_first = in;
-                    else
+                    else%out ~= 0 
                         %devo andare ad inserire i punti in mezzo
                         j = out;
                         while(j ~= in)
-                            j= mod(j,num_f)+1;
+                            j = mod(j,num_f)+1;
                             pol_temp(end+1) = j;
                         end
                     end
                 end
+                %out è l'entrata nella frattura precedente, ora lo aggiorno
+                % se out_temp = 0 non sono uscito, quindi non devo fare
+                % nulla
+                % se out_temp ~= 0 allora è uscito e aggiorno out
                 if(out_temp ~= 0) 
                     out = out_temp;
                 end
                 
                 %inserisco le eventuali intersezioni
                 for j = 1:n_intersect
+                    %forse dovrebbe essere =
+                    %node_plane(id_node_plane(i)).in_info(j)???
+                    %pol_temp(end+1) = in_info(j);
                     pol_temp(end+1) = in_info(j);
                 end
             end

@@ -38,7 +38,7 @@ node = repmat(struct('coord',[0 0 0],'side',0,'toll',-1,'edges',[0,0,0],...
 
 
 for i=1:n_nodes 
-    node(i).coord = A(2:4,i);
+    node(i).coord = (A(2:4,i))';
 end 
 
 fclose(fp); 
@@ -147,7 +147,7 @@ fp = fopen('barra.1.face','r');
   A = fscanf(fp,'%d',2); 
   n_fracts = A(1); 
   
-  fract =repmat(struct('P', [], 'n_points', 0, 'N',[0,0,0],'d',0,...
+  fract =repmat(struct('P', [], 'n_points', 0, 'N',[0;0;0],'d',0,...
                        'G',[0,0],'r',0,'side_int',0,'protocol',-1),...
                 n_fracts,1);
   %il campo .side_int serve ad avere un riferimento per capire se un punto

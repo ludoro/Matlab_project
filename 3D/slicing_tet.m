@@ -42,8 +42,8 @@ elseif(sum == 0)
     info_fract(id_f).cut_tet(id_cut).faces(8,:) = [middle(3),down(1),down(2),middle(4)];
     info_fract(id_f).cut_tet(id_cut).faces(9,:) = [middle(4),down(2),middle(1),0];
     
-    info_fract(id_f).cut_tet.poly_1 = [1,2,3,4,5];
-    info_fract(id_f).cut_tet.poly_2 = [6,7,8,9,5];
+    info_fract(id_f).cut_tet(id_cut).poly_1 = [1,2,3,4,5];
+    info_fract(id_f).cut_tet(id_cut).poly_2 = [6,7,8,9,5];
     
 
 elseif(sum == 3 || sum == 5)

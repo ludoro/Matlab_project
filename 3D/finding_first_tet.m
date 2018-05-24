@@ -86,6 +86,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             if(it_is_cut ~= 0)
                 %------------TAGLIATO-------------
                 found = 1;
+                tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 %devo riempire points e quindi up middle e down
                 
@@ -157,6 +158,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             if(it_is_cut ~= 0)
                 %---------TAGLIATO-------------
                 found = 1;
+                tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 %devo riempire points e quindi up middle e down
                 
@@ -444,9 +446,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
             
             if(it_is_cut ~= 0)
-                %----tagliato-----
+                %----TAGLIATO-----
                 found = 1;
-                
+                tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 info_fract(id_f).cut_tet(1).points = zeros(5,3);
                 
@@ -510,8 +512,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
             
             if(it_is_cut ~= 0 && it_is_cut ~=2)
-                %-----tagliato------
+                %-----TAGLIATO------
                 found = 1;
+                tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 
                 %metto punti e facce 

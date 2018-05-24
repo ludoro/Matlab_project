@@ -1,0 +1,3 @@
+for i = 1:100
+    v(i) = info_fract(1).cut_
+end

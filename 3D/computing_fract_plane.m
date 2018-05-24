@@ -24,7 +24,7 @@ for id_f = 1:n_fracts
     if(fract(id_f).N(max) < fract(id_f).N(2))
        max = 2;
     end
-    if(max < fract(id_f).N(3))
+    if(fract(id_f).N(max) < fract(id_f).N(3))
        max = 3;
     end
     
