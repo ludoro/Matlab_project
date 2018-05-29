@@ -53,8 +53,10 @@ end
 if(norm(G_f-G_p,inf) > r_p + r_f)
     it_is_cut = 0;
 else
-    %--------------------------STEP 2----------------------------------
     %tutta l'impronta è tutta interna o ha almeno un punto esterno
+    
+    %--------------------------STEP 2----------------------------------
+    %impronta tutta interna 
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
         if(isempty(node_plane(id_node_plane(i)).sides))
@@ -70,20 +72,20 @@ else
     %salvo il "side campione"
     side_int = fract(id_f).side_int;
     it_is_out = zeros(n_to_check,1);
-    all_out = 0;
-    j = 1;
+    some_out = 0;
     for i = 1:n_to_check
         if(node_plane(id_node_plane(i)).is_out==-1)
             node_plane(id_node_plane(i)).is_out=0;
+            j=1;
             while(node_plane(id_node_plane(i)).is_out == 0 && j <= num_f)
                 if(side(i,j) == -side_int)
-                    all_out = 1;
+                    some_out = 1;
                     node_plane(id_node_plane(i)).is_out = 1;
                 end
                 j = j + 1;
             end
         elseif(node_plane(id_node_plane(i)).is_out==1)
-            all_out=1;
+            some_out=1;
         end
     end
     
@@ -101,7 +103,7 @@ else
         end
     end
     if(n_to_check > 2)
-    if(all_out == 0)
+    if(some_out == 0)
         %faccio poligonazione
         if(isempty(info_fract(id_f).pol(1).v))
             info_fract(id_f).pol(1).v=zeros(n_to_check,1);
@@ -116,6 +118,7 @@ else
         fract(id_f).protocol = 0;
     else
         %-----------STEP 3--------------------
+        disp('entrato step3');
         %controllo ed eventualmente inverto P per avere verso concorde
         %controllo con prodotto vettoriale
         v_1 = F(2,:) - F(1,:);
@@ -278,6 +281,7 @@ else
         if(in_first ~= 0)
             %devo inserire punti tra out e in_first
              j = out;
+             
              while(j ~= in_first)
                 j= mod(j,num_f) + 1;
                 pol_temp(end+1) = j;
@@ -286,7 +290,11 @@ else
         
         %DETTAGLIO: quando è tagliato oppure no?
         if(length(pol_temp) > 2)
-            info_fract(id_f).pol(end+1).v = pol_temp;
+            if(isempty(info_fract(id_f).pol(1).v))
+                info_fract(id_f).pol(1).v = pol_temp;
+            else
+                info_fract(id_f).pol(end+1).v = pol_temp;
+            end
             it_is_cut = 1;
             %modifico protocol
             fract(id_f).protocol = 0;

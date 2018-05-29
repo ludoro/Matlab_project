@@ -68,4 +68,12 @@ for id_f = 1:n_fracts
     
     
     clear max r_temp;
+    % metto i vertici di ogni frattura in info_fract.points
+
+    info_fract(id_f).points = zeros(fract(id_f).n_points,3);
+    for j = 1:fract(id_f).n_points
+        info_fract(id_f).points(j,:) = fract_vertex(fract(id_f).P(j),:);
+    end
+
 end
+

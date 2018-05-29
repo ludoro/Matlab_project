@@ -14,6 +14,7 @@ global queue_temp;
 global edge;
 global neigh;
 global face;
+global n_fracts;
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -33,7 +34,7 @@ A = fscanf(fp,'%d %f %f %f',[4 n_nodes]);
 
 %s = -1 se il punto non sta sul piano della frattura
 %s > 0 da la riga corrispondente di node_fract
-node = repmat(struct('coord',[0 0 0],'side',0,'toll',-1,'edges',[0,0,0],...
+node = repmat(struct('coord',[0 0 0],'side',0,'edges',[0,0,0],...
     'tets',[0,0,0,0],'tot_edges',0,'tot_tets',0,'where_on_plane',-1),n_nodes,1);
 
 
@@ -192,11 +193,4 @@ info_fract = repmat(struct('cut_tet',struct('id',0,'points',zeros(0,3),...
 queue = repmat(struct('id',-1,'points',[],'edges',[],'faces',[]),0,1);
 queue_temp = zeros(0,2); 
 
-% metto i vertici di ogni frattura in info_fract.points
-for i = 1:n_fracts
-    info_fract(i).points = zeros(fract(i).n_points,3);
-    for j = 1:fract(i).n_points
-        info_fract(i).points(j,:) = fract_vertex(fract(i).P(j),:);
-    end
-end
   clear A fp

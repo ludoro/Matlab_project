@@ -79,7 +79,7 @@ while(i <= num_f && flag)
                 else %n_intersections==2
                     flag=0;
                     P_temp=F(i,:)+st(2)*(F(mod(i,num_f)+1,:)-F(i,:));
-                    if(edge_intersections_temp(2)==0)
+                    if(edge_intersection(2)==0)
                         %tutto normale
                         %controllo se l'ordine è quello giusto
                         if(norm(P_intersect(1,:)-node_plane(p_1).coord,inf)>...
@@ -117,11 +117,22 @@ while(i <= num_f && flag)
             if(in_out==2)
                 flag=0;
                 n_intersect=0;
-                edge_intersection(2)=mod(i-2,num_f)+1; % "i-1"
+                %controllo che il primo punto del segmento analizzato
+                % coincida o no con un vertice della frattura
+                edge_intersection(1) = 0;
+                if(st(1) < accuracy && st(1) > -accuracy)
+                    
+                    edge_intersection(2) = i;
+                else
+                    edge_intersection(2) = mod(i-2,n_to_check)+1;
+                end
+                
+                
             elseif(in_out==1)
                 flag=0;
                 n_intersect=0;
                 edge_intersection(1)=i;
+                edge_intersection(2)=0;
             else %in_out==3
                 n_intersect = n_intersect +1;
                 if(n_intersect == 1)
@@ -171,10 +182,12 @@ while(i <= num_f && flag)
                 edge_intersection(1) = i;
                 edge_intersection(2) = 0;
             elseif(in_out == 2)
+                
                 flag = 0;
                 n_intersect = 0;
                 edge_intersection(1) = 0;
-                edge_intersection(2) = mod(i-2,n_to_check)+1;
+                edge_intersection(2) = mod(i-2,num_f)+1; % "i-1";
+
             else%in_out == 3
                 n_intersect = 1;
                 edge_intersection(1)= i;
