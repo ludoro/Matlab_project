@@ -17,9 +17,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             side(i) = which_side_3D(id_f,tet(id_tet).P(i));
             node(tet(id_tet).P(i)).side = side(i);
             called_which_side(i) = 1;
-        else
-            side(i) = node(tet(id_tet).P(i)).side;
         end
+            side(i) = node(tet(id_tet).P(i)).side;
+        
     end  
     if( ~(side(1) == side(2) == side(3) == side(4)) )
         %potrebbe essere tagliato 

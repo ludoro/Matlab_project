@@ -15,6 +15,8 @@ global edge;
 global neigh;
 global face;
 global n_fracts;
+global n_tets;
+
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario

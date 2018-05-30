@@ -11,6 +11,6 @@ for i=1:2
     Z(i)=node(edge(id_e).P(i)).coord(3);
 end
 
-line(X,Y,Z,'Color',[0 0 0],'Marker','o');
+line(X,Y,Z,'Color',[0 0 0],'Marker','o','LineWidth',2);
 hold on
 end

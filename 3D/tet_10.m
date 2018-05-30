@@ -1,5 +1,5 @@
 side = [0,0,0,0];
-id_tet = 11;
+id_tet = 10;
 id_f = 1;
 for i = 1:4
     side(i) = node(tet(id_tet).P(i)).side;
@@ -26,4 +26,4 @@ for i = 2:4
 end
 P_intersect
 
-info_fract(id_f).cut_tet(3).points
+info_fract(id_f).cut_tet(1).points

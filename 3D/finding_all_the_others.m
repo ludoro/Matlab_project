@@ -7,12 +7,14 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
+coda = queue;
 while(~isempty(queue) || ~isempty(queue_temp))
     %svuoto queue_temp
     checking_queue_temp;
     
 %controllo solo la queue vera
 while(~isempty(queue))
+    %queue.id
     id_tet = queue(1).id;
     
     % controllo di non aver già incontrato il tetraedro oppure che non sia
@@ -26,11 +28,14 @@ while(~isempty(queue))
                 side(i) = which_side_3D(id_f,tet(id_tet).P(i));
                 node(tet(id_tet).P(i)).side = side(i);
                 called_which_side(i) = 1;
-            else
-                side(i) = node(tet(id_tet).P(i)).side;
             end
-        end 
-        if(~(side(1) == side(2) == side(3) == side(4)) )
+            side(i) = node(tet(id_tet).P(i)).side;
+            
+        end
+        
+        if(side(1) == side(2) == side(3) == side(4))
+            it_is_near;
+        else
             %potrebbe essere tagliato 
             sum = side(1)+side(2)+side(3)+side(4);
             
@@ -90,7 +95,7 @@ while(~isempty(queue))
                        edge(e_temp(i)).checked = length(node_plane);
                     end
                     id_node_plane(i) = edge(e_temp(i)).checked;
-                    third_coord(i) = node_plane(edge(e_temp(1)).checked).third_coord;
+                    third_coord(i) = node_plane(edge(e_temp(i)).checked).third_coord;
                 end
                 
                 %chiamo la funzione intersect_3D
@@ -104,8 +109,10 @@ while(~isempty(queue))
                 
                 info_fract(id_f).cut_tet(end).points = zeros(7,3);
                 %inizio con punta
+               
                 info_fract(id_f).cut_tet(end).points(1,:) = ...
                       node(tet(id_tet).P(lonely_point)).coord;
+                  
                   
                 % metto quelli della base
                 for i = 2:4
@@ -595,7 +602,10 @@ while(~isempty(queue))
                 end
             end
         end
+    elseif(tet(id_tet).status_queue ~= 0)
+        it_is_near;
     end
     queue = queue(2:end);
+    
 end
 end

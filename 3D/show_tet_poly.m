@@ -11,30 +11,30 @@ for k = 1:length(v_tet)
     end
     color_2 = [0.4,1,0.4];
     
-%     for i = 1:length(info_fract(id_f).cut_tet(id_tet).poly_1)
-%         id_face = info_fract(id_f).cut_tet(id_tet).poly_1(i);
-%         if(info_fract(id_f).cut_tet(id_tet).faces(id_face,4) ~= 0)
-%             X = [0,0,0,0];
-%             Y = [0,0,0,0];
-%             Z = [0,0,0,0];
-%         else
-%             X = [0,0,0];
-%             Y = [0,0,0];
-%             Z = [0,0,0];
-%         end
-%         for j = 1:4
-%             if(info_fract(id_f).cut_tet(id_tet).faces(id_face,j) ~= 0)
-%                 id_vertex = info_fract(id_f).cut_tet(id_tet).faces(id_face,j);
-%                 X(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,1);
-%                 Y(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,2);
-%                 Z(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,3);
-%             end
-%         end
-%         fill3(X,Y,Z,color_1,'FaceAlpha',0.65);
-%         hold on
-%         
-%         
-%     end
+    for i = 1:length(info_fract(id_f).cut_tet(id_tet).poly_1)
+        id_face = info_fract(id_f).cut_tet(id_tet).poly_1(i);
+        if(info_fract(id_f).cut_tet(id_tet).faces(id_face,4) ~= 0)
+            X = [0,0,0,0];
+            Y = [0,0,0,0];
+            Z = [0,0,0,0];
+        else
+            X = [0,0,0];
+            Y = [0,0,0];
+            Z = [0,0,0];
+        end
+        for j = 1:4
+            if(info_fract(id_f).cut_tet(id_tet).faces(id_face,j) ~= 0)
+                id_vertex = info_fract(id_f).cut_tet(id_tet).faces(id_face,j);
+                X(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,1);
+                Y(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,2);
+                Z(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,3);
+            end
+        end
+        fill3(X,Y,Z,color_1,'FaceAlpha',0.65);
+        hold on
+        
+        
+    end
     
     for i = 1:length(info_fract(id_f).cut_tet(id_tet).poly_2)
         id_face = info_fract(id_f).cut_tet(id_tet).poly_2(i);
