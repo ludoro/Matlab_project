@@ -15,6 +15,8 @@ global edge;
 global neigh;
 global face;
 global n_fracts;
+global n_tets;
+
 accuracy = 1e-14;
 
 %N.B. fscanf legge il file al "contrario", quindi nelle matrici è necessario
@@ -174,7 +176,7 @@ fp = fopen('barra.1.face','r');
 % sides contiene tutti i side del punto rispetto ai lati della frattura
 
 node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1,'is_out',-1,...
-                           'near_nodes',zeros(0,2),'from_edge',-1),0,1);
+                           'near_nodes',zeros(0,2),'from_edge',-1,'third_coord',0),0,1);
 % -1 nella seconda colonna di near_nodes quando non ci sono intersezioni 
 % e quindi non ci sono informazioni su info_node
 %from_edge = 1 deriva intersezione piano edge

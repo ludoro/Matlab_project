@@ -17,9 +17,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             side(i) = which_side_3D(id_f,tet(id_tet).P(i));
             node(tet(id_tet).P(i)).side = side(i);
             called_which_side(i) = 1;
-        else
-            side(i) = node(tet(id_tet).P(i)).side;
         end
+            side(i) = node(tet(id_tet).P(i)).side;
+        
     end  
     if( ~(side(1) == side(2) == side(3) == side(4)) )
         %potrebbe essere tagliato 
@@ -70,14 +70,16 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 e_temp(i) = which_edge(tet(id_tet).P(lonely_point),...
                                        tet(id_tet).P(nodes_together(i)));  
                 if(edge(e_temp(i)).checked == -1)
-                   [node_plane(end+1).coord,third_coord(i)] = intersect_plane_edge...
+                    node_plane(end+1).in_info = -1;
+                    node_plane(end).is_out = -1;
+                    node_plane(end).from_edge = 1;
+                    [node_plane(end).coord,node_plane(end).third_coord] = intersect_plane_edge...
                                              (id_f,e_temp(i));
-                   node_plane(end).in_info = -1;
-                   node_plane(end).is_out = -1;
-                   node_plane(end).from_edge = 1;
-                   edge(e_temp(i)).checked = length(node_plane);
+                   
+                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_node_plane(i) = edge(e_temp(i)).checked;
+                third_coord(i) = node_plane(edge(e_temp(i)).checked).third_coord;
             end
             
             %chiamo la funzione intersect_3D
@@ -142,14 +144,17 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                                    tet(id_tet).P(nodes_together_2(2)));
             for i = 1:4
                 if(edge(e_temp(i)).checked == -1)
-                   [node_plane(end+1).coord,third_coord(i)] = ...
-                       intersect_plane_edge(id_f,e_temp(i));                   
-                   node_plane(end).in_info = -1;
+                   node_plane(end+1).in_info = -1;
                    node_plane(end).is_out = -1;
                    node_plane(end).from_edge = 1;
+                   [node_plane(end).coord,node_plane(end).third_coord] = ...
+                       intersect_plane_edge(id_f,e_temp(i));                   
+               
                    edge(e_temp(i)).checked = length(node_plane);
                 end
+                
                 id_node_plane(i) = edge(e_temp(i)).checked;
+                third_coord(i) = node_plane(edge(e_temp(i)).checked).third_coord;
             end
             
             %chiamo la funzione intersect_3D
@@ -249,14 +254,16 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 e_temp(i) = which_edge(tet(id_tet).P(lonely_point),...
                                        tet(id_tet).P(nodes_together(i)));
                 if(edge(e_temp(i)).checked == -1)
-                   [node_plane(end+1).coord,third_coord(i)] = ...
-                       intersect_plane_edge(id_f,e_temp(i));                   
-                   node_plane(end).in_info = -1;
+                   node_plane(end+1).in_info = -1;
                    node_plane(end).is_out = -1;
                    node_plane(end).from_edge = 1;
+                   [node_plane(end).coord,node_plane(end).third_coord] = ...
+                       intersect_plane_edge(id_f,e_temp(i));                   
+                   
                    edge(e_temp(i)).checked = length(node_plane);
                 end
                 id_node_plane(i) = edge(e_temp(i)).checked;
+                third_coord(i) = node_plane(edge(e_temp(i)).checked).third_coord;
             end
             
             %aggiungo in node_plane il punto tet(id_tet).P(point_on_plane)
@@ -350,7 +357,11 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                     node_plane(end).in_info = -1;
                     node_plane(end).is_out = -1;
                     node_plane(end).from_edge = 0;
+                    
+                    %non verrà utilizzata
+                    node_plane(end).third_coord = 0;
                 end
+                
                 id_node_plane(i) = ...
                     node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
                 third_coord(i) = ...
@@ -412,16 +423,18 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 which_edge(tet(id_tet).P(lonely_point_1),...
                            tet(id_tet).P(lonely_point_2));
             if(edge(e_temp(1)).checked == -1)
-                [node_plane(end+1).coord,third_coord(1)] = ...
-                    intersect_plane_edge(id_f,e_temp(1));
                 
-                node_plane(end).in_info = -1;
+                node_plane(end+1).in_info = -1;
                 node_plane(end).is_out = -1;
                 node_plane(end).from_edge = 1;
+                
+                [node_plane(end).coord,node_plane(end).third_coord] = ...
+                    intersect_plane_edge(id_f,e_temp(1));
                 
                 edge(e_temp(1)).checked = length(node_plane);
             end
             id_node_plane(1) = edge(e_temp(1)).checked;
+            third_coord(1)=node_plane(edge(e_temp(1)).checked).third_coord;
             
             %inserisco i 2 nodi del tetraedro su node_plane
             for i = 1:2
@@ -435,6 +448,8 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                     node_plane(end).in_info = -1;
                     node_plane(end).is_out = -1;
                     node_plane(end).from_edge = 0;
+                    %non verrà utilizzata
+                    node_plane(end).third_coord = 0;
                 end
                 id_node_plane(i+1) = ...
                     node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
@@ -501,7 +516,11 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                     node_plane(end).in_info = -1;
                     node_plane(end).is_out = -1;
                     node_plane(end).from_edge = 0;
+                    
+                    %non verrà utilizzato
+                    node_plane(end).third_coord = 0;
                 end
+                
                 id_node_plane(i) = ...
                     node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
                 third_coord(i) = ...

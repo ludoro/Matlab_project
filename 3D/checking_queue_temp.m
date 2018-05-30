@@ -1,5 +1,4 @@
 while(~isempty(queue_temp))
- 
     id_tet = queue_temp(1,1);
     
     % se lo status_queue ~ da 5, già stato controllato

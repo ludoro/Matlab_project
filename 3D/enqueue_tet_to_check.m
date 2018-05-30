@@ -7,6 +7,7 @@ id_tet = id tetraedro considerato
 for i = 1:4
     if(neigh(id_tet,i) ~= -1)
         if(tet(neigh(id_tet,i)).status_queue ~= 0)
+            tet(neigh(id_tet,i)).status_queue = -4;
             queue(end+1).id = neigh(id_tet,i);
             %Prendiamo tutti i punti tranne l'i-esimo
             %sperimentiamo con vettore logico
@@ -28,8 +29,9 @@ tet_second_level = [];
 for i = 1:6
     for j = 1:length(edge(tet(id_tet).edges(i)).tets)
         id_temp = edge(tet(id_tet).edges(i)).tets(j);
-        if(~ismember(id_tet,neigh(id_tet,:)) && id_temp ~= id_temp)
-            if(tet(neigh(id_tet,i)).status_queue ~= 0)
+        if(~ismember(id_temp,neigh(id_tet,:)) && id_tet ~= id_temp)
+            if(tet(id_temp).status_queue ~= 0)
+                tet(id_temp).status_queue = -3;
                 queue(end+1).id = id_temp;
                 queue(end).points = edge(tet(id_tet).edges(i)).P;
                 queue(end).faces = [];
@@ -45,13 +47,15 @@ for i = 1:4
     for j = 1:node(tet(id_tet).P(i)).tot_tets
         id_temp = node(tet(id_tet).P(i)).tets(j);
         if(~ismember(id_temp,tet_second_level) &&...
-           ~ismember(id_temp,neigh(id_tet,:)) && id_temp ~= id_temp)
-            queue(end+1).id = id_temp;
-            queue(end).points = tet(id_tet).P(i);
-            queue(end).faces = [];
-            queue(end).edges = [];
+           ~ismember(id_temp,neigh(id_tet,:)) && id_tet ~= id_temp)
+            if(tet(id_temp).status_queue ~= 0)
+                tet(id_temp).status_queue = -2;
+                queue(end+1).id = id_temp;
+                queue(end).points = tet(id_tet).P(i);
+                queue(end).faces = [];
+                queue(end).edges = [];
+            end
         end
     end
 end
-
 clear tet_second_level id_temp;
