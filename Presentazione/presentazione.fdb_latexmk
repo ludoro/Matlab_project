@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1527011454 "presentazione.tex" "presentazione.pdf" "presentazione" 1527061510
+["pdflatex"] 1527663963 "presentazione.tex" "presentazione.pdf" "presentazione" 1527663974
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -70,11 +70,11 @@
   "/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1495593472 2350277 a699055bee05bf8a40b0504752487295 ""
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1508588794 4129593 30145b81c08eff01c211f2c9b9bd8c4a ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
-  "presentazione.aux" 1527011454 831 c0a71bb7e2098b092a539ec5ba818c9e ""
-  "presentazione.tex" 1527011442 5134 95364c8fa60064118e186e1689c52ba0 ""
-  "presentazione.toc" 1527011454 451 f66333dbcc688762f75c928152c6fff3 ""
+  "presentazione.aux" 1527663963 1149 a4efdc28a1be0e99000e89ea3b603e96 ""
+  "presentazione.tex" 1527663962 9542 10b2e4fd0c1ca56e102041910447261d ""
+  "presentazione.toc" 1527663963 712 4e660b541f80a766f4073b0b380d25e3 ""
   (generated)
-  "presentazione.pdf"
   "presentazione.aux"
+  "presentazione.pdf"
   "presentazione.log"
   "presentazione.toc"

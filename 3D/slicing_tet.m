@@ -23,9 +23,10 @@ if(sum == 2 || sum == -2)
     info_fract(id_f).cut_tet(id_cut).faces(5,:) = [middle(1),down(1),down(2),middle(2)];
     info_fract(id_f).cut_tet(id_cut).faces(6,:) = [middle(2),down(2),down(3),middle(3)];
     info_fract(id_f).cut_tet(id_cut).faces(7,:) = [middle(3),down(3),down(1),middle(1)];
+    info_fract(id_f).cut_tet(id_cut).faces(8,:) = [down,0];  
     
     info_fract(id_f).cut_tet(id_cut).poly_1 = [1,2,3,4];
-    info_fract(id_f).cut_tet(id_cut).poly_2 = [5,6,7,4];
+    info_fract(id_f).cut_tet(id_cut).poly_2 = [4,5,6,7,8];
     
 elseif(sum == 0)
     
@@ -58,6 +59,8 @@ elseif(sum == 3 || sum == 5)
     info_fract(id_f).cut_tet(id_cut).faces(5,:) = [middle(1),down(1),middle(2),0];
     info_fract(id_f).cut_tet(id_cut).faces(6,:) = [middle(2),down(1),down(2),middle(3)];
     info_fract(id_f).cut_tet(id_cut).faces(7,:) = [middle(3),down(2),middle(1),0];
+    info_fract(id_f).cut_tet(id_cut).faces(8,:) = [middle(1),down(1),down(2),0];
+   
     
     info_fract(id_f).cut_tet.poly_1 = [1,2,3,4];
     info_fract(id_f).cut_tet.poly_2 = [5,6,7,4];

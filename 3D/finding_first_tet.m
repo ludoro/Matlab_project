@@ -1,6 +1,6 @@
 found = 0;
 id_tet = 1;
-called_which_side = [0,0,0];
+%called_which_side = [0,0,0];
 side = [0,0,0,0];
 lonely_point = 0;
 nodes_together = [0,0,0];
@@ -10,7 +10,7 @@ third_coord = [0,0,0,0];
 it_is_cut = -1;
 while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
     id_node_plane = [-1,-1,-1,-1]; %indici nodi 
-    called_which_side = [0,0,0,0]; %flag
+    %called_which_side = [0,0,0,0]; %flag
     %chiamo which_side
     for i =1:4
         if(node(tet(id_tet).P(i)).side == 0)

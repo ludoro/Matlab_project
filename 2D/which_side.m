@@ -39,10 +39,6 @@ else
     elseif (s <= 1 + toll_t(id_t) && s >= 1 - toll_t(id_t))
         s = 1;
     end
-        
-   
-        
-    
 end
 end
 

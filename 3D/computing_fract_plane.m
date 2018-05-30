@@ -21,10 +21,10 @@ for id_f = 1:n_fracts
     
     %Cerchiamo la coordinata massima di .N per proiezione ottimale
     max = 1;
-    if(fract(id_f).N(max) < fract(id_f).N(2))
+    if(abs(fract(id_f).N(max)) < abs(fract(id_f).N(2)))
        max = 2;
     end
-    if(fract(id_f).N(max) < fract(id_f).N(3))
+    if(abs(fract(id_f).N(max)) < abs(fract(id_f).N(3)))
        max = 3;
     end
     

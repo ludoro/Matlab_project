@@ -42,7 +42,61 @@ Si \`e scelto di salvare nella struttura \textit{node} le coordinate dei punti d
 \'E una matrice le cui colonne contengono gli indici degli estremi della traccia riferiti alla matrice 'trace\_vertex'. \\\\
 \textbf{Info trace}\\
 \'E una struttura che contiene, per ogni traccia, le informazioni relative alle richieste del problema. Il campo 'cut\_tri' \'e una sottostruttura di 'info\_trace' e contiene le informazioni relative ai triangoli tagliati. Per ogni triangolo tagliato di questa sottostruttura vengono salvati in 'points' i punti in 'poly\_1' i punti del primo poligono che si forma dopo il taglio, in 'poly\_2' i punti del secondo poligono che si forma dopo il taglio, in 'tri' le informazioni relative alla sottotriangolazione, 'tri' \'e una matrice di dimensione iniiziale 3x3 (numero plausibile di sottotriangoli) che descrive utilizzando i punti le cui coordinate sono salvate in points, i triangoli della sottotriangolazione. \\
-\subsubsection{\textbf{Funzioni di riempimento}}
+\subsection{\textbf{Script di riempimento}}
+In questa sezione vengono brevemente presentati tre script che calcolano informazioni utili per portare a termine le richieste del problema. I dati calcolati da queste funzioni vengono salvati nelle strutture prima presentate.
+
+
+\begin{itemize}
+     \item \textbf{triangles\_for\_node}\\
+    Calcola per ogni nodo i triangoli aventi quel nodo come estremo. La strategia \'e quella di scorrere la matrice triangle e per ogni vertice del triangolo inserire l'indice dell'i\_esimo triangolo al campo 'triangles' della struttura 'node'. Viene salvato il numero totale dei triangoli condivisi come gi\'a spiegato.
+    \item \textbf{edges\_for\_node}\\
+    Analoga allo script "triangles\_for\_node', calcola le stesse informazioni per i segmenti e inserisce gli indici degli edges in 'edges'. Il numero totale dei segmenti condivisi \'e salvato in 'tot\_edges'.
+    \item \textbf{toll\_for\_node}\\
+    L'idea utilizzata per avere una tolleranza con cui lavorare \'e quella di fare una media sulle lunghezze dei segmenti della triangolazione. Per ogni nodo \'e quindi stata calcolata una media delle lunghezze di tutti i segmenti aventi quel nodo come estremo. Per \textit{diminuire il costo computazionale in tempo} viene utilizzata la norma infinito invece della norma euclidea per il calcolo delle lunghezze. La differenza tra scegliere una norma o un'altra \'e soltanto di una costante moltiplicativa.
+
+\end{itemize}
+
+\subsection{\textbf{Le funzioni which\_side e intersect}}
+In questa sezione vengono descritte due funzioni importanti per il programma che servono per capire come i segmenti di un triangolo siano messi rispetto alla traccia e se questi la intersecano e come. Grazie a queste informazioni sar\'a possibile capire quali triangoli siano tagliati o meno.
+
+\begin{itemize}
+    \item \textbf{which\_side} \\
+    \'E una function a cui vengono passati l'id della traccia e il punto del quale si vuole conoscere la posizione rispetto alla traccia. La funzione restituisce 1 o -1 se il punto non sta sulla retta della traccia e 2 altrimenti. La funzione tiene conto della tolleranza.
+    \item \textbf{intersection} \\
+    \subsection{\textbf{Script di riempimento}}
+    In questa sezione vengono brevemente presentati tre script che calcolano informazioni utili per portare a termine le richieste del problema. I dati calcolati da queste funzioni vengono salvati nelle strutture prima presentate.
+
+
+    \begin{itemize}
+         \item \textbf{triangles\_for\_node}\\
+        Calcola per ogni nodo i triangoli aventi quel nodo come estremo. La strategia \'e quella di scorrere la matrice triangle e per ogni vertice del triangolo inserire l'indice dell'i\_esimo triangolo al campo 'triangles' della struttura 'node'. Viene salvato il numero totale dei triangoli condivisi come gi\'a spiegato.
+        \item \textbf{edges\_for\_node}\\
+        Analoga allo script "triangles\_for\_node', calcola le stesse informazioni per i segmenti e inserisce gli indici degli edges in 'edges'. Il numero totale dei segmenti condivisi \'e salvato in 'tot\_edges'.
+        \item \textbf{toll\_for\_node}\\
+        L'idea utilizzata per avere una tolleranza con cui lavorare \'e quella di fare una media sulle lunghezze dei segmenti della triangolazione. Per ogni nodo \'e quindi stata calcolata una media delle lunghezze di tutti i segmenti aventi quel nodo come estremo. Per \textit{diminuire il costo computazionale in tempo} viene utilizzata la norma infinito invece della norma euclidea per il calcolo delle lunghezze. La differenza tra scegliere una norma o un'altra \'e soltanto di una costante moltiplicativa.
+
+    \end{itemize}
+
+    \subsection{\textbf{Le funzioni which\_side e intersect}}
+    In questa sezione vengono descritte due funzioni importanti per il programma che servono per capire come i segmenti di un triangolo siano messi rispetto alla traccia e se questi la intersecano e come. Grazie a queste informazioni sar\'a possibile capire quali triangoli siano tagliati o meno.
+
+    \begin{itemize}
+        \item \textbf{which\_side} \\
+        \'E una function a cui vengono passati l'id della traccia e il punto del quale si vuole conoscere la posizione rispetto alla traccia. La funzione restituisce 1 o -1 se il punto non sta sulla retta della traccia e 2 altrimenti. La funzione tiene conto della tolleranza.
+        \item \textbf{intersection} \\
+        
+
+
+
+
+    \end{itemize}
+
+
+
+
+
+\end{itemize}
+
 
 
 
