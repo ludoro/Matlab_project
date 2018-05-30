@@ -166,7 +166,7 @@ while(~isempty(queue))
                        edge(e_temp(i)).checked = length(node_plane);
                     end
                     id_node_plane(i) = edge(e_temp(i)).checked;
-                    third_coord(i) = node_plane(edge(e_temp(i)).checked).third_coord;
+                    third_coord(i) = node_plane(edge(e_temp(i))).checked;
                 end
                 
                 %chiamo la funzione intersect_3D
@@ -464,7 +464,7 @@ while(~isempty(queue))
                     edge(e_temp(1)).checked = length(node_plane);
                 end
                 id_node_plane(1) = edge(e_temp(1)).checked;
-                third_coord(1) = node_plane(edge(e_temp(1)).checked).third_coord;
+                third_coord(1) = 
 
                 %inserisco i 2 nodi del tetraedro su node_plane
                 for i = 1:2
@@ -478,9 +478,6 @@ while(~isempty(queue))
                         node_plane(end).in_info = -1;
                         node_plane(end).is_out = -1;
                         node_plane(end).from_edge = 0;
-                        
-                        %non verrà utilizzata
-                        node_plane(end).third_coord = 0;
                     end
                     id_node_plane(i+1) = ...
                         node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
@@ -550,9 +547,6 @@ while(~isempty(queue))
                         node_plane(end).in_info = -1;
                         node_plane(end).is_out = -1;
                         node_plane(end).from_edge = 0;
-                        
-                        %non verrà utilizzato
-                        node_plane(end).third_coord = 0;
                     end
                     id_node_plane(i) = ...
                         node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane;
