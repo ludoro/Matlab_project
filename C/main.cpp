@@ -1,11 +1,6 @@
-#include <stdio.h>
-#include <iostream>
-#include "global_variables.h"
-#include "file_reading.h"
+#include "Domain2D.hpp"
 
 int main(){
-  load_max_numbers();
-  load_matrices();
-  create_additional_structures();
+  printf("Hello world\n");
   return 0;
 }

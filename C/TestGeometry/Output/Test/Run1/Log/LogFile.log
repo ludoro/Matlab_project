@@ -1,0 +1,80 @@
+2018/04/13 18:01:58 ************************************************************
+2018/04/13 18:01:58 INFO: Starting all tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain1D tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain1D_Creation: Test Id SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Creation: Test Description SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Vertices: Test AddVertex SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Vertices: Test TotalNumberVertices SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Vertices: Test NumberVertices SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Initialize: Test Initialize SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Initialize: Test Length SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Initialize: Test Centroid 1 SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Initialize: Test Centroid 2 SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain1D_Initialize: Test Centroid 3 SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain2D tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain2D_Creation: Test Id SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain2D_Creation: Test Description SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain2D_Vertices: Test AddVertex SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain2D_Vertices: Test TotalNumberVertices SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain2D_Vertices: Test NumberVertices SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: Domain2D tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: Parallelogram_Creation: Test BuildParallelogram SUCCESS
+2018/04/13 18:01:58 INFO: Parallelogram_Creation: Test Area SUCCESS
+2018/04/13 18:01:58 INFO: Parallelogram_Creation: Test Centroid 1 SUCCESS
+2018/04/13 18:01:58 INFO: Parallelogram_Creation: Test Centroid 2 SUCCESS
+2018/04/13 18:01:58 INFO: Parallelogram_Creation: Test Centroid 3 SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain3D tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericDomain3D_Creation: Test Id SUCCESS
+2018/04/13 18:01:58 INFO: GenericDomain3D_Creation: Test Description SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: Domain3D tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: Parallelepiped_Creation: Test Volume SUCCESS
+2018/04/13 18:01:58 INFO: Parallelepiped_Creation: Test Centroid 1 SUCCESS
+2018/04/13 18:01:58 INFO: Parallelepiped_Creation: Test Centroid 2 SUCCESS
+2018/04/13 18:01:58 INFO: Parallelepiped_Creation: Test Centroid 3 SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericTreeNode tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericTreeNode_Creation: Test Id SUCCESS
+2018/04/13 18:01:58 INFO: GenericTreeNode_Creation: Test GlobalId SUCCESS
+2018/04/13 18:01:58 INFO: GenericTreeNode_Creation: Test State SUCCESS
+2018/04/13 18:01:58 INFO: GenericTreeNode_Creation: Test Marker SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericPoint tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericPoint_Creation: Test SetCoordinates SUCCESS
+2018/04/13 18:01:58 INFO: GenericPoint_Creation: Test Coordinates x SUCCESS
+2018/04/13 18:01:58 INFO: GenericPoint_Creation: Test Coordinates y SUCCESS
+2018/04/13 18:01:58 INFO: GenericPoint_Creation: Test Coordinates z SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericMesh tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test AddCell SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test AddFace SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test AddEdge SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test AddPoint SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test NumberOfCells SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test NumberOfFaces SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test NumberOfEdges SUCCESS
+2018/04/13 18:01:58 INFO: GenericMesh_Creation: Test NumberOfPoints SUCCESS
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: GenericMeshImportInterface tests
+2018/04/13 18:01:58 ------------------------------------------------------------
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumNumberCell_Creation: Test mesh creation SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumNumberCell_Creation: Test mesh NumberOfCells SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumNumberCell_Creation: Test mesh NumberOfCells SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumNumberCell_Creation: Test point markers SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumCellSize_Creation: Test mesh creation SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumCellSize_Creation: Test mesh NumberOfCells SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumCellSize_Creation: Test mesh NumberOfCells SUCCESS
+2018/04/13 18:01:58 INFO: MeshImport_Line_MinimumCellSize_Creation: Test point markers SUCCESS
+2018/04/13 18:01:58 ************************************************************

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="Eigen" />
+					<Add directory="Geometry" />
+					<Add directory="Configuration" />
+					<Add directory="UnitTest" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="Eigen" />
+					<Add directory="Geometry" />
+					<Add directory="Configuration" />
+					<Add directory="UnitTest" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Configuration/ConfigFile.cpp" />
+		<Unit filename="Configuration/ConfigFile.hpp" />
+		<Unit filename="Configuration/MacroDefinitions.hpp" />
+		<Unit filename="Configuration/Output.cpp" />
+		<Unit filename="Configuration/Output.hpp" />
+		<Unit filename="Geometry/Domain2D.cpp" />
+		<Unit filename="Geometry/Domain2D.hpp" />
+		<Unit filename="Geometry/Domain3D.cpp" />
+		<Unit filename="Geometry/Domain3D.hpp" />
+		<Unit filename="Geometry/GenericDomain.cpp" />
+		<Unit filename="Geometry/GenericDomain.hpp" />
+		<Unit filename="Geometry/GenericMesh.cpp" />
+		<Unit filename="Geometry/GenericMesh.hpp" />
+		<Unit filename="Geometry/MeshImport_Line.cpp" />
+		<Unit filename="Geometry/MeshImport_Line.hpp" />
+		<Unit filename="UnitTest/UnitTest.cpp" />
+		<Unit filename="UnitTest/UnitTest.hpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
