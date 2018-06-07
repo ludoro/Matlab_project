@@ -16,14 +16,14 @@ nodes_on_trace=[0 0];
 points_together = [0,0];
 
 %finchè queue ha delle righe vado avanti
-while(size(queue,1) > 0 || size(queue_temp,1) > 0)
+while(~isempty(queue) || size(queue_temp,1) > 0)
     
     checking_queue_temp;
     
 if(size(queue,1) > 0)
     called_which_side=[0,0,0];
     called_intersect =[0,0,0];
-    id_tri = queue(1,1); % prendo il primo triangolo nella coda
+    id_tri = queue(1).id; % prendo il primo triangolo nella coda
     
     if(id_tri < num_tri_checked)
         it_is_near; % verifica che il triangolo non sia giÃ  controllato
@@ -469,7 +469,7 @@ if(size(queue,1) > 0)
             end
         end
     end
-    queue = queue(2:end,:);
+    queue = queue(2:end);
 end
 end
    

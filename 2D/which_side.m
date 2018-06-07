@@ -10,14 +10,14 @@ global T_squared
 global trace
 global trace_vertex
 global toll_t
+global N
 
 v = [node(p).x - trace_vertex(trace(id_t,1),1);
      node(p).y - trace_vertex(trace(id_t,1),2)];
-N = [-T(id_t,2);
-     T(id_t,1)];
+
 % scalar rappresenta la distanza punto traccia, per un valore esatto
 % dovremmo usare la norma-2, ma è più costosa per via della radice.
-scalar = dot(N,v)/norm(N,1);
+scalar = dot(N(id_t,:),v);
 toll = node(p).toll;
 if(scalar<-toll)
     side=-1;

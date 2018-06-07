@@ -10,8 +10,6 @@ if( b < -1)
     if(info_trace(id_t).near_tri(1).id == 0)
         a = 1;
     else
-        a = length(info_trace(id_t).near_tri)+1;
-    end
         
         info_trace(id_t).near_tri(1).id = id_tri;
         triangle(id_tri,10) = 1;

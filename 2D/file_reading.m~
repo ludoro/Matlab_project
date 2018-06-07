@@ -164,9 +164,7 @@ info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',[],...
 % queue = coda triangoli da controllare      
 % .id: id triangolo 
 % .points: punti in comune con triangolo tagliato
-% .edges: quale dei tre lati del triangolo è in comune con un
-%         triangolo tagliato ( valore : 1, 2 o 3)
-
+% .edges: quale dei tre lati del triangolo è in comune con 
 
 queue = repmat(struct('id',-1,'points',[],'edges',[]),0,1);
 
