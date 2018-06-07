@@ -125,8 +125,8 @@ fclose(fp);
 
 
 %!!!!!! ------- modifiche di prova -------- !!!!!!
-trace_vertex(3,:)=[0.1 0.1];
-trace_vertex(4,:)=[0.9 0.9];
+% trace_vertex(3,:)=[0.1 0.1];
+% trace_vertex(4,:)=[0.9 0.9];
 
 
 %creo matrice T che è la matrice che per ogni traccia contiene 
@@ -159,13 +159,13 @@ toll_t = zeros(n_traces,1);
 info_trace = repmat(struct('cut_tri',struct('points',zeros(5,2),'poly_1',[],...
                                             'poly_2',[],'tri',zeros(3,3),'id',0),...
                            's',[],...
-                           'near_tri',struct('id',0,'nodes',[],'edges',[])),n_traces,1);
+                           'near_tri',struct('id',0,'points',[],'edges',[])),n_traces,1);
  
 % queue = coda triangoli da controllare      
 % .id: id triangolo 
 % .points: punti in comune con triangolo tagliato
 % .edges: quale dei tre lati del triangolo è in comune con un
-%         triangolo tagliato ( valore : 1, 2 o 3)
+%         triangolo tagliato, indice del lato 
 
 
 queue = repmat(struct('id',-1,'points',[],'edges',[]),0,1);

@@ -1,9 +1,4 @@
-clear all
-clc
-file_reading
-edges_for_node
-toll_for_node
-triangles_for_node
-for i = 1:n_nodes
-    node(i).triangles
+for i = 1:length(info_trace(2).near_tri)
+    v_near(i) = info_trace(2).near_tri(i).id;
 end
+

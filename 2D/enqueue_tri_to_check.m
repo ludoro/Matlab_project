@@ -11,7 +11,7 @@ if(triangle(neigh(id_tri,1),10) ~=0 )
     queue(end+1).id = neigh(id_tri,1);
     queue(end).points(1) = triangle(id_tri,2);
     queue(end).points(2) = triangle(id_tri,3);
-    queue(end).edges(1) = 1;
+    queue(end).edges(1) = which_edge(queue(end).points(1),queue(end).points(2));
     if(triangle(neigh(id_tri,1),10) == -1 || triangle(neigh(id_tri,1),10) == -4)
        triangle(neigh(id_tri,1),10) = -2;
     end
@@ -23,7 +23,7 @@ if(triangle(neigh(id_tri,2),10) ~=0)
     queue(end+1).id = neigh(id_tri,2);
     queue(end).points(1) = triangle(id_tri,1);
     queue(end).points(2) = triangle(id_tri,3);
-    queue(end).edges(1) = 2;
+    queue(end).edges(1) = which_edge(queue(end).points(1),queue(end).points(2));
     if(triangle(neigh(id_tri,2),10) == -1 || triangle(neigh(id_tri,2),10) == -4)
        triangle(neigh(id_tri,2),10) = -2;
     end
@@ -36,7 +36,7 @@ if(triangle(neigh(id_tri,3),10) ~=0)
     queue(end+1).id = neigh(id_tri,3);
     queue(end).points(1) = triangle(id_tri,1);
     queue(end).points(2) = triangle(id_tri,2);
-    queue(end).edges(1) = 3;
+    queue(end).edges(1) = which_edge(queue(end).points(1),queue(end).points(2));
     if(triangle(neigh(id_tri,3),10) == -1 || triangle(neigh(id_tri,3),10) == -4)
        triangle(neigh(id_tri,3),10) = -2;
     end
