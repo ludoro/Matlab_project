@@ -271,7 +271,6 @@ while(id_tri<=n_triangles && found==0)
                 else
                     s_temp(2) = triangle(id_tri,node_on_trace+6);
                 end
-        
                 s_temp(1) = node(tr(node_on_trace)).s;
 
                 if( (s_temp(1) > 0 && s_temp(1) < 1) ||...
@@ -300,11 +299,11 @@ while(id_tri<=n_triangles && found==0)
                          [node_on_trace,opposite_nodes(1),4];
                     info_trace(id_t).cut_tri(1).tri(2,:) = ...
                          [node_on_trace,4,opposite_nodes(2)];
-                end
+                
         
                 %Chiamo per triangoli vicini
                 enqueue_tri_to_check(id_tri);
-
+                
                 % inserisco le s in info_trace
                 if(s_temp(1) <= 1 && s_temp(1) >=0 && ... 
                    called_which_side(node_on_trace) == 1 )
@@ -314,6 +313,7 @@ while(id_tri<=n_triangles && found==0)
 
                 if(s_temp(2) <= 1 && s_temp(2) >=0)
                     info_trace(id_t).s(end+1) = s_temp(2);
+                end
                 end
 %---------------------- 2 NODI SULLA TRACCIA ------------------------
         else %sum==3 || sum==5 

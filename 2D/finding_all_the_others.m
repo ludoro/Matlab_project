@@ -17,7 +17,6 @@ points_together = [0,0];
 
 %finchè queue ha delle righe vado avanti
 while(~isempty(queue) || size(queue_temp,1) > 0)
-    
     checking_queue_temp;
     
 if(size(queue,1) > 0)
@@ -297,7 +296,7 @@ if(size(queue,1) > 0)
         
         if((s_temp(1) > 0 && s_temp(1) < 1) ||...
             (tr(node_on_trace+3) ~= 0) )
-            % Ã¨ tagliato 
+            % è tagliato 
             it_is_cut;
             enqueue_tri_to_check(id_tri);
             %trovo coordinate quarto punto

@@ -125,8 +125,8 @@ fclose(fp);
 
 
 %!!!!!! ------- modifiche di prova -------- !!!!!!
-trace_vertex(3,:)=[0.5 0.25];
-trace_vertex(4,:)=[0.7 0.25];
+ trace_vertex(3,:)=[0.15 0.1];
+ trace_vertex(4,:)=[0.3 0.15];
 
 
 %creo matrice T che è la matrice che per ogni traccia contiene 
