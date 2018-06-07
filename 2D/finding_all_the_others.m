@@ -26,7 +26,7 @@ if(size(queue,1) > 0)
     id_tri = queue(1).id; % prendo il primo triangolo nella coda
     
     if(id_tri < num_tri_checked)
-        it_is_near; % verifica che il triangolo non sia giÃ  controllato
+        it_is_near; % verifica che il triangolo non sia già  controllato
     elseif(triangle(id_tri,10) ~= 0)
         tr=triangle(id_tri,:);
         for i=1:3

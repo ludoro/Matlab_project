@@ -89,14 +89,17 @@ while(id_tri<=n_triangles && found==0)
             %tr(points_together([1 2])+3) contiene i due status
             status=tr(points_together([1 2])+3);
           
-            if(status(1)~=0 || status(2)~=0)
+            if(status(1)~=0 || status(2)~=0 || ...
+              (s_temp(1) < 0 && s_temp(2) >1) || (s_temp(2) < 0 && s_temp(1) >1))
                 %IL TRIANGOLO SICURAMENTE TAGLIATO
                 found = 1;
                 it_is_cut;
                 enqueue_tri_to_check(id_tri);
                 
-                if((status(1) == 0 && status(2) == 2) || ...
-                   (status(2) == 0 && status(1) == 2) )
+                if( (s_temp(1) == 0 && s_temp(2) < 0) || ... 
+                    (s_temp(2) == 0 && s_temp(1) < 0) || ...
+                    (s_temp(1) == 1 && s_temp(2) > 1) || ...
+                    (s_temp(2) == 1 && s_temp(1) > 1))
                
                     if(status(1) == 0 && status(2) == 2)
                         a = 2;
@@ -139,8 +142,16 @@ while(id_tri<=n_triangles && found==0)
                         
                     end
                       
+                %traccia completamente interna al triangolo
+%                 elseif((status(1) == 0 && status(2) == 0) || ...
+%                         (s_temp(1) == 0 && s_temp(2) > 0) || ...
+%                         (s_temp(2) == 0 && s_temp(1) > 0) || ...
+%                         (s_temp(1) == 1 && s_temp(2) < 1) || ...
+%                         (s_temp(1) == 0 && s_temp(2) > 0) || ...)
+                    
+                    
                 else % 3 triangoli nella triangolazione
-              
+                    
                     %metto ascisse curvilinee dentro info_trace
                     for i = [1,2]
                         if(s_temp(i) <= 1 && s_temp(i)>=0)
@@ -257,11 +268,15 @@ while(id_tri<=n_triangles && found==0)
                         end
                      end
 
+                else
+                    s_temp(2) = triangle(id_tri,node_on_trace+6);
                 end
+        
                 s_temp(1) = node(tr(node_on_trace)).s;
 
-                if((s_temp(1) > 0 && s_temp(1) < 1) ||...
-                    (tr(node_on_trace+3) ~= 0) )
+                if( (s_temp(1) > 0 && s_temp(1) < 1) ||...
+                    (tr(node_on_trace+3) ~= 0) || ...
+                    (s_temp(1) < 0 && s_temp(2) >1) || (s_temp(2) < 0 && s_temp(1) >1))
 
                     % è tagliato 
                     found = 1;
