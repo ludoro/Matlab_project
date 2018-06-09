@@ -7,13 +7,19 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
-coda = queue;
+
+
 while(~isempty(queue) || ~isempty(queue_temp))
     %svuoto queue_temp
     checking_queue_temp;
     
 %controllo solo la queue vera
 while(~isempty(queue))
+    
+    %!!!!!!!!!!!!!! DEBUGGING !!!!!!!!!!!!!!!!!!
+    %test
+    
+    
     %queue.id
     id_tet = queue(1).id;
     
@@ -33,7 +39,7 @@ while(~isempty(queue))
             
         end
         
-        if(side(1) == side(2) == side(3) == side(4))
+        if(side(1) == side(2) && side(2) == side(3) && side(3) == side(4))
             it_is_near;
         else
             %potrebbe essere tagliato 
@@ -219,6 +225,7 @@ while(~isempty(queue))
 
 %---------------1 nodo su piano, altri discordi----------------------------
             elseif(sum == 3 || sum == 5)
+                
                 if(side(1) == side(2))
                     nodes_together = [1,2];
                     if(side(3) == 4)
@@ -334,7 +341,7 @@ while(~isempty(queue))
                     %metto nodes_together
                     for i = 3:4
                         info_fract(id_f).cut_tet(end).points(i,:) = ...
-                            tet(id_tet).P(nodes_together(i-2));   
+                            node(tet(id_tet).P(nodes_together(i-2))).coord;   
                     end
 
                     %metto intersezioni
@@ -358,19 +365,19 @@ while(~isempty(queue))
 %---------------2 nodi sul piano, altri concordi---------------------------               
             elseif(sum == 10 || sum == 6)
                 
-                if(side(1) == side(2) == 4)
+                if(side(1) == side(2) && side(1) == 4)
                     nodes_on_plane = [1,2];
                     nodes_together = [3,4];
-                elseif(side(1) == side(3) == 4)
+                elseif(side(1) == side(3) && side(1) == 4)
                     nodes_on_plane = [1,3];
                     nodes_together = [2,4];
-                elseif(side(1) == side(4) == 4)
+                elseif(side(1) == side(4) && side(1) == 4)
                     nodes_on_plane = [1,4];
                     nodes_together = [2,3];
-                elseif(side(2) == side(3) == 4)
+                elseif(side(2) == side(3) && side(2) == 4)
                     nodes_on_plane = [2,3];
                     nodes_together = [1,4];
-                elseif(side(2) == side(4) == 4)
+                elseif(side(2) == side(4) && side(2) == 4)
                     nodes_on_plane = [2,4];
                     nodes_together = [1,3];
                 else%side(3) == side(4) == 4
@@ -410,12 +417,12 @@ while(~isempty(queue))
 
                     %metto punti e facce 
                     info_fract(id_f).cut_tet(end).points = zeros(4,3);
-                    info_fract(id_f).cut_tet(end).faces = zeros(4,3);
+                    info_fract(id_f).cut_tet(end).faces = zeros(4,4);
                     for i=1:4
                         info_fract(id_f).cut_tet(end).points(i,:) = ...
-                            tet(id_tet).P(i);
+                            node(tet(id_tet).P(i)).coord;
                         info_fract(id_f).cut_tet(end).faces(i,:) = ...
-                            find(1:4~=i);
+                            [find(1:4~=i),0];
                     end
 
                     %metto poliedri
@@ -431,27 +438,27 @@ while(~isempty(queue))
 %---------------2 nodi sul piano, altri discordi---------------------------
             elseif(sum == 8)
                 
-                if(side(1) == side(2) == 4)
+                if(side(1) == side(2))
                     nodes_on_plane = [1,2];
                     lonely_point_1 = 3;
                     lonely_point_2 = 4;
-                elseif(side(1) == side(3) == 4)
+                elseif(side(1) == side(3))
                     nodes_on_plane = [1,3];
                     lonely_point_1 = 2;
                     lonely_point_2 = 4;
-                elseif(side(1) == side(4) == 4)
+                elseif(side(1) == side(4))
                     nodes_on_plane = [1,4];
                     lonely_point_1 = 2;
                     lonely_point_2 = 3;
-                elseif(side(2) == side(3) == 4)
+                elseif(side(2) == side(3))
                     nodes_on_plane = [2,3];
                     lonely_point_1 = 1;
                     lonely_point_2 = 4;
-                elseif(side(2) == side(4) == 4)
+                elseif(side(2) == side(4))
                     nodes_on_plane = [2,4];
                     lonely_point_1 = 1;
                     lonely_point_2 = 3;
-                else%side(3) == side(4) == 4
+                else%side(3) == side(4)
                     nodes_on_plane = [3,4];
                     lonely_point_1 = 1;
                     lonely_point_2 = 2;
@@ -459,6 +466,7 @@ while(~isempty(queue))
                 e_temp(1) = ...
                     which_edge(tet(id_tet).P(lonely_point_1),...
                                tet(id_tet).P(lonely_point_2));
+                
                 if(edge(e_temp(1)).checked == -1)
                     
                     node_plane(end+1).in_info = -1;
@@ -514,7 +522,7 @@ while(~isempty(queue))
                     %metto nodes_on_plane
                     for i = 2:3
                         info_fract(id_f).cut_tet(end).points(i,:) = ...
-                        tet(id_tet).P(nodes_on_plane(i-1));
+                        node(tet(id_tet).P(nodes_on_plane(i-1))).coord;
                     end
                     %metto punto intersezione
                     info_fract(id_f).cut_tet(end).points(5,coord_to_use(id_f,:)) = ...
@@ -525,7 +533,7 @@ while(~isempty(queue))
                     up = 1;
                     middle = [2,3,5];
                     down = 4;
-                    id_cut = lenght(info_fract(id_f).cut_tet);
+                    id_cut = length(info_fract(id_f).cut_tet);
                     slicing_tet;
                     enqueue_tet_to_check;   
                 else
@@ -535,19 +543,22 @@ while(~isempty(queue))
 %---------------3 nodi sul piano-------------------------------------------
             elseif(sum == 13 || sum == 11)
                 
-                if(side(1) == side(2) == side(3) == 4)
+                if(side(4) == 1 || side(4)==-1)
                     nodes_on_plane = [1,2,3];
                     lonely_point = 4;
-                elseif(side(2) == side(3) == side(4) == 4)
+                elseif(side(1)== 1 || side(1)==-1)
                     nodes_on_plane = [2,3,4];
                     lonely_point = 1;
-                else%side(3) == side(4) == side(1) == 4
+                elseif(side(2) == 1 || side(2) == -1)
                     nodes_on_plane = [1,3,4];
                     lonely_point = 2;
+                else%side(3)==1 || s1de(3)==-1
+                    nodes_on_plane = [1,2,4];
+                    lonely_point = 3;
                 end
 
                 for i = 1:3
-                    if(node(tet(id_tet).P(nodes_on_plane(i))).checked == -1)
+                    if(node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane == -1)
                         node_plane(end+1).coord = ...
                             node(tet(id_tet).P(nodes_on_plane(i))).coord(coord_to_use(id_f,:));
 
@@ -578,12 +589,12 @@ while(~isempty(queue))
 
                     %metto punti e facce 
                     info_fract(id_f).cut_tet(end).points = zeros(4,3);
-                    info_fract(id_f).cut_tet(end).faces = zeros(4,3);
+                    info_fract(id_f).cut_tet(end).faces = zeros(4,4);
                     for i=1:4
                         info_fract(id_f).cut_tet(end).points(i,:) = ...
-                            tet(id_tet).P(i);
+                            node(tet(id_tet).P(i)).coord;
                         info_fract(id_f).cut_tet(end).faces(i,:) = ...
-                            find(1:4~=i);
+                            [find(1:4~=i),0];
                     end
 
                     %metto poliedri
@@ -600,6 +611,8 @@ while(~isempty(queue))
                     %------VICINO------
                     it_is_near;
                 end
+            else
+                it_is_near;
             end
         end
     elseif(tet(id_tet).status_queue ~= 0)

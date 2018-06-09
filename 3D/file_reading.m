@@ -155,6 +155,30 @@ fp = fopen('barra.1.face','r');
   %STRUTTURA di fract_vertex : fract_vertex(n,2) coordinata y del vertice n
   %                            fract_vertex(n,3) coordinata z del vertice n
   
+  %!!!!!!!!!!!!!!!! --DEBUGGING-- !!!!!!!!!!!!!!!!!!!!
+%   x_debug=[-2 2];
+%   m=0;
+%   q=5;
+%   z_debug=[-2 2];
+%   fract_vertex(1,:)=[x_debug(1) m*x_debug(1)+q z_debug(1)];
+%   fract_vertex(2,:)=[x_debug(1) m*x_debug(1)+q z_debug(2)];
+%   fract_vertex(4,:)=[x_debug(2) m*x_debug(2)+q z_debug(2)];
+%   fract_vertex(3,:)=[x_debug(2) m*x_debug(2)+q z_debug(1)];
+ 
+ 
+
+% esempio di punto che tocca
+%   fract_vertex(1,:) = [-0.2, 1.25, 0];
+%   fract_vertex(2,:) = [0.7, 1.25, 0.5];
+%   fract_vertex(4,:) = [-0.2, 1.25, 1];
+%   fract_vertex(3,:) = [-1, 1.25, 0.5];
+    
+fract_vertex(1,:) = [-0.8, 0.5, 0];
+fract_vertex(2,:) = [0.8, 0.5, 0];
+fract_vertex(4,:) = [0.8, 4.5, 0];
+fract_vertex(3,:) = [-0.8, 4.5, 0];
+  
+  
   A = fscanf(fp,'%d',2); 
   n_fracts = A(1); 
   
@@ -189,6 +213,9 @@ node_plane = repmat(struct('coord', [], 'sides',[],'in_info',-1,'is_out',-1,...
 % e quindi non ci sono informazioni su info_node
 %from_edge = 1 deriva intersezione piano edge
 %          = 0 deriva da un nodo che giace sul piano
+
+
+%Non chiamiamo troppe volte intersect 2D! (Salviamo qui le info)
 info_node = repmat(struct('n_intersect',0,'in',0,...
                           'out',0,'in_info',[0 0]),0,1);
                       

@@ -10,7 +10,8 @@ global fract_vertex;
 global accuracy;
 global node_plane;
 global coord_to_use
-
+in = 0;
+out = 0;
 if(isempty(node_plane(p_1).sides) || isempty(node_plane(p_1).sides))
     disp('Big problem in intersect_2D');
 end
@@ -60,6 +61,7 @@ while(i <= num_f && flag)
        
         st = A\b; %prima posizione t(segmento) , seconda posizione s(frattura)
         %devo controllare i valori di st(2)
+ 
         if(st(2)<1-accuracy && st(2)>accuracy)
             if(in_out<=2)
                 flag=0;
@@ -168,7 +170,7 @@ while(i <= num_f && flag)
                 end
             end
         end
-    else%side(1) + side(2) == 4
+    elseif(side(1) + side(2) == 4)
         %trovo punto medio G del lato della frattura
         G = (node_plane(p_1).coord + node_plane(p_2).coord)/2;
         if(norm(G-F(i,:),inf) < norm(G-node_plane(p_1).coord,inf))
@@ -181,6 +183,7 @@ while(i <= num_f && flag)
                 n_intersect = 0;
                 edge_intersection(1) = i;
                 edge_intersection(2) = 0;
+                
             elseif(in_out == 2)
                 
                 flag = 0;

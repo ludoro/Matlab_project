@@ -4,18 +4,15 @@
 %edge_to_avoid = contiene l'indice dell'edge di aggancio
 
 %riempo queue_temp
-
-
-
 %trovo indice faccia che sta sul piano
 face_temp = tet(id_tet).faces(lonely_point);
-
 % quello speculare non va aggiunto in queue_temp, 
 % cambio solo lo status
-if(tet(neigh(id_tet,lonely_point)).status_queue == -1)
-    tet(neigh(id_tet,lonely_point)).status_queue = -5;
+if(neigh(id_tet,lonely_point) ~= -1)
+    if(tet(neigh(id_tet,lonely_point)).status_queue == -1)
+        tet(neigh(id_tet,lonely_point)).status_queue = -5;
+    end
 end
-
 %aggiungo vicini di edge
 for i = 1:3
     e_temp = which_edge(face(face_temp,i),face(face_temp,mod(i,3)+1));
@@ -26,7 +23,8 @@ for i = 1:3
                tet(edge(e_temp).tets(j)).status_queue == -1)
                 %aggiungo il j-esimo in queue_temp
                 queue_temp(end+1,1) = edge(e_temp).tets(j);
-                queue_temp(end+1,2) = e_temp;
+                queue_temp(end,2) = e_temp;
+                tet(edge(e_temp).tets(j)).status_queue = -5;
             end
         end
     end

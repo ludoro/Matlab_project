@@ -7,8 +7,6 @@ function [it_is_cut] = intersect_3D(id_f,id_node_plane,third_coord)
 % it_is_cut = 0 se non è tagliato
 % it_is_cut = 1 se è tagliato nello step 3 
 % it_is_cut = 2 non è tagliato quando tetraedro è appoggiato sul piano
-% it_is_cut = 3 se un vertice della frattura tocca lato proiezione
-% it_is_cut = 4 un vertice della proiezione è sulla frontiera
 % se n_to_check == 2:
 % it_is_cut == 0 o 1
 global fract_vertex;
@@ -17,6 +15,7 @@ global info_fract;
 global fract;
 global node_plane;
 global info_node;
+it_is_cut=0;
 
 %salvo subito coordinate frattura
 num_f = fract(id_f).n_points;
@@ -52,10 +51,12 @@ end
 % allora non si toccano
 if(norm(G_f-G_p,inf) > r_p + r_f)
     it_is_cut = 0;
+    
 else
     %tutta l'impronta è tutta interna o ha almeno un punto esterno
     
     %--------------------------STEP 2----------------------------------
+    
     %impronta tutta interna 
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
@@ -102,8 +103,12 @@ else
             node_plane(id_node_plane(i)).in_info = size(info_fract(id_f).points,1);
         end
     end
+    
+    
     if(n_to_check > 2)
+        
     if(some_out == 0)
+        
         %faccio poligonazione
         if(isempty(info_fract(id_f).pol(1).v))
             info_fract(id_f).pol(1).v=zeros(n_to_check,1);
@@ -118,7 +123,10 @@ else
         fract(id_f).protocol = 0;
     else
         %-----------STEP 3--------------------
-        disp('entrato step3');
+        
+        %!!!!!!!!!!!! DEGUGGING !!!!!!!!!!!
+        %disp('entrato step3');
+        
         %controllo ed eventualmente inverto P per avere verso concorde
         %controllo con prodotto vettoriale
         v_1 = F(2,:) - F(1,:);
@@ -169,7 +177,7 @@ else
                 %id_node_plane(i)
                 j = 1;
                 flag = 0;
-                while(j < size(node_plane(id_node_plane(i)).near_nodes,1)...
+                while(j <= size(node_plane(id_node_plane(i)).near_nodes,1)...
                         && flag == 0)
                     if(node_plane(id_node_plane(i)).near_nodes(j,1) == ...
                        id_node_plane(mod(i,n_to_check)+1))
@@ -199,14 +207,17 @@ else
                      = intersect_2D(id_f,id_node_plane(i),...
                               id_node_plane(mod(i,n_to_check)+1));
                           
+                    
+                    
                     in_info = [0 0];
                     
                     %lato "trapassa" la frattura
                     if(in ~= 0 || out_temp ~= 0)
                         
                         %salvare in info_nodes
-                        info_node(end+1).in = in;
-                        info_node(end).out = out_temp;
+                        %Nell'impronta vicina, il verso è opposto!!!!!
+                        info_node(end+1).in = out_temp;
+                        info_node(end).out = in;
                         info_node(end).n_intersect = n_intersect;
                         
                         %salvare in info_fract le intersezioni
@@ -247,7 +258,7 @@ else
                         node_plane(id_node_plane(mod(i,n_to_check)+1)).near_nodes(end,2) = -1;
                     end 
                 end
-                
+
                 %----blocco algoritmico di "uscita/entrata" dalla frattura-
                 if(in ~= 0)
                     if(out == 0)
@@ -278,6 +289,7 @@ else
                 end
             end
         end
+        
         if(in_first ~= 0)
             %devo inserire punti tra out e in_first
              j = out;
@@ -289,6 +301,7 @@ else
         end
         
         %DETTAGLIO: quando è tagliato oppure no?
+        
         if(length(pol_temp) > 2)
             if(isempty(info_fract(id_f).pol(1).v))
                 info_fract(id_f).pol(1).v = pol_temp;
@@ -300,6 +313,7 @@ else
             fract(id_f).protocol = 0;
         else
             if(fract(id_f).protocol == -1)
+                
                 %controllo se baricentro della frattura è interno o esterno
                 side_int_imprint = which_side_2D(G_p,...
                                    node_plane(id_node_plane(1)).coord,...
@@ -308,8 +322,8 @@ else
                 c = 1;
                 while(c <= n_to_check && G_f_is_out == 0)
                     side_G_f = which_side_2D(G_f,...
-                                node_plane(id_node_plane(i)).coord,...
-                                node_plane(id_node_plane(mod(i,n_to_check)+1)).coord);
+                                node_plane(id_node_plane(c)).coord,...
+                                node_plane(id_node_plane(mod(c,n_to_check)+1)).coord);
                     if(side_G_f == -side_int_imprint)
                         G_f_is_out = 1;
                     end
@@ -322,6 +336,7 @@ else
             end
             
             if(fract(id_f).protocol ~= 1)
+                
                 if(length(pol_temp) == 2)
                     counter = 0;
                     points_inside = [0 0];
@@ -341,7 +356,7 @@ else
                         end
 
                     else%counter == 1 || counter == 0
-                        it_is_cut = 2;
+                        it_is_cut = 1;
                     end
             
                 elseif(length(pol_temp) == 1)
@@ -352,13 +367,14 @@ else
                         if(node_plane(id_node_plane(i)).is_out == 0)
                             one_inside = i;
                         end
+                        i=i+1;
                     end
                     
                     if(one_inside == 0)
-                        it_is_cut = 3;
+                        it_is_cut = 1;
                     else%one_inside == nodo interno
                         if(node_plane(id_node_plane(one_inside)).from_edge == 1)
-                            it_is_cut = 4;
+                            it_is_cut = 1;
                         else
                             it_is_cut = 0;
                         end
@@ -367,61 +383,20 @@ else
                     
                     if(in_first == 0)
                         
-                        if(fract(id_f).protocol == 0 || ...
-                           fract(id_f).protocol == 1)
-                            %frattura esterna a tetraedro
-                            it_is_cut = 0;
-                        else%controllo G_f
-                            %controllo se baricentro della frattura è interno o esterno
-                            side_int_imprint = which_side_2D(G_p,...
-                                               node_plane(id_node_plane(1)).coord,...
-                                               node_plane(id_node_plane(2)).coord);
-                            G_f_is_out = 0; %flag che indica in o out di G_f
-                            c = 1;
-                            while(c <= n_to_check && G_f_is_out == 0)
-                                side_G_f = which_side_2D(G_f,...
-                                            node_plane(id_node_plane(i)).coord,...
-                                            node_plane(id_node_plane(mod(i,n_to_check)+1)).coord);
-                                if(side_G_f == -side_int_imprint)
-                                    G_f_is_out = 1;
-                                end
-                                c = c+1;
-                            end
-                            
-                            if(G_f_is_out == 0)%interno
-                                it_is_cut = 1;
-                            else%esterno
-                                it_is_cut = 0;
-                            end
-                        end
-                    else%in_first != 0
-                        %controllo se baricentro della frattura è interno o esterno
-                        side_int_imprint = which_side_2D(G_p,...
-                                           node_plane(id_node_plane(1)).coord,...
-                                           node_plane(id_node_plane(2)).coord);
-                        G_f_is_out = 0; %flag che indica in o out di G_f
-                        c = 1;
-                        while(c <= n_to_check && G_f_is_out == 0)
-                            side_G_f = which_side_2D(G_f,...
-                                       node_plane(id_node_plane(i)).coord,...
-                                       node_plane(id_node_plane(mod(i,n_to_check)+1)).coord);
-                            if(side_G_f == -side_int_imprint)
-                                G_f_is_out = 1;
-                            end
-                            c = c+1;
-                        end
-                        
-                        if(G_f_is_out == 0)
-                            %interno
-                            it_is_cut = 1;
-                        else%G_f_is_out == 1
-                            %esterno
-                            it_is_cut = 3;
-                        end
+                        %controllo G_f
+                        %so che se mi trovo in questo punto allora
+                        %fract.protocol~=1, quindi G_f è esterno    
+                        it_is_cut=0;
+                    else%in_first ~= 0
+                        %so che se mi trovo in questo punto allora
+                        %fract.protocol~=1, quindi G_f è esterno
+                       
+                        it_is_cut=1;
                     end
                 end
             end
         end
+       
     end
     
     else % n_to_check == 2
@@ -430,12 +405,14 @@ else
             %entrambi interni, non c'è taglio.
             it_is_cut = 0;
             
-        else%bisogna se sono propriamente interni
+        else%bisogna vedere se sono propriamente interni
             it_is_in = [1,1];
+            
             for i = 1:2
                 j = 1;
-                while(j < num_f && it_is_in(i) == 1)
-                    if(side(i,j) == side_int)
+                while(j <= num_f && it_is_in(i) == 1)
+                    if(side(i,j) ~= side_int)
+                        
                         it_is_in(i) = 0;
                     end
                     j=j+1;
@@ -443,6 +420,7 @@ else
             end
             if(it_is_in(1) == 1 || it_is_in(2) == 1)
                 it_is_cut = 1;
+                
             else
                 [garbage1,garbage2,in,out]... 
                  = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));

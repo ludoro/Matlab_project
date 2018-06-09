@@ -556,7 +556,7 @@ while(id_tet <= n_tets && found == 0)
                     info_fract(id_f).cut_tet(1).points(i,:) = ...
                         node(tet(id_tet).P(i)).coord;
                     info_fract(id_f).cut_tet(1).faces(i,:) = ...
-                        [find(1:4~=i),0];
+                        [find(1:4~=i);
                 end
                 
                 %metto poliedri
