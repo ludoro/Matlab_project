@@ -3,6 +3,7 @@ global info_fract;
 global node;
 global face;
 global tet;
+if(info_fract(id_f).near_tet(1).id~=0)
 for j = 1:length(info_fract(id_f).near_tet)
     id_tet = info_fract(id_f).near_tet(j).id;
     for i = 1:4
@@ -12,6 +13,7 @@ for j = 1:length(info_fract(id_f).near_tet)
         fill3(X,Y,Z,[1,0.4,0.7],'FaceAlpha',0.2,'EdgeAlpha',0.6);   
         hold on;
     end
+end
 end
 end
 

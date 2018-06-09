@@ -21,15 +21,18 @@ while(~isempty(queue_temp))
         %3 nodi sul piano 1 fuori
         if(sum == 13 || sum == 11)
             %"estendo" queue_temp
-            if(side(1) == side(2) == side(3) == 4)
+            if(side(4) == 1 || side(4)==-1)
                 nodes_on_plane = [1,2,3];
                 lonely_point = 4;
-            elseif(side(2) == side(3) == side(4) == 4)
+            elseif(side(1)== 1 || side(1)==-1)
                 nodes_on_plane = [2,3,4];
                 lonely_point = 1;
-            else%side(3) == side(4) == side(1) == 4
+            elseif(side(2) == 1 || side(2) == -1)
                 nodes_on_plane = [1,3,4];
                 lonely_point = 2;
+            else%side(3)==1 || s1de(3)==-1
+                nodes_on_plane = [1,2,4];
+                lonely_point = 3;
             end
             
             %controllo se è tagliato
@@ -91,23 +94,23 @@ while(~isempty(queue_temp))
             
             
         elseif(sum == 8)
-            if(side(1) == side(2) == 4)
+            if(side(1) == side(2))
                 nodes_on_plane = [1,2];
                 lonely_point_1 = 3;
                 lonely_point_2 = 4;
-            elseif(side(1) == side(3) == 4)
+            elseif(side(1) == side(3))
                 nodes_on_plane = [1,3];
                 lonely_point_1 = 2;
                 lonely_point_2 = 4;
-            elseif(side(1) == side(4) == 4)
+            elseif(side(1) == side(4))
                 nodes_on_plane = [1,4];
                 lonely_point_1 = 2;
                 lonely_point_2 = 3;
-            elseif(side(2) == side(3) == 4)
+            elseif(side(2) == side(3))
                 nodes_on_plane = [2,3];
                 lonely_point_1 = 1;
                 lonely_point_2 = 4;
-            elseif(side(2) == side(4) == 4)
+            elseif(side(2) == side(4))
                 nodes_on_plane = [2,4];
                 lonely_point_1 = 1;
                 lonely_point_2 = 3;

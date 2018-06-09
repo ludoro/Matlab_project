@@ -147,6 +147,16 @@ fp = fopen('barra.1.face','r');
   %STRUTTURA di fract_vertex : fract_vertex(n,2) coordinata y del vertice n
   %                            fract_vertex(n,3) coordinata z del vertice n
   
+  %!!!!!!!!!!!!!!!1 --DEBUGGING-- !!!!!!!!!!!!!!!!!!!!
+  x_debug=[-0.5 1.5];
+  m=0;
+  q=1;
+  z_debug=[-2 2];
+  fract_vertex(1,:)=[x_debug(1) m*x_debug(1)+q z_debug(1)];
+  fract_vertex(2,:)=[x_debug(1) m*x_debug(1)+q z_debug(2)];
+  fract_vertex(4,:)=[x_debug(2) m*x_debug(2)+q z_debug(2)];
+  fract_vertex(3,:)=[x_debug(2) m*x_debug(2)+q z_debug(1)];
+  
   A = fscanf(fp,'%d',2); 
   n_fracts = A(1); 
   

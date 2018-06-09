@@ -21,9 +21,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             side(i) = node(tet(id_tet).P(i)).side;
         
     end  
-    if( ~(side(1) == side(2) == side(3) == side(4)) )
+    if( ~(side(1) == side(2) && side(2) == side(3) && side(3) == side(4)) )
         %potrebbe essere tagliato 
-        
+       
         sum = side(1)+side(2)+side(3)+side(4);
 %--------------------------------------------------------------------------
 %------------------------INIZIO SUDDIVISIONE-------------------------------
@@ -87,6 +87,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             
             if(it_is_cut ~= 0)
                 %------------TAGLIATO-------------
+                
                 found = 1;
                 tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
@@ -169,12 +170,16 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 
                 info_fract(id_f).cut_tet(1).points = zeros(8,3);
                 %inizio con i 2 sopra
-                info_fract(id_f).cut_tet(1).points(1:2,:) = ...
-                    node(tet(id_tet).P(nodes_together_1)).coord;
+                info_fract(id_f).cut_tet(1).points(1,:) = ...
+                    node(tet(id_tet).P(nodes_together_1(1))).coord;
+                info_fract(id_f).cut_tet(1).points(2,:) = ...
+                    node(tet(id_tet).P(nodes_together_1(2))).coord;
                 
                 %metto i 2 sotto
-                info_fract(id_f).cut_tet(1).points(3:4,:) = ...
-                    node(tet(id_tet).P(nodes_together_2)).coord;
+                info_fract(id_f).cut_tet(1).points(3,:) = ...
+                    node(tet(id_tet).P(nodes_together_2(1))).coord;
+                info_fract(id_f).cut_tet(1).points(4,:) = ...
+                    node(tet(id_tet).P(nodes_together_2(2))).coord;
                 
                 %metto le 4 intersezioni
                 for i = 5:8
@@ -289,7 +294,9 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
             
             if(it_is_cut ~= 0)
+                %---------tagliato-----------
                 found = 1;
+                tet(id_tet).status_queue=0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
                 %devo riempire points e quindi up middle e down
                 
@@ -324,24 +331,24 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 enqueue_tet_to_check;
             end
             
-        %----2 nodi su piano altri concordi-------
+%-------------------2 nodi su piano altri concordi-------------------------
         elseif(sum == 10 || sum == 6)
-            if(side(1) == side(2) == 4)
+            if(side(1) == side(2) && side(1) == 4)
                 nodes_on_plane = [1,2];
                 nodes_together = [3,4];
-            elseif(side(1) == side(3) == 4)
+            elseif(side(1) == side(3) && side(1) == 4)
                 nodes_on_plane = [1,3];
                 nodes_together = [2,4];
-            elseif(side(1) == side(4) == 4)
+            elseif(side(1) == side(4) && side(1) == 4)
                 nodes_on_plane = [1,4];
                 nodes_together = [2,3];
-            elseif(side(2) == side(3) == 4)
+            elseif(side(2) == side(3) && side(2) == 4)
                 nodes_on_plane = [2,3];
                 nodes_together = [1,4];
-            elseif(side(2) == side(4) == 4)
+            elseif(side(2) == side(4) && side(1) == 4)
                 nodes_on_plane = [2,4];
                 nodes_together = [1,3];
-            else%side(3) == side(4) == 4
+            else%side(3) == side(4) && side(3) == 4
                 nodes_on_plane = [3,4];
                 nodes_together = [1,2];
             end
@@ -372,15 +379,17 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:2),third_coord(1:2));
             
             if(it_is_cut == 1)
+                %---------TAGLIATO---------
                 found = 1;
                 info_fract(id_f).cut_tet(1).id = id_tet;
+                tet(id_tet).status_queue=0;
                 
                 %metto punti e facce 
                 info_fract(id_f).cut_tet(1).points = zeros(4,3);
                 info_fract(id_f).cut_tet(1).faces = zeros(4,3);
                 for i=1:4
                     info_fract(id_f).cut_tet(1).points(i,:) = ...
-                        tet(id_tet).P(i);
+                        node(tet(id_tet).P(i)).coord;
                     info_fract(id_f).cut_tet(1).faces(i,:) = ...
                         find(1:4~=i);
                 end
@@ -392,29 +401,29 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 enqueue_tet_to_check;
             end
             
-        %-----2 nodi su piano altri discordi----
+%-------------------2 nodi su piano altri discordi----------------------
         elseif(sum == 8)
-            if(side(1) == side(2) == 4)
+            if(side(1) == side(2))
                 nodes_on_plane = [1,2];
                 lonely_point_1 = 3;
                 lonely_point_2 = 4;
-            elseif(side(1) == side(3) == 4)
+            elseif(side(1) == side(3))
                 nodes_on_plane = [1,3];
                 lonely_point_1 = 2;
                 lonely_point_2 = 4;
-            elseif(side(1) == side(4) == 4)
+            elseif(side(1) == side(4))
                 nodes_on_plane = [1,4];
                 lonely_point_1 = 2;
                 lonely_point_2 = 3;
-            elseif(side(2) == side(3) == 4)
+            elseif(side(2) == side(3))
                 nodes_on_plane = [2,3];
                 lonely_point_1 = 1;
                 lonely_point_2 = 4;
-            elseif(side(2) == side(4) == 4)
+            elseif(side(2) == side(4))
                 nodes_on_plane = [2,4];
                 lonely_point_1 = 1;
                 lonely_point_2 = 3;
-            else%side(3) == side(4) == 4
+            else%side(3) == side(4) 
                 nodes_on_plane = [3,4];
                 lonely_point_1 = 1;
                 lonely_point_2 = 2;
@@ -461,7 +470,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
             it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
             
             if(it_is_cut ~= 0)
-                %----TAGLIATO-----
+                %--------TAGLIATO---------
                 found = 1;
                 tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;
@@ -492,21 +501,24 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 enqueue_tet_to_check;   
             end
             
-        %------3 nodi sul piano-------
+%------------------------ 3 nodi sul piano -------------------------------
         elseif(sum == 13 || sum == 11)
-            if(side(1) == side(2) == side(3) == 4)
+            if(side(4) == 1 || side(4)==-1)
                 nodes_on_plane = [1,2,3];
                 lonely_point = 4;
-            elseif(side(2) == side(3) == side(4) == 4)
+            elseif(side(1)== 1 || side(1)==-1)
                 nodes_on_plane = [2,3,4];
                 lonely_point = 1;
-            else%side(3) == side(4) == side(1) == 4
+            elseif(side(2) == 1 || side(2) == -1)
                 nodes_on_plane = [1,3,4];
                 lonely_point = 2;
+            else%side(3)==1 || s1de(3)==-1
+                nodes_on_plane = [1,2,4];
+                lonely_point = 3;
             end
             
             for i = 1:3
-                if(node(tet(id_tet).P(nodes_on_plane(i))).checked == -1)
+                if(node(tet(id_tet).P(nodes_on_plane(i))).where_on_plane == -1)
                     node_plane(end+1).coord = ...
                         node(tet(id_tet).P(nodes_on_plane(i))).coord(coord_to_use(id_f,:));
                     
@@ -541,7 +553,7 @@ while(id_tet <= n_tets && found == 0 && fract(id_f).protocol ~= 1)
                 info_fract(id_f).cut_tet(1).faces = zeros(4,3);
                 for i=1:4
                     info_fract(id_f).cut_tet(1).points(i,:) = ...
-                        tet(id_tet).P(i);
+                        node(tet(id_tet).P(i)).coord;
                     info_fract(id_f).cut_tet(1).faces(i,:) = ...
                         find(1:4~=i);
                 end
