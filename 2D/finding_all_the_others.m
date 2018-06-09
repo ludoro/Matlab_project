@@ -117,7 +117,7 @@ if(size(queue,1) > 0)
                             a = 1;
                         end
                     
-                    %La s che ci interessa Ã¨ in s_temp(a)
+                    %La s che ci interessa è in s_temp(a)
                     
                     if(called_intersect(points_together(a)) == 1)
                         info_trace(id_t).s(end+1) = s_temp(a);

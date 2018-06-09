@@ -32,11 +32,7 @@ while(id_tri<=n_triangles && found==0)
     if(side(1)~=side(2) || side(2)~=side(3))%potrebbe incrociare la traccia
         
         sum=side(1)+side(2)+side(3);
-        
-  %!!!!!!!!!!DEBUG!!!!!!!!!!!!!!
-       % [id_tri sum]
-        
-        
+
         %---------NESSUN VERTICE SULLA TRACCIA----------%
         if(sum==-1 || sum==1)
             
@@ -141,15 +137,7 @@ while(id_tri<=n_triangles && found==0)
                         [points_together(a),lonely_point,4];
                         
                     end
-                      
-                %traccia completamente interna al triangolo
-%                 elseif((status(1) == 0 && status(2) == 0) || ...
-%                         (s_temp(1) == 0 && s_temp(2) > 0) || ...
-%                         (s_temp(2) == 0 && s_temp(1) > 0) || ...
-%                         (s_temp(1) == 1 && s_temp(2) < 1) || ...
-%                         (s_temp(1) == 0 && s_temp(2) > 0) || ...)
-                    
-                    
+
                 else % 3 triangoli nella triangolazione
                     
                     %metto ascisse curvilinee dentro info_trace
@@ -200,14 +188,7 @@ while(id_tri<=n_triangles && found==0)
                     node_on_trace=i;
                 end
             end
-                
-         %!!!!!!!!!!DEBUG!!!!!!!!!!!
-%                 id_tri
-%                 side
-%                 node_on_trace
-%                 called_which_side
-%                 s_temp(1)
-                
+
             if(s_temp(1)>=0 && s_temp(1)<=1 )
                 found=1;
                 %La s del nodo non è stata inserita in precedenza se è

@@ -144,6 +144,14 @@ fp = fopen('barra.1.face','r');
   A = fscanf(fp,'%f',[4 n_fract_vertex]);
   fract_vertex = A([2 3 4],:)'; 
   
+  %!!!!!!!!!!!!! DEBUGGING !!!!!!!!!!!!!!
+  
+  fract_vertex(1,:) = [-1.9,0,-3];
+  fract_vertex(2,:) = [-0.1,5,-3];
+  fract_vertex(4,:) = [-0.1,5,3];
+  fract_vertex(3,:) = [-1.9,0,3];
+  
+  
   %STRUTTURA di fract_vertex : fract_vertex(n,2) coordinata y del vertice n
   %                            fract_vertex(n,3) coordinata z del vertice n
   

@@ -7,6 +7,7 @@ global node
 
 % se non sappiamo niente
 if(neigh(id_tri,1) ~= -1)
+%controllo che non sia già tagliato
 if(triangle(neigh(id_tri,1),10) ~=0 )
     queue(end+1).id = neigh(id_tri,1);
     queue(end).points(1) = triangle(id_tri,2);
@@ -19,6 +20,7 @@ end
 end
 
 if(neigh(id_tri,2) ~= -1)
+%controllo che non sia già tagliato
 if(triangle(neigh(id_tri,2),10) ~=0)
     queue(end+1).id = neigh(id_tri,2);
     queue(end).points(1) = triangle(id_tri,1);
@@ -32,6 +34,7 @@ end
 end
 
 if(neigh(id_tri,3) ~= -1)
+%controllo che non sia già tagliato
 if(triangle(neigh(id_tri,3),10) ~=0)
     queue(end+1).id = neigh(id_tri,3);
     queue(end).points(1) = triangle(id_tri,1);

@@ -425,8 +425,8 @@ else
     end
     
     else % n_to_check == 2
-        if(node_plane(id_node_plane(1).is_out) == 0 && ...
-           node_plane(id_node_plane(2).is_out) == 0)
+        if(node_plane(id_node_plane(1)).is_out == 0 && ...
+           node_plane(id_node_plane(2)).is_out == 0)
             %entrambi interni, non c'è taglio.
             it_is_cut = 0;
             
