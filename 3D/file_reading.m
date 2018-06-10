@@ -156,15 +156,19 @@ fp = fopen('barra.1.face','r');
   %                            fract_vertex(n,3) coordinata z del vertice n
   
   %!!!!!!!!!!!!!!!! --DEBUGGING-- !!!!!!!!!!!!!!!!!!!!
-%   x_debug=[-2 2];
+%   x_debug=[-0.95 -0.8];
 %   m=0;
-%   q=5;
-%   z_debug=[-2 2];
+%   q=2;
+%   z_debug=[-0.1 -0.25];
 %   fract_vertex(1,:)=[x_debug(1) m*x_debug(1)+q z_debug(1)];
 %   fract_vertex(2,:)=[x_debug(1) m*x_debug(1)+q z_debug(2)];
 %   fract_vertex(4,:)=[x_debug(2) m*x_debug(2)+q z_debug(2)];
 %   fract_vertex(3,:)=[x_debug(2) m*x_debug(2)+q z_debug(1)];
- 
+
+% fract_vertex(1,:) = [0, 2.5, -2];
+% fract_vertex(2,:) = [-0.9, 2.5, -0.75];
+% fract_vertex(4,:) = [0, 2.5, 0.5];
+% fract_vertex(3,:) = [0.9, 2.5, -0.75];
  
 
 % esempio di punto che tocca
@@ -173,10 +177,16 @@ fp = fopen('barra.1.face','r');
 %   fract_vertex(4,:) = [-0.2, 1.25, 1];
 %   fract_vertex(3,:) = [-1, 1.25, 0.5];
     
-fract_vertex(1,:) = [-0.8, 0.5, 0];
-fract_vertex(2,:) = [0.8, 0.5, 0];
-fract_vertex(4,:) = [0.8, 4.5, 0];
-fract_vertex(3,:) = [-0.8, 4.5, 0];
+% fract_vertex(1,:) = [-0.8, -1, -1.5];
+% fract_vertex(2,:) = [0.8, -1, -1.5];
+% fract_vertex(4,:) = [0.8, 6, -1.5];
+% fract_vertex(3,:) = [-0.8, 6, -1.5];
+
+fract_vertex(1,:) = [-1, -1, -1.5];
+fract_vertex(2,:) = [1, 0.5, 0];
+fract_vertex(4,:) = [1, 6, 0];
+fract_vertex(3,:) = [-1, 5, -1.5];
+
   
   
   A = fscanf(fp,'%d',2); 

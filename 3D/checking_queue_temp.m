@@ -1,12 +1,13 @@
+
 while(~isempty(queue_temp))
-    
+
     id_tet = queue_temp(1,1);
-    tet(id_tet).status_queue
+    
     % se lo status_queue ~ da 5, già stato controllato
     if(tet(id_tet).status_queue == -5)
         
         %chiamo which_side
-        called_which_side = [0,0,0,0];
+        
         side = [0,0,0,0];
         for i =1:4
             if(node(tet(id_tet).P(i)).side == 0)
@@ -57,11 +58,24 @@ while(~isempty(queue_temp))
                   6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
             end
             
-            it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+            %se il tetraedro opposto è tagliato, allora lo è anche
+            %questo, senza bisogno di chiamare intersect_3D
+            if(neigh(id_tet,lonely_point)==-1)
+                it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+            else
+                if(tet(neigh(id_tet,lonely_point)).status_queue==0)
+                    it_is_cut=1;
+                elseif(tet(neigh(id_tet,lonely_point)).status_queue>0)
+                    it_is_cut=0;
+                else
+                    it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+                end
+            end
             
             if(it_is_cut ~= 0 && it_is_cut ~=2)
                 %-----tagliato------
                 
+                tet(id_tet).status_queue=0;
                 if(info_fract(id_f).cut_tet(1).id == 0)
                     %dove inserire il tetraedro tagliato
                     a = 1;
@@ -74,12 +88,12 @@ while(~isempty(queue_temp))
                 
                 %metto punti e facce 
                 info_fract(id_f).cut_tet(a).points = zeros(4,3);
-                info_fract(id_f).cut_tet(a).faces = zeros(4,3);
+                info_fract(id_f).cut_tet(a).faces = zeros(4,4);
                 for i=1:4
                     info_fract(id_f).cut_tet(a).points(i,:) = ...
-                            tet(id_tet).P(i);
+                            node(tet(id_tet).P(i)).coord;
                     info_fract(id_f).cut_tet(a).faces(i,:) = ...
-                            find(1:4~=i);
+                            [find(1:4~=i),0];
                 end
                 
                 %metto poliedri
@@ -172,14 +186,14 @@ while(~isempty(queue_temp))
                 
                 %metto punto in alto
                 info_fract(id_f).cut_tet(a).points(1,:) = ...
-                    tet(id_tet).P(lonely_point_1);
+                    node(tet(id_tet).P(lonely_point_1)).coord;
                 %metto punto basso
                 info_fract(id_f).cut_tet(a).points(4,:) = ...
-                    tet(id_tet).P(lonely_point_2);
+                    node(tet(id_tet).P(lonely_point_2)).coord;
                 %metto nodes_on_plane
                 for i = 2:3
                     info_fract(id_f).cut_tet(a).points(i,:) = ...
-                    tet(id_tet).P(nodes_on_plane(i-1));
+                    node(tet(id_tet).P(nodes_on_plane(i-1))).coord;
                 end
                 %metto punto intersezione
                 info_fract(id_f).cut_tet(a).points(5,coord_to_use(id_f,:)) = ...

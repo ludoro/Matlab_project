@@ -1,5 +1,5 @@
 id_tet = 0;
-called_which_side = [0,0,0];
+%called_which_side = [0,0,0];
 side = [0,0,0,0];
 lonely_point = 0;
 nodes_together = [0,0,0];
@@ -7,6 +7,7 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
+
 
 
 while(~isempty(queue) || ~isempty(queue_temp))
@@ -27,7 +28,7 @@ while(~isempty(queue))
     % già tagliato
     if(id_tet > last_checked && tet(id_tet).status_queue ~=0)
         %id_node_plane = [-1,-1,-1,-1]; %indici nodi 
-        called_which_side = [0,0,0,0]; %flag
+        %called_which_side = [0,0,0,0]; %flag
         %chiamo which_side
         for i =1:4
             if(node(tet(id_tet).P(i)).side == 0)
@@ -540,7 +541,7 @@ while(~isempty(queue))
                     %-----VICINO-----
                     it_is_near;
                 end       
-%---------------3 nodi sul piano-------------------------------------------
+%-----------------------3 nodi sul piano----------------------------------
             elseif(sum == 13 || sum == 11)
                 
                 if(side(4) == 1 || side(4)==-1)
@@ -579,8 +580,19 @@ while(~isempty(queue))
                       6-coord_to_use(id_f,1)-coord_to_use(id_f,2));
                 end
                 
-                %chiamo intersect
-                it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+                %se il tetraedro opposto è tagliato, allora lo è anche
+                %questo, senza bisogno di chiamare intersect_3D
+                if(neigh(id_tet,lonely_point)==-1)
+                    it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+                else
+                    if(tet(neigh(id_tet,lonely_point)).status_queue==0)
+                        it_is_cut=1;
+                    elseif(tet(neigh(id_tet,lonely_point)).status_queue>0)
+                        it_is_cut=0;
+                    else
+                        it_is_cut = intersect_3D(id_f,id_node_plane(1:3),third_coord(1:3));
+                    end
+                end
 
                 if(it_is_cut ~= 0 && it_is_cut ~=2)
                     %-----TAGLIATO------

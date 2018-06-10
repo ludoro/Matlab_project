@@ -235,7 +235,13 @@ else
 
                             in_info(k) = size(info_fract(id_f).points,1);
                         end
-                        info_node(end).in_info = in_info;
+                        %se le intersezioni sono 2, il giro successivo
+                        %l'ordine E' SCAMBIATO!!!!
+                        if(n_intersect==2)
+                            info_node(end).in_info = in_info([2 1]);
+                        else
+                            info_node(end).in_info = in_info;
+                        end
                         %salvo su node_plane.near_nodes, ho trovato dei
                         %nuovi vicini
                         node_plane(id_node_plane(i)).near_nodes(end+1,1) = ...
@@ -424,11 +430,38 @@ else
             else
                 [garbage1,garbage2,in,out]... 
                  = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
-                if(in ~= 0 && out ~=0 && in ~= out)
-                    it_is_cut = 1;
+             
+                if(node_plane(id_node_plane(1)).is_out == 1 && ...
+                    node_plane(id_node_plane(2)).is_out == 1)
+                    if(in ~= 0 && out ~=0 && in ~= out)
+                        it_is_cut = 1;
+                    else
+                        it_is_cut = 0;
+                    end
                 else
-                    it_is_cut = 0;
+                    if(node_plane(id_node_plane(1)).is_out == 1)
+                        k=2;
+                    else
+                        k=1;
+                    end
+                    i=0;
+                    found=0;
+                    while(found==0 && i<=num_f)
+                        i=i+1;
+                        if(side(k,i)==2)
+                            found=1;
+                        end
+                    end
+                    i
+                    [in out]
+                    if(in==i || out==i)
+                        it_is_out=0;
+                    else
+                        it_is_out=1;
+                    end
                 end
+                
+                
             end
         end
     end
