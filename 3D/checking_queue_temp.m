@@ -1,4 +1,3 @@
-
 while(~isempty(queue_temp))
 
     id_tet = queue_temp(1,1);

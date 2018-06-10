@@ -17,11 +17,6 @@ while(~isempty(queue) || ~isempty(queue_temp))
 %controllo solo la queue vera
 while(~isempty(queue))
     
-    %!!!!!!!!!!!!!! DEBUGGING !!!!!!!!!!!!!!!!!!
-    %test
-    
-    
-    %queue.id
     id_tet = queue(1).id;
     
     % controllo di non aver già incontrato il tetraedro oppure che non sia
@@ -410,7 +405,6 @@ while(~isempty(queue))
                 
                 %chiamo intersect_3D
                 it_is_cut = intersect_3D(id_f,id_node_plane(1:2),third_coord(1:2));
-
                 if(it_is_cut == 1)
                     %------TAGLIATO---------
                     info_fract(id_f).cut_tet(end+1).id = id_tet;

@@ -35,6 +35,7 @@ in_out=0;
 %dentro -> fuori:   in_out=2
 %fuori -> dentro:   in_out=1
 %fuori -> fuori:    in_out=3
+
 if(node_plane(p_1).is_out==0 && node_plane(p_2).is_out==1)
     in_out=2;
 elseif(node_plane(p_1).is_out==1 && node_plane(p_2).is_out==0)
@@ -123,13 +124,10 @@ while(i <= num_f && flag)
                 % coincida o no con un vertice della frattura
                 edge_intersection(1) = 0;
                 if(st(1) < accuracy && st(1) > -accuracy)
-                    
                     edge_intersection(2) = i;
                 else
                     edge_intersection(2) = mod(i-2,n_to_check)+1;
                 end
-                
-                
             elseif(in_out==1)
                 flag=0;
                 n_intersect=0;
@@ -171,7 +169,7 @@ while(i <= num_f && flag)
             end
         end
     elseif(side(1) + side(2) == 4)
-        %trovo punto medio G del lato della frattura
+        %trovo punto medio G del segmento da analizzare 
         G = (node_plane(p_1).coord + node_plane(p_2).coord)/2;
         if(norm(G-F(i,:),inf) < norm(G-node_plane(p_1).coord,inf))
             %primo punto del lato frattura interno al segmento

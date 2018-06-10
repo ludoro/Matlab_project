@@ -418,7 +418,6 @@ else
                 j = 1;
                 while(j <= num_f && it_is_in(i) == 1)
                     if(side(i,j) ~= side_int)
-                        
                         it_is_in(i) = 0;
                     end
                     j=j+1;
@@ -427,7 +426,10 @@ else
             if(it_is_in(1) == 1 || it_is_in(2) == 1)
                 it_is_cut = 1;
                 
-            else
+            else%nessuno dei due è totalmente interno
+                % due esterni oppure uno completamente esterno e uno
+                % frontiera
+                
                 [garbage1,garbage2,in,out]... 
                  = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
              
@@ -439,29 +441,14 @@ else
                         it_is_cut = 0;
                     end
                 else
-                    if(node_plane(id_node_plane(1)).is_out == 1)
-                        k=2;
-                    else
-                        k=1;
-                    end
-                    i=0;
-                    found=0;
-                    while(found==0 && i<=num_f)
-                        i=i+1;
-                        if(side(k,i)==2)
-                            found=1;
-                        end
-                    end
-                    i
-                    [in out]
-                    if(in==i || out==i)
-                        it_is_out=0;
-                    else
-                        it_is_out=1;
+                    n_intersect = intersect_2D_bis(id_f,id_node_plane(1),id_node_plane(2));
+                    
+                    if(n_intersect == 1)
+                        it_is_cut=0;
+                    else%n_intersect = 2
+                        it_is_cut=1;
                     end
                 end
-                
-                
             end
         end
     end

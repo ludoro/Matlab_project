@@ -10,7 +10,7 @@ for j = 1:length(info_fract(id_f).near_tet)
         X = [node(face(tet(id_tet).faces(i),1)).coord(1),node(face(tet(id_tet).faces(i),2)).coord(1),node(face(tet(id_tet).faces(i),3)).coord(1)];
         Y = [node(face(tet(id_tet).faces(i),1)).coord(2),node(face(tet(id_tet).faces(i),2)).coord(2),node(face(tet(id_tet).faces(i),3)).coord(2)];
         Z = [node(face(tet(id_tet).faces(i),1)).coord(3),node(face(tet(id_tet).faces(i),2)).coord(3),node(face(tet(id_tet).faces(i),3)).coord(3)];
-        fill3(X,Y,Z,[1,0.4,0.7],'FaceAlpha',0.2,'EdgeAlpha',0.6);   
+        fill3(X,Y,Z,[1,0.3,1],'FaceAlpha',0.2,'EdgeAlpha',0.6);   
         hold on;
     end
 end

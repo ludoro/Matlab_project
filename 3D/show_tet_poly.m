@@ -45,14 +45,14 @@ for k = 1:length(v_tet)
     end
     
     if(side_1==1)
-        color_1=[0.4,0.8,1];
+        color_1=[0,0.6,1];
     else
-        color_1=[0.4,1,0.4];
+        color_1=[0,0.95,1];
     end
     if(side_2==1)
-        color_2=[0.4,0.8,1];
+        color_2=[0,0.6,1];
     else
-        color_2=[0.4,1,0.4];
+        color_2=[0,0.95,1];
     end
     
     for i = 1:length(info_fract(id_f).cut_tet(id_tet).poly_1)
@@ -74,7 +74,7 @@ for k = 1:length(v_tet)
                 Z(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,3);
             end
         end
-        fill3(X,Y,Z,color_1,'FaceAlpha',0.65);
+        fill3(X,Y,Z,color_1,'FaceAlpha',0.35);
         hold on
         
         
@@ -99,7 +99,7 @@ for k = 1:length(v_tet)
                 Z(j) = info_fract(id_f).cut_tet(id_tet).points(id_vertex,3);
             end
         end
-        fill3(X,Y,Z,color_2,'FaceAlpha',0.65);
+        fill3(X,Y,Z,color_2,'FaceAlpha',0.35);
         hold on  
     end
 end
