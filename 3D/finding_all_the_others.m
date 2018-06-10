@@ -625,6 +625,5 @@ while(~isempty(queue))
         it_is_near;
     end
     queue = queue(2:end);
-    
 end
 end

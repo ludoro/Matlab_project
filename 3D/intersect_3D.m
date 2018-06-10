@@ -56,7 +56,6 @@ else
     %tutta l'impronta è tutta interna o ha almeno un punto esterno
     
     %--------------------------STEP 2----------------------------------
-    
     %impronta tutta interna 
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
@@ -430,11 +429,12 @@ else
                 % due esterni oppure uno completamente esterno e uno
                 % frontiera
                 
-                [garbage1,garbage2,in,out]... 
-                 = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
+               
              
                 if(node_plane(id_node_plane(1)).is_out == 1 && ...
                     node_plane(id_node_plane(2)).is_out == 1)
+                    [garbage1,garbage2,in,out]... 
+                      = intersect_2D(id_f,id_node_plane(1),id_node_plane(2));
                     if(in ~= 0 && out ~=0 && in ~= out)
                         it_is_cut = 1;
                     else
@@ -442,7 +442,7 @@ else
                     end
                 else
                     n_intersect = intersect_2D_bis(id_f,id_node_plane(1),id_node_plane(2));
-                    
+                    n_intersect
                     if(n_intersect == 1)
                         it_is_cut=0;
                     else%n_intersect = 2

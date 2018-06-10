@@ -146,24 +146,24 @@ fp = fopen('barra.1.face','r');
   
   %!!!!!!!!!!!!! DEBUGGING !!!!!!!!!!!!!!
   
-  fract_vertex(1,:) = [-1.9,0,-3];
-  fract_vertex(2,:) = [-0.1,5,-3];
-  fract_vertex(4,:) = [-0.1,5,3];
-  fract_vertex(3,:) = [-1.9,0,3];
-  
+%   fract_vertex(1,:) = [-1.9,0,-3];
+%   fract_vertex(2,:) = [-0.1,5,-3];
+%   fract_vertex(4,:) = [-0.1,5,3];
+%   fract_vertex(3,:) = [-1.9,0,3];
+%   
   
   %STRUTTURA di fract_vertex : fract_vertex(n,2) coordinata y del vertice n
   %                            fract_vertex(n,3) coordinata z del vertice n
   
   %!!!!!!!!!!!!!!!! --DEBUGGING-- !!!!!!!!!!!!!!!!!!!!
-%   x_debug=[-0.95 -0.8];
-%   m=0;
-%   q=2;
-%   z_debug=[-0.1 -0.25];
-%   fract_vertex(1,:)=[x_debug(1) m*x_debug(1)+q z_debug(1)];
-%   fract_vertex(2,:)=[x_debug(1) m*x_debug(1)+q z_debug(2)];
-%   fract_vertex(4,:)=[x_debug(2) m*x_debug(2)+q z_debug(2)];
-%   fract_vertex(3,:)=[x_debug(2) m*x_debug(2)+q z_debug(1)];
+   x_debug=[-0.9 -0.5];
+   m=0;
+   q=1.75;
+   z_debug=[-0.5 -0.1];
+   fract_vertex(1,:)=[x_debug(1) m*x_debug(1)+q z_debug(1)];
+   fract_vertex(2,:)=[x_debug(1) m*x_debug(1)+q z_debug(2)];
+   fract_vertex(4,:)=[x_debug(2) m*x_debug(2)+q z_debug(2)];
+   fract_vertex(3,:)=[x_debug(2) m*x_debug(2)+q z_debug(1)];
 
 % fract_vertex(1,:) = [0, 2.5, -2];
 % fract_vertex(2,:) = [-0.9, 2.5, -0.75];
@@ -182,13 +182,20 @@ fp = fopen('barra.1.face','r');
 % fract_vertex(4,:) = [0.8, 6, -1.5];
 % fract_vertex(3,:) = [-0.8, 6, -1.5];
 
-fract_vertex(1,:) = [-1, -1, -1.5];
-fract_vertex(2,:) = [1, 0.5, 0];
-fract_vertex(4,:) = [1, 6, 0];
-fract_vertex(3,:) = [-1, 5, -1.5];
+% fract_vertex(1,:) = [-1, -1, -1.5];
+% fract_vertex(2,:) = [1, 0.5, 0];
+% fract_vertex(4,:) = [1, 6, 0];
+% fract_vertex(3,:) = [-1, 5, -1.5];
+% 
+%   
 
-  
-  
+% fract_vertex(1,:) = [-1.3, -0.5, 0];
+% fract_vertex(2,:) = [1.3, -0.5, 0];
+% fract_vertex(4,:) = [1.3, 5.5, 0];
+% fract_vertex(3,:) = [-1.3, 5.5, 0];
+% 
+
+
   A = fscanf(fp,'%d',2); 
   n_fracts = A(1); 
   

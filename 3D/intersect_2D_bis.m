@@ -52,9 +52,10 @@ while(i <= num_f && flag)
         end
             
     elseif(side(1) + side(2) == 4)
+        disp('qui');
         %punto medio segmento analizzare
         G = (node_plane(p_1).coord + node_plane(p_2).coord)/2;
-        G_f = (F(i,:)-F(mod(i,num_f)+1,:))/2;
+        G_f = (F(i,:)+F(mod(i,num_f)+1,:))/2;
         sum_r = norm(G_f - F(i,:),inf) + norm(G - node_plane(p_1).coord,inf);
         if(norm(G-G_f,inf) < sum_r - toll)
             n_intersect = 2;

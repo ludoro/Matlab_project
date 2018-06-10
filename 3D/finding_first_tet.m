@@ -377,7 +377,7 @@ while(id_tet <= n_tets && found == 0)
             end
             
             it_is_cut = intersect_3D(id_f,id_node_plane(1:2),third_coord(1:2));
-            
+            it_is_cut
             if(it_is_cut == 1)
                 %---------TAGLIATO---------
                 found = 1;

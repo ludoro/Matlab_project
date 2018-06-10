@@ -12,7 +12,7 @@ for i=1:2
 end
 
 
-line(X,Y,Z,'Color',[0 0 0],'Marker','o');
+line(X,Y,Z,'Color',[0 0.8 0],'LineWidth',1.3);
 hold on
 end
 
