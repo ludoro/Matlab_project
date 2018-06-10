@@ -11,8 +11,8 @@ for i = 1:4
             queue(end+1).id = neigh(id_tet,i);
             %Prendiamo tutti i punti tranne l'i-esimo
             %sperimentiamo con vettore logico
-            queue(end).points = tet(neigh(id_tet,i)).P(1:4~=i);
-            queue(end).faces = face(tet(neigh(id_tet,i)).faces(i));
+            queue(end).points = tet(id_tet).P(1:4~=i);
+            queue(end).faces = tet(id_tet).faces(i);
             queue(end).edges = [0 0 0];
             for j = 1:3
                 queue(end).edges(j) = which_edge(queue(end).points(j),...

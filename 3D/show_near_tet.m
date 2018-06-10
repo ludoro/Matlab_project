@@ -13,6 +13,7 @@ for j = 1:length(info_fract(id_f).near_tet)
         fill3(X,Y,Z,[1,0.3,1],'FaceAlpha',0.2,'EdgeAlpha',0.6);   
         hold on;
     end
+
 end
 end
 end
