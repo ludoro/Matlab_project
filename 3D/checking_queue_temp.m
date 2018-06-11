@@ -6,7 +6,6 @@ while(~isempty(queue_temp))
     if(tet(id_tet).status_queue == -5)
         
         %chiamo which_side
-        
         side = [0,0,0,0];
         for i =1:4
             if(node(tet(id_tet).P(i)).side == 0)

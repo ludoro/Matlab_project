@@ -1,5 +1,5 @@
 function [it_is_cut] = intersect_3D(id_f,id_node_plane,third_coord)
-%Questa funzione va a riempire info_trace.div
+%Questa funzione va a riempire info_fract.v
 %id_f = id della frattura
 %node_plane = i punti di taglio del piano
 %id_node_plane = indici da considerare di node plane
@@ -15,6 +15,7 @@ global info_fract;
 global fract;
 global node_plane;
 global info_node;
+
 it_is_cut=0;
 
 %salvo subito coordinate frattura
@@ -29,8 +30,10 @@ for i = 1:n_to_check
     P(i,:) = node_plane(id_node_plane(i)).coord;
 end
 
-%-----STEP 1-----------
+%--------------------STEP 1--------------------
 %controllo grossolano
+%trovo raggi circonferenza circoscritta a frattura e a impronta,
+%faccio dei controlli preliminari 
 G_f = fract(id_f).G;
 r_f = fract(id_f).r;
 
@@ -47,6 +50,7 @@ for i = 2:n_to_check
         r_p = r_temp;
     end
 end
+
 % se la distanza dei due baricentri è maggiore della somma dei due raggi, 
 % allora non si toccano
 if(norm(G_f-G_p,inf) > r_p + r_f)
@@ -56,7 +60,9 @@ else
     %tutta l'impronta è tutta interna o ha almeno un punto esterno
     
     %--------------------------STEP 2----------------------------------
-    %impronta tutta interna 
+    %Nello step 2 analizziamo il caso in cui l'impronta sia tutta interna
+    %alla frattura,nel caso abbia almeno un punto esterno alla frattura
+    %passiamo allo step 3.
     side = zeros(n_to_check,num_f);
     for i=1:n_to_check
         if(isempty(node_plane(id_node_plane(i)).sides))
@@ -103,10 +109,12 @@ else
         end
     end
     
-    
+    %se ho più di due punti di node_plane da controllare ho un caso
+    %standard
     if(n_to_check > 2)
         
     if(some_out == 0)
+        %tutti i punti interni
         
         %faccio poligonazione
         if(isempty(info_fract(id_f).pol(1).v))
@@ -122,9 +130,7 @@ else
         fract(id_f).protocol = 0;
     else
         %-----------STEP 3--------------------
-        
-        %!!!!!!!!!!!! DEGUGGING !!!!!!!!!!!
-        %disp('entrato step3');
+        %almeno un punto dell'impronta è esterno alla frattura
         
         %controllo ed eventualmente inverto P per avere verso concorde
         %controllo con prodotto vettoriale
@@ -307,6 +313,8 @@ else
         
         %DETTAGLIO: quando è tagliato oppure no?
         
+        %controllo la lunghezza del poligono e agisco di conseguenza 
+        
         if(length(pol_temp) > 2)
             if(isempty(info_fract(id_f).pol(1).v))
                 info_fract(id_f).pol(1).v = pol_temp;
@@ -316,7 +324,7 @@ else
             it_is_cut = 1;
             %modifico protocol
             fract(id_f).protocol = 0;
-        else
+        else %length(pol_temp) <= 2
             if(fract(id_f).protocol == -1)
                 
                 %controllo se baricentro della frattura è interno o esterno
@@ -442,7 +450,6 @@ else
                     end
                 else
                     n_intersect = intersect_2D_bis(id_f,id_node_plane(1),id_node_plane(2));
-                    n_intersect
                     if(n_intersect == 1)
                         it_is_cut=0;
                     else%n_intersect = 2

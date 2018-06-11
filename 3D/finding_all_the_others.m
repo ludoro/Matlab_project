@@ -8,8 +8,6 @@ id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
 
-
-
 while(~isempty(queue) || ~isempty(queue_temp))
     %svuoto queue_temp
     checking_queue_temp;

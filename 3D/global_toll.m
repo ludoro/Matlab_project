@@ -1,3 +1,6 @@
+%vogliamo trovare una tollerenza globale
+%Media aritmetica delle lunghezze in norma 1 moltiplicata per 
+%un valore predefinito di accuracy.
 global toll;
 sum = 0;
 v = [0,0,0];

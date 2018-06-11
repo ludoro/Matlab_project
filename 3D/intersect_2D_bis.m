@@ -1,7 +1,8 @@
 function [n_intersect] = intersect_2D_bis(id_f,p_1,p_2)
-%
-%
-%
+%Funzione specifica all'ultimo caso di intersect_3D, cioè quando:
+%nessuno dei due punti è totalmente interno, due alternative:
+% 1)due esterni
+% 2)oppure uno completamente esterno e uno sulla frontiera 
 global fract;
 global fract_vertex;
 global accuracy;
@@ -47,12 +48,19 @@ while(i <= num_f && flag)
        
         st = A\b; %prima posizione t(segmento) , seconda posizione s(frattura)
         %devo controllare i valori di st(2)
+        
+        % se sta tra 0 e 1 ho trovato un intersezione propria,
+        % quindi aumento n_intersect
         if(st(2)<1-accuracy && st(2)>=accuracy)
             n_intersect = n_intersect + 1;
         end
             
     elseif(side(1) + side(2) == 4)
-        disp('qui');
+        %in questa situazione ho segmento e lato frattura paralleli,
+        %inoltre, devo solo analizzare se la i due lati si 
+        %toccano nell'estremo oppure uno è dentro l'altro. Questo perchè
+        %siamo in una caso particolare di intersect 3D.
+        
         %punto medio segmento analizzare
         G = (node_plane(p_1).coord + node_plane(p_2).coord)/2;
         G_f = (F(i,:)+F(mod(i,num_f)+1,:))/2;

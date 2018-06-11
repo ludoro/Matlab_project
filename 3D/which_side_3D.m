@@ -6,7 +6,6 @@ global fract;
 global fract_vertex;
 global node;
 global toll;
-
 v = node(p).coord-fract_vertex(fract(id_f).P(1),:);
 scalar=dot(fract(id_f).N,v);
 if(scalar<-toll)

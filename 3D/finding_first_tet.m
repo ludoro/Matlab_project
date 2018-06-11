@@ -8,6 +8,7 @@ e_temp = [0,0,0,0];
 id_node_plane = [-1,-1,-1,-1];
 third_coord = [0,0,0,0];
 it_is_cut = -1;
+
 while(id_tet <= n_tets && found == 0)
     id_node_plane = [-1,-1,-1,-1]; %indici nodi 
     %called_which_side = [0,0,0,0]; %flag
@@ -87,7 +88,6 @@ while(id_tet <= n_tets && found == 0)
             
             if(it_is_cut ~= 0)
                 %------------TAGLIATO-------------
-                
                 found = 1;
                 tet(id_tet).status_queue = 0;
                 info_fract(id_f).cut_tet(1).id = id_tet;

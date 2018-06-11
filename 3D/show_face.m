@@ -10,7 +10,5 @@ for i=1:3
 end
 fill3(X,Y,Z,[0.4 1 0],'FaceAlpha',0.5,'EdgeAlpha',0);
 hold on
-
-
 end
 

@@ -15,6 +15,5 @@ for i = 1:4
 end
 end
 axis equal;
-
 end
 

@@ -199,7 +199,7 @@ while(i <= num_f && flag)
     end
     i=i+1;
 end
-%problema: potrebbe essere che da fuori a fuori abbia solo un intersezione,
+%problema: potrebbe essere che da fuori a fuori abbia solo un intersezione
 %con un vertice della frattura, ma la funzione in questo caso si aspetta
 %due intersezioni, risolviamo il problema:
 if(flag == 1 && n_intersect == 1)
