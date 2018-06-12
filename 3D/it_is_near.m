@@ -5,9 +5,9 @@ n_points_on_queue = length(queue(1).points);
 n_edges_on_queue = length(queue(1).edges);
 n_faces_on_queue = length(queue(1).faces);
 
-% b < -1 := il triangolo non è già stato inserito su near_tri
-% b > 0  := il triangolo è già stato inserito su near_tri
-%           b indica posizione in near_tri
+% b < -1 := il tetraedro non è già stato inserito su near_tet
+% b > 0  := il tetraedro è già stato inserito su near_tet
+%           b indica posizione in near_tet
 
 if(b < -1)
     if(info_fract(id_f).near_tet(1).id == 0)

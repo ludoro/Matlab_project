@@ -4,7 +4,7 @@ function [P_intersect,n_intersect,in,out]...
 % P_intersect matrice 2x2 di coordinate di punti di intersezione
 % se n_intersection = numero intersezioni proprie (escluse i vertici della
 %                     frattura)
-% edge_intersection = in quale lato entra? in quale lato esce?
+% in out = in quale lato entra? in quale lato esce?
 global fract;
 global fract_vertex;
 global accuracy;
