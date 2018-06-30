@@ -4,7 +4,7 @@ The project is divided in three parts: 2D, 3D and C++.
 
 ## 2D
 
-Given a segment and a triangulated polygon, we need to understand if the segment "cuts" the polygon, if that is the case, we need to triangualte the cut figures. Images are worth many words: 
+Given a segment and a triangulated polygon, we need to understand if the segment "cuts" the polygon. If that is the case, we need to triangulate the cut figures. Images are worth many words: 
 
 ![img](https://i.imgur.com/ffmdsdf.png)
 ![img](https://i.imgur.com/VCEAfhs.png)
