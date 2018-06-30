@@ -4,7 +4,7 @@ The project is divided in three parts: 2D, 3D and C++.
 
 ## 2D
 
-Given a segment and a triangulated polygon, we need to understand if the segment "cuts" the polygon, if that is the case, we need to triangualte the cut figures. Images are worth many word: 
+Given a segment and a triangulated polygon, we need to understand if the segment "cuts" the polygon, if that is the case, we need to triangualte the cut figures. Images are worth many words: 
 
 ![img](https://i.imgur.com/ffmdsdf.png)
 ![img](https://i.imgur.com/VCEAfhs.png)
@@ -22,3 +22,7 @@ Given a polygon in the space and a parallelepiped, we need to understand if the 
 ![img](https://i.imgur.com/PBwTBCS.png)
 
 In red we have the polygon. In blue we have the cut tetrahedrons, in pink we have the tetrahedron that are near cut tetrahedrons. In yellow we have the polygons formed by the cut. 
+
+## C++
+
+Just a translation of the 2D project in C++, with the same functionality. 
