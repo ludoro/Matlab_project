@@ -14,7 +14,7 @@ The red dot are the intersections between the segment and a triangle. The light 
 
 ## 3D 
 
-Given a polygon in the space and a parallelepiped, we need to understand if the polygon "cuts" the polygon, if that is the case, we need to divide the cut sections in subsections. As before, images:
+Given a polygon in the space and a parallelepiped, we need to understand if the polygon "cuts" the parallelepiped. If that is the case, we need to divide the cut sections in subsections. As before, images:
 
 ![img](https://i.imgur.com/ojKxKJX.png)
 ![img](https://i.imgur.com/nHrkpJS.png)
